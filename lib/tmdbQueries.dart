@@ -9,13 +9,13 @@ class TMDBQueries {
 
   static Future<Response> actualQuerySearch;
 
-  static Future<Map<String, dynamic>> onlineSearchMulti(String query, [SortingTypes sort = SortingTypes.date]) async {
-    String url = "https://api.themoviedb.org/3/search/multi?api_key=$key&language=$lang&page=1&include_adult=false&query=$query";
+  static Future<Map<String, dynamic>> onlineSearchMulti(String query, [int offset = 1]) async {
+    String url = "https://api.themoviedb.org/3/search/multi?api_key=$key&language=$lang&page=$offset&include_adult=false&query=$query";
 
     Map<String, dynamic> returner;  
     if (actualQuerySearch != null) {
-      print("remove Query search");
-      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("removed"));
+    
+      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
     Response response = await actualQuerySearch;
@@ -31,18 +31,12 @@ class TMDBQueries {
     return returner;
   }
 
-  static Future<Map<String, dynamic>> onlineSearchMovie(String query, [int year = 0, SortingTypes sort = SortingTypes.date]) async {
-    String url;
-    if (year != 0)
-      url = "https://api.themoviedb.org/3/search/movie?api_key=$key&language=$lang&year=$year&include_adult=false&query=$query";
-    else 
-      url = "https://api.themoviedb.org/3/search/movie?api_key=$key&language=$lang&include_adult=false&query=$query";
+  static Future<Map<String, dynamic>> onlineSearchMovie(String query, [int offset = 1]) async {
+    String url = "https://api.themoviedb.org/3/search/movie?api_key=$key&page=$offset&language=$lang&include_adult=false&query=$query";
       
-
     Map<String, dynamic> returner;
     if (actualQuerySearch != null) {
-      print("remove Query search");
-      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("removed"));
+      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
     Response response = await actualQuerySearch;
@@ -58,13 +52,12 @@ class TMDBQueries {
     return returner;
   }
 
-  static Future<Map<String, dynamic>> onlineSearchPerson(String query, [SortingTypes sort = SortingTypes.date]) async {
-    String url = "https://api.themoviedb.org/3/search/person?api_key=$key&language=$lang&query=$query";
+  static Future<Map<String, dynamic>> onlineSearchPerson(String query, [int offset = 1]) async {
+    String url = "https://api.themoviedb.org/3/search/person?api_key=$key&language=$lang&query=$query&page=$offset";
 
     Map<String, dynamic> returner;      
     if (actualQuerySearch != null) {
-      print("remove Query search");
-      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("removed"));
+      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
     Response response = await actualQuerySearch;
@@ -80,13 +73,12 @@ class TMDBQueries {
     return returner;
   }
 
-  static Future<Map<String, dynamic>> onlineSearchCollection(String query, [SortingTypes sort = SortingTypes.date]) async {
-    String url = "https://api.themoviedb.org/3/search/collection?api_key=$key&language=$lang&query=$query";
+  static Future<Map<String, dynamic>> onlineSearchCollection(String query, [int offset = 1]) async {
+    String url = "https://api.themoviedb.org/3/search/collection?api_key=$key&language=$lang&query=$query&page=$offset";
 
     Map<String, dynamic> returner;      
     if (actualQuerySearch != null) {
-      print("remove Query search");
-      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("removed"));
+      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
     Response response = await actualQuerySearch;
@@ -102,17 +94,12 @@ class TMDBQueries {
     return returner;
   }
 
-  static Future<Map<String, dynamic>> onlineSearchTV(String query, [int year = 0, SortingTypes sort = SortingTypes.date]) async {
-    String url;
-    if (year != 0)
-      url = "https://api.themoviedb.org/3/search/tv?api_key=$key&language=$lang&query=$query&first_air_date_year=$year";
-    else 
-      url = "https://api.themoviedb.org/3/search/tv?api_key=$key&language=$lang&query=$query";
+  static Future<Map<String, dynamic>> onlineSearchTV(String query, [int offset = 1]) async {
+    String url = "https://api.themoviedb.org/3/search/tv?api_key=$key&page=$offset&$lang&query=$query";
 
     Map<String, dynamic> returner;    
     if (actualQuerySearch != null) {
-      print("remove Query search");
-      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("removed"));
+      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
     Response response = await actualQuerySearch;
@@ -128,13 +115,12 @@ class TMDBQueries {
     return returner;
   }
 
-  static Future<Map<String, dynamic>> onlineSearchCompanies(String query, [SortingTypes sort = SortingTypes.date]) async {
-    String url = "https://api.themoviedb.org/3/search/company?api_key=$key&language=$lang&query=$query";
+  static Future<Map<String, dynamic>> onlineSearchCompanies(String query, [int offset = 1]) async {
+    String url = "https://api.themoviedb.org/3/search/company?api_key=$key&page=$offset&$lang&query=$query";
 
     Map<String, dynamic> returner;    
     if (actualQuerySearch != null) {
-      print("remove Query search");
-      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("removed"));
+      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
     Response response = await actualQuerySearch;
@@ -155,8 +141,7 @@ class TMDBQueries {
 
     Map<String, dynamic> returner;
     if (actualQuerySearch != null) {
-      print("remove Query search");
-      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("removed"));
+      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
     Response response = await actualQuerySearch;
@@ -177,8 +162,7 @@ class TMDBQueries {
 
     Map<String, dynamic> returner;
     if (actualQuerySearch != null) {
-      print("remove Query search");
-      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("removed"));
+      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
     Response response = await actualQuerySearch;
@@ -199,8 +183,7 @@ class TMDBQueries {
 
     Map<String, dynamic> returner;
     if (actualQuerySearch != null) {
-      print("remove Query search");
-      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("removed"));
+      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
     Response response = await actualQuerySearch;

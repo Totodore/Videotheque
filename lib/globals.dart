@@ -34,12 +34,14 @@ class GlobalsMessage {
   static const String errorMail = "Erreur lors de la récupération du mail, veuillez recommencer dès que possible";
   static const String askMail = "Suite à une mise à jour il est maintenant requis d'entrer une adresse email valide pour ouvrir ou utiliser un compte, veuillez renseigner la votre ci-dessous. Elle vous permettra de récupérer votre mot de passe en cas de perte ou de changement majeurs de l'application.";
   static const String defaultError = "Une erreur est apparue lors de la récupération de vos données";
+  static const String noResults = "Ouuups, aucun résultat n'a été trouvé pour votre recherche";
+  static const String defaultSearchMessage = "Recherchez, Ajoutez, Triez, Le tour est joué ! ";
 
   static const String general = "Recherche générale";
   static const String movie = "Films";
   static const String person = "Personnes";
   static const String collection = "Collections";
-  static const String tv = "Série TV";
+  static const String tv = "Séries TV";
   static const String companies = "Companies"; 
 
   static const List<Map<dynamic, dynamic>> chipData = [

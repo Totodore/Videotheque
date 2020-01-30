@@ -26,7 +26,6 @@ class HomeAppState extends State<HomeApp> {
   bool _dispSearch = false;
   bool _showSorting = false;
   OnlineSearchView searchView;
-  QueryTypes _selectedSort;
   SortingTypes _selectedSortType = SortingTypes.defaul;
   //Base title AppBar
   final Text _baseTitleAppBar = Text("Vidéothèque",
@@ -38,7 +37,6 @@ class HomeAppState extends State<HomeApp> {
     ),
   );
 
-  PopupMenuButton<SortingTypes> _popupSortMenu;
   TextField _searchTitleAppBar;
 
   @override
@@ -57,46 +55,29 @@ class HomeAppState extends State<HomeApp> {
       ),
       cursorColor: Colors.black,
       onSubmitted: (String query) async {
-        OnlineSearchView.currentView.searchQuery(query, _selectedSort);
+        OnlineSearchView.currentView.searchQuery(query);
       },
       onChanged: (String query) async {
         //We launch the query on the onlineSearchView
-        OnlineSearchView.currentView.searchQuery(query, _selectedSort);
+        OnlineSearchView.currentView.searchQuery(query);
       },
     );
 
-    _popupSortMenu = PopupMenuButton<SortingTypes>(
-      icon: Icon(Icons.filter_list,
-        color: GlobalsColor.darkGreen,
-        size: 35,
-      ),
-      elevation: 3.2,
-      initialValue: _selectedSortType,
-      onSelected: (SortingTypes selected) => _selectedSortType = selected,
-      itemBuilder: (BuildContext context) => [
-        PopupMenuItem(child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[Icon(Icons.star, color: Colors.grey,), Padding(padding: EdgeInsets.only(left: 4)), Text("Trier par pertinence")]), value: SortingTypes.defaul),
-        PopupMenuItem(child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[Icon(Icons.sort_by_alpha, color: Colors.grey,), Padding(padding: EdgeInsets.only(left: 4)), Text("Trier alphabétiquement")]), value: SortingTypes.alpha),
-        PopupMenuItem(child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[Icon(Icons.access_time, color: Colors.grey,), Padding(padding: EdgeInsets.only(left: 4)), Text("Trier par date")]), value: SortingTypes.date),
-      ],
-      offset: Offset(0, 118),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( //Default app BAR
-        leading: IconButton(
-          icon: Icon(_dispSearch ? Icons.arrow_back : Icons.subscriptions,
-            color: GlobalsColor.darkGreen,
-            size: 38,
-          ),
-          onPressed: _dispSearch ? () => setState(() { _dispSearch = false; OnlineSearchView.currentView.reset();}) : null,
+      appBar: !_dispSearch ? AppBar( //Default app BAR
+        leading: Icon(Icons.subscriptions,
+          color: GlobalsColor.darkGreen,
+          size: 38,
         ),
-        title: _dispSearch ? _searchTitleAppBar : _baseTitleAppBar,
+        title: _baseTitleAppBar,
         backgroundColor: GlobalsColor.lightGreen,
+        elevation: 2,
         actions: <Widget>[
-          _dispSearch ? _popupSortMenu : IconButton(
+          IconButton(
             icon: Icon(Icons.search,
               color: GlobalsColor.darkGreen,
               size: 35,
@@ -104,6 +85,17 @@ class HomeAppState extends State<HomeApp> {
             onPressed: () => setState(() => _dispSearch = true),
           )
         ],
+      ) : AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,
+            color: GlobalsColor.darkGreen,
+            size: 38,
+          ),
+          onPressed: () => setState(() => _dispSearch = false),
+        ),
+        title: _searchTitleAppBar,
+        backgroundColor: GlobalsColor.lightGreen,
+        elevation: 0,
       ),
       body: AnimatedSwitcher(
         transitionBuilder: (Widget child, Animation<double> animation) => SlideTransition(

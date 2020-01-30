@@ -18,88 +18,114 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
 
 
   static GlobalKey<OnlineSearchViewState> searchViewKey = GlobalKey<OnlineSearchViewState>();
+
   PageController _resultsPageController = PageController(initialPage: 0);
-  Center _loading = Center( 
-    child: Padding(
-      padding: EdgeInsets.only(top: 55),
-      child: SizedBox(
-        height: 65,
-        width: 65,
-        child: CircularProgressIndicator(
-          strokeWidth: 3,
-          valueColor: AlwaysStoppedAnimation(GlobalsColor.darkGreen),
-        ),
-      ),
-    ),
-  );
+  ScrollController _pageResultsController = ScrollController();
+  ScrollController _rowChipTypeController = ScrollController();
   QueryTypes _selectedSort = QueryTypes.all;
   String _currentQuery;
-  SortingTypes _selectedSortingType = SortingTypes.defaul;
-  ListView _searchResults;
-  bool _dispLoading = false;
   PageView _resultsView;
+  bool _displaySortBar = false;
+  bool _dispAnimationHomeSearch = false;
 
-  //function to reset the view when hiding it
-  void reset() {
-    setState(() {
-      _searchResults = null;
-      _dispLoading = false;
-      _currentQuery = null;
+  Map<QueryTypes, dynamic> _loadedSiblings; //List which represent number of view loaded
+  //List which represent offset of result per view
+  Map<QueryTypes, List> _dataLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return null;})); 
+  //offset actuel de chaque view
+  Map<QueryTypes, int> _offsetLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return 1;}));
+  //si on a atteint le bas du bottom correspondant à la view
+  Map<QueryTypes, bool> _reachBottomLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return false;}));
+
+  @override 
+  void initState() {
+    super.initState();
+    //Quand on scroll latéralement on fait bouger les chips aussi
+    _resultsPageController.addListener(() async {
+      double ratio = _resultsPageController.offset/_resultsPageController.position.maxScrollExtent;
+      double animatePos = _rowChipTypeController.position.maxScrollExtent*ratio;
+      _rowChipTypeController.animateTo(
+        animatePos,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.ease
+      );
+    });
+    
+    //Si on arrive en bas de page
+    _pageResultsController.addListener(() async {
+      QueryTypes actualQueryType = QueryTypes.values[_resultsPageController.page.toInt()];
+
+      if (_pageResultsController.offset > _pageResultsController.position.maxScrollExtent - 40 && !_reachBottomLoadedView[actualQueryType]) {
+        //On incrémente l'offset correspondant à la view actuelle
+        _offsetLoadedView[actualQueryType] += 1;
+        print(_offsetLoadedView[actualQueryType].toString() + " test");
+        _reachBottomLoadedView[actualQueryType] = true; //On dit qu'on a attein le bottom de la view
+        searchQuery(_currentQuery, _offsetLoadedView[actualQueryType]);
+      }
+    });
+    Future.delayed(const Duration(milliseconds: 10), () {
+      setState(() {
+        _displaySortBar = true;
+        _dispAnimationHomeSearch = true;
+      });
     });
   }
-  //Search query called from HomeHeaderView
-  void searchQuery(String query, QueryTypes queryType, [SortingTypes = SortingTypes.date]) async {
+
+  Future<ListView> buildView(QueryTypes queryType, [int offset = 1]) async {
     Map result;
+    ListView _searchResults;
 
-    //Check if query is empty if yes we abort
-    if (query == null || query.isEmpty) {
-      setState(() => _searchResults = null);
-      return;
-    }
-    //We display loader
-    setState(() => _dispLoading = true);
-
-    //set current query
-    _currentQuery = query;
     //On fait la requête en fx de queryType
-    switch (_selectedSort) {
+    switch (queryType) {
       case QueryTypes.all:
-        result = await TMDBQueries.onlineSearchMulti(query).whenComplete(() => setState(() => _dispLoading = false));
+        result = await TMDBQueries.onlineSearchMulti(_currentQuery, offset);
         break;
       case QueryTypes.movie:
-        result = await TMDBQueries.onlineSearchMovie(query).whenComplete(() => setState(() => _dispLoading = false));
+        result = await TMDBQueries.onlineSearchMovie(_currentQuery, offset);
         break;
       case QueryTypes.person:
-        result = await TMDBQueries.onlineSearchPerson(query).whenComplete(() => setState(() => _dispLoading = false));
+        result = await TMDBQueries.onlineSearchPerson(_currentQuery, offset);
         break;
       case QueryTypes.tv:
-        result = await TMDBQueries.onlineSearchTV(query).whenComplete(() => setState(() => _dispLoading = false));
+        result = await TMDBQueries.onlineSearchTV(_currentQuery, offset);
         break;
       case QueryTypes.collection:
-        result = await TMDBQueries.onlineSearchCollection(query).whenComplete(() => setState(() => _dispLoading = false));
+        result = await TMDBQueries.onlineSearchCollection(_currentQuery, offset);
         break;
       case QueryTypes.companies:
-        result = await TMDBQueries.onlineSearchCompanies(query).whenComplete(() => setState(() => _dispLoading = false));
+        result = await TMDBQueries.onlineSearchCompanies(_currentQuery, offset);
         break;
     }
-    print(List.from(result["results"]).length);
 
+    if (result["total_pages"] == offset || result["results"] == null || List.from(result["results"]).length == 0) {
+      //Si c'est la dernière page de la view ou que ya plus de résultat on dit qu'on a atteint le bottom
+      _reachBottomLoadedView[queryType] = true;
+    } else {
+      //Si ya encore des résultats alors on a pas encore atteint le fond
+      _reachBottomLoadedView[queryType] = false;
+    }
     //Si les results sont bons...
     if (result["results"] != null && List.from(result["results"]).length > 0) {
       //On build les résults
+      print("building " + queryType.toString() + " " + offset.toString());
+      if (offset == 1)
+        _dataLoadedView[queryType] = result["results"]; 
+      else 
+        _dataLoadedView[queryType].addAll(result["results"]);
+
       _searchResults = ListView.builder(
         shrinkWrap: true,
-        itemCount: result["total_results"] < 10 ? result["total_results"] : 10,
+        controller: _pageResultsController,
+        itemCount: _dataLoadedView[queryType].length,
         scrollDirection: Axis.vertical,
 
         itemBuilder: (BuildContext context, int index) {
           //Déclaration des différents composants;
           QueryTypes elementType;
-          Map element = Map.from(result["results"][index]);
+          Map element = Map.from(_dataLoadedView[queryType][index]);
           String title = ""; 
           String poster_path = "";
           IconData icon;
-          Widget infos = Padding(padding: EdgeInsets.all(0));
+          Widget infos = Container();
           //Switch pour savoir sur quel element on travail
           switch (element["media_type"]) {
             case "movie":
@@ -135,7 +161,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                   maxLines: 10,
                   softWrap: true,
                 ),
-              ) : Padding(padding:EdgeInsets.all(0));
+              ) : Container();
               break;
             case QueryTypes.tv:
               icon = Icons.tv;
@@ -149,7 +175,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                   maxLines: 10,
                   softWrap: true,
                 ),
-              ) : Padding(padding:EdgeInsets.all(0));
+              ) : Container();
               break;
             case QueryTypes.person:
               icon = Icons.person;
@@ -199,8 +225,9 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
             margin: EdgeInsets.all(6),
             child: InkWell(
               onTap: () {
-                
+                // TODO: Implement tap card
               },
+              onDoubleTap: null,
               onLongPress: null,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -216,14 +243,14 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        ProgressiveImage(
+                        poster_path != null ? ProgressiveImage(
                           placeholder: AssetImage("assets/loading.png"),
                           thumbnail: NetworkImage(GlobalsData.thumbImgSize + poster_path, scale: 1),
                           image: NetworkImage(GlobalsData.imgSize + poster_path, scale: 1),
                           width: 100,
                           height: 150,
                           fit: BoxFit.cover,
-                        ),
+                        ) : Container(),
                         Padding(
                           child: Container(),
                           padding: EdgeInsets.only(left: 7),
@@ -245,62 +272,194 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
       );
     } //Si ya des erreurs on les affiches 
     else if (result["error"] != null){
-      _searchResults = ListView(children: <Widget>[Center(child: Icon(Icons.error_outline, size: 20))]);
+      _searchResults = ListView(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 100), 
+            child: Center(
+              child: Icon(Icons.error_outline, 
+                size: 100
+              )
+            )
+          ),
+          Text(GlobalsMessage.defaultError,
+            textAlign: TextAlign.center,
+          )
+        ]
+      );
       GlobalsFunc.snackBar(context, result["error"]);
     } //Et si ya rien on met que ya rien 
     else {
       _searchResults = ListView(
-        children: <Widget>[Center(child: Icon(Icons.not_interested, size: 20))]);
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 75, bottom: 25), 
+            child: Center(
+              child: Icon(Icons.not_interested, 
+                size: 100
+              )
+            )
+          ),
+          Text(GlobalsMessage.noResults,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.w500),
+          )
+        ]
+      );
     }
+
+    return _searchResults;
+  }
+
+  //Search handler which determine which view should be loaded recursively
+  void handleBuildView(bool newQuery, int index, [int offset = 1]) {
+    QueryTypes queryType = QueryTypes.values[index];
+    //Quand on a fini de get la view,
+    buildView(queryType, offset).then((ListView newView) {
+      //On la rajoute dans la liste des views loadés
+      _loadedSiblings[queryType] = newView;
+      buildListView();  //On rebuild le tout avec la nouvelle view
+      //Pour chaque view dans la liste si yen a une pas loadé on fait la load et ainsi de suite
+      //Seulement si c'est une nouvelle requête
+      if (newQuery) {
+        for (var item in QueryTypes.values) {
+          if (_loadedSiblings[item] == false) {
+            handleBuildView(true, item.index);
+            break;  //On break quand on en a trouvé une a loader
+          }
+        }
+      }
+    });
+  }
+  //Search query called from HomeHeaderView or called recursively to load 
+  void searchQuery(String query, [int offset = 1]) async {
+
+    if (offset == 1) {
+      //Si c'est une nouvelle requete on réinitialise les données
+      _loadedSiblings = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return false;}));
+    }
+    //Check if query is empty if yes we abort
+    if (query == null || query.isEmpty) {
+      return;
+    }
+
+    //Si c'est pas une nouvelle requête
+    if (query != _currentQuery) {
+      _currentQuery = query;
+    }
+    handleBuildView(true, QueryTypes.values.indexOf(_selectedSort), offset);
+
+    buildListView();
+  }
+
+  void buildListView() {
+    // print("building : ");
     setState(() {
       _resultsView = PageView.builder(
         itemBuilder: (BuildContext context, int index) {
-          return _searchResults;
+          if (_loadedSiblings[QueryTypes.values[index]] != false) {
+            return _loadedSiblings[QueryTypes.values[index]];
+          } else {
+            return Container( 
+              child: Center( 
+                child: Padding(
+                  padding: EdgeInsets.only(top: 55),
+                  child: SizedBox(
+                    height: 65,
+                    width: 65,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      valueColor: AlwaysStoppedAnimation(GlobalsColor.darkGreen),
+                    ),
+                  ),
+                ),
+              )
+            );
+          }
         },
         controller: _resultsPageController,
         itemCount: GlobalsMessage.chipData.length,
+        onPageChanged: (int index) {
+          setState(() {
+            _selectedSort = QueryTypes.values[index];
+            // _rowChipTypeController.animateTo(offset)
+          });
+        },
       );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        ConstrainedBox(
-          constraints: BoxConstraints.tight(Size.fromHeight(56)),
-          child: ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                child: ChoiceChip(
-                  pressElevation: 3,
-                  elevation: 1,
-                  backgroundColor: Colors.transparent,
-                  avatarBorder: CircleBorder(side: BorderSide(width: 3, color: Colors.grey)),
-                  selectedColor: GlobalsColor.fadedGreen,
-                  labelStyle: TextStyle(color: GlobalsColor.green),
-                  shadowColor: GlobalsColor.darkGreenDisabled,
-                  label: Text(GlobalsMessage.chipData[index]["name"]),
-                  selected: GlobalsMessage.chipData[index]["type"] == _selectedSort,
-                  onSelected: (bool selected) {
-                    setState(() => selected == true ? _selectedSort = GlobalsMessage.chipData[index]["type"] : null);
-                    selected ? searchQuery(_currentQuery, _selectedSort, _selectedSortingType) : null;
-                  },
-                ),
-              );
-            }, 
+    return Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(56),
+          child: AnimatedContainer( 
+            duration: Duration(milliseconds: 500),
+            height: 56,
+            transform: _displaySortBar ? Matrix4.translationValues(0, 0, 0) : Matrix4.translationValues(0, -56, 0),
+            curve: Curves.ease,
+            child: Theme(data: Theme.of(context).copyWith(accentColor: GlobalsColor.darkGreen), child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              controller: _rowChipTypeController,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: List<Widget>.generate(GlobalsMessage.chipData.length, (int index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                    child: Theme(data: Theme.of(context).copyWith(splashColor: GlobalsColor.green),child: ChoiceChip(
+                      pressElevation: 3,
+                      elevation: 1,
+                      backgroundColor: Colors.transparent,
+                      avatarBorder: CircleBorder(side: BorderSide(width: 3, color: Colors.grey)),
+                      selectedColor: GlobalsColor.fadedGreen,
+                      labelStyle: TextStyle(color: GlobalsColor.green, fontWeight: FontWeight.w600),
+                      shadowColor: GlobalsColor.darkGreenDisabled,
+                      label: Text(GlobalsMessage.chipData[index]["name"]),
+                      selected: GlobalsMessage.chipData[index]["type"] == _selectedSort,
+
+                      onSelected: (bool selected) {
+                        setState(() => selected == true ? _selectedSort = GlobalsMessage.chipData[index]["type"] : null);
+                        //Si la liste view est créée on la fait bouger
+                        if (_resultsPageController.hasClients && selected)
+                          _resultsPageController.animateToPage(index, curve: Curves.ease, duration: Duration(milliseconds: 200));
+                        //Sinon on met la page initial
+                        else if (!_resultsPageController.hasClients && selected){
+                          _resultsPageController = PageController(initialPage: index);
+                        }
+                      },
+                    ),
+                  ));
+                }),
+              ),
+            )
           ),
         ),
-        _resultsView, //All the pages with the results
-        // Expanded(
-          // child: _dispLoading ? _loading : (_searchResults != null ? _searchResults : Center(
-            // child: Text("Recherchez, ajoutez, triez, le tour est joué !"),
-          // )), //Loading or result
-        // )
-      ],
+      ),
+      body: Theme(
+        child: _resultsView != null ? _resultsView : AnimatedContainer(
+          duration: Duration(milliseconds: 500),
+          curve: Curves.ease,
+          transform: _dispAnimationHomeSearch ? Matrix4.translationValues(0, 0, 0) : Matrix4.translationValues(0, 50, 0),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 25, bottom: 25), 
+                child: Center(
+                  child: Icon(Icons.local_movies,
+                    size: 100
+                  )
+                )
+              ),
+              Text(GlobalsMessage.defaultSearchMessage,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.w500),
+              )
+            ],
+          ),
+        ),
+        data: Theme.of(context).copyWith(accentColor: GlobalsColor.darkGreen),
+      ) //All the pages with the results
     );
   }
 }
