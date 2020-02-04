@@ -25,7 +25,7 @@ dependencies:
   url_launcher: ^5.4.1
   flutter_launcher_icons: ^0.7.4
   firebase: ^7.1.0
-  popup_menu: ^1.0.5
+  scroll_shadow_container: ^1.0.1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2

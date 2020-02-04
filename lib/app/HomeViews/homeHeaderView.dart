@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'dart:collection';
 import 'package:Videotheque/globals.dart';
 
 import 'package:Videotheque/app/HomeViews/onlineSearchView.dart';
 import 'package:Videotheque/app/HomeViews/homeBodyView.dart';
-import 'package:Videotheque/tmdbQueries.dart';
 
 class CustomPopupMenu {
   CustomPopupMenu({this.title, this.icon});
@@ -24,9 +22,7 @@ class HomeApp extends StatefulWidget {
 class HomeAppState extends State<HomeApp> {
 
   bool _dispSearch = false;
-  bool _showSorting = false;
   OnlineSearchView searchView;
-  SortingTypes _selectedSortType = SortingTypes.defaul;
   //Base title AppBar
   final Text _baseTitleAppBar = Text("Vidéothèque",
     style: TextStyle(
@@ -65,9 +61,17 @@ class HomeAppState extends State<HomeApp> {
 
   }
 
+  Future<bool> _willPopScope() async {
+    if (_dispSearch) {
+      setState(() => _dispSearch = false);
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(onWillPop: _willPopScope, child: Scaffold(
       appBar: !_dispSearch ? AppBar( //Default app BAR
         leading: Icon(Icons.subscriptions,
           color: GlobalsColor.darkGreen,
@@ -108,6 +112,6 @@ class HomeAppState extends State<HomeApp> {
         duration: Duration(milliseconds: 0),
         child: _dispSearch ? searchView = OnlineSearchView() : HomeBodyView(),
       )
-    );
+    ));
   }
 }

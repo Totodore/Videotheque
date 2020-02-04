@@ -21,9 +21,12 @@ class GlobalsData {
 
   static const String apiKey = "a6499d6e1a486416773626640f79de9d";
   static const String lang = "fr-FR";
+  
+  static const String backdropSize = "https://image.tmdb.org/t/p/w780/";
+  static const String thumbBackdropSize = "https://image.tmdb.org/t/p/w300/"; 
   static const String imgSize = "https://image.tmdb.org/t/p/w500/";
-  static const String thumbImgSize = "https://image.tmdb.org/t/p/w92";
-  static const String midThumbImgSize = "https://image.tmdb.org/t/p/w185";
+  static const String thumbImgSize = "https://image.tmdb.org/t/p/w92/";
+  static const String midThumbImgSize = "https://image.tmdb.org/t/p/w185/";
 }
 
 
@@ -47,27 +50,32 @@ class GlobalsMessage {
   static const List<Map<dynamic, dynamic>> chipData = [
     {
       "name": general,
-      "type": QueryTypes.all
+      "type": QueryTypes.all,
     },
     {
       "name": movie,
       "type": QueryTypes.movie,
+      "route": "movie",
     },
     {
       "name": person,
       "type": QueryTypes.person,
+      "route": "person"
     },
     {
       "name": collection,
       "type": QueryTypes.collection,
+      "route": "collection"
     },
     {
       "name": tv,
       "type": QueryTypes.tv,
+      "route": "tv"
     },
     {
       "name": companies,
       "type": QueryTypes.companies,
+      "route": "companies"
     }
   ]; 
 }
@@ -75,6 +83,7 @@ class GlobalsMessage {
 class GlobalsFunc {
   
   static void snackBar(context, [message = GlobalsMessage.defaultError, duration = 4]) {
+    Scaffold.of(context).removeCurrentSnackBar();
     Scaffold.of(context).showSnackBar(new SnackBar(
       content: Text(message), 
       behavior: SnackBarBehavior.floating,
@@ -85,4 +94,9 @@ class GlobalsFunc {
   static Future<Response> fetchData(url) {
     return get(url).timeout(Duration(seconds: 5));
   }
+}
+
+class GlobalsArgs {
+  static dynamic transfertArg;
+  static String actualRoute;
 }

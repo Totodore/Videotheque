@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'Connexion/mainConnexion.dart';
 import 'app/appMain.dart';
+import 'app/ElementsViews/movieView.dart';
 import 'webApp.dart';
 
 void main() {
@@ -13,6 +14,7 @@ void main() {
       "/": (context) => App(),
       "/webapp": (context) => WebApp(),
       "/connexion/": (context) => Connexion(),
+      "/element/movie/": (context) => MovieView()
     },
   ));
 }

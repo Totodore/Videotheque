@@ -12,6 +12,6 @@
                 "kind": "build",
                 "isDefault": true
             }
-        },
+        }
     ]
 }

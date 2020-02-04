@@ -27,6 +27,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
   PageView _resultsView;
   bool _displaySortBar = false;
   bool _dispAnimationHomeSearch = false;
+  bool _displayShadowSortBar = false;
 
   Map<QueryTypes, dynamic> _loadedSiblings; //List which represent number of view loaded
   //List which represent offset of result per view
@@ -40,15 +41,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
   void initState() {
     super.initState();
     //Quand on scroll latéralement on fait bouger les chips aussi
-    _resultsPageController.addListener(() async {
-      double ratio = _resultsPageController.offset/_resultsPageController.position.maxScrollExtent;
-      double animatePos = _rowChipTypeController.position.maxScrollExtent*ratio;
-      _rowChipTypeController.animateTo(
-        animatePos,
-        duration: Duration(milliseconds: 200),
-        curve: Curves.ease
-      );
-    });
+    _resultsPageController.addListener(syncScrollBar);
     
     //Si on arrive en bas de page
     _pageResultsController.addListener(() async {
@@ -61,6 +54,11 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
         _reachBottomLoadedView[actualQueryType] = true; //On dit qu'on a attein le bottom de la view
         searchQuery(_currentQuery, _offsetLoadedView[actualQueryType]);
       }
+      //Si on scroll vers le bas et que la barre est affichée on la cache
+      if (_pageResultsController.position.pixels > 5)
+        setState(() => _displayShadowSortBar = true);
+      else  //Sinon on l'affiche;
+        setState(() => _displayShadowSortBar = false);
     });
     Future.delayed(const Duration(milliseconds: 10), () {
       setState(() {
@@ -68,6 +66,18 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
         _dispAnimationHomeSearch = true;
       });
     });
+  }
+
+  void syncScrollBar() async {
+      double ratio = _resultsPageController.offset/_resultsPageController.position.maxScrollExtent;
+      double animatePos = _rowChipTypeController.position.maxScrollExtent*ratio;
+      setState(() => _displayShadowSortBar = false);
+
+      _rowChipTypeController.animateTo(
+        animatePos,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.ease
+      );
   }
 
   Future<ListView> buildView(QueryTypes queryType, [int offset = 1]) async {
@@ -123,7 +133,8 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
           QueryTypes elementType;
           Map element = Map.from(_dataLoadedView[queryType][index]);
           String title = ""; 
-          String poster_path = "";
+          String posterPath = "";
+          String heroTag = "image_search#"+index.toString();
           IconData icon;
           Widget infos = Container();
           //Switch pour savoir sur quel element on travail
@@ -151,7 +162,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
           switch (elementType) {
             case QueryTypes.movie: 
               icon = Icons.movie;
-              poster_path = element["poster_path"];
+              posterPath = element["poster_path"];
               title = element["title"] != null ? element["original_title"] : null;
               infos = element["overview"] != null ? Flexible(
                 child: Text(element["overview"],  
@@ -165,7 +176,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
               break;
             case QueryTypes.tv:
               icon = Icons.tv;
-              poster_path = element["poster_path"];
+              posterPath = element["poster_path"];
               title = element["name"] != null ? element["original_name"] : null;
               infos = element["overview"] != null ? Flexible(
                 child: Text(element["overview"],
@@ -179,7 +190,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
               break;
             case QueryTypes.person:
               icon = Icons.person;
-              poster_path = element["profile_path"];
+              posterPath = element["profile_path"];
               title = element["name"];
               infos = element["known_for"] != null ? Flexible(
                 child: Wrap(
@@ -207,12 +218,12 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
               break;
             case QueryTypes.collection:
               icon = Icons.subscriptions;
-              poster_path = element["poster_path"] != null ? element["poster_path"] : "";
+              posterPath = element["poster_path"] != null ? element["poster_path"] : "";
               title = element["name"] != null ? element["name"] : "";
               break;
             case QueryTypes.companies:
               icon = Icons.business;
-              poster_path = element["logo_path"];
+              posterPath = element["logo_path"];
               title = element["name"];
               break;
             default: 
@@ -225,7 +236,10 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
             margin: EdgeInsets.all(6),
             child: InkWell(
               onTap: () {
-                // TODO: Implement tap card
+                String route = "/element/"+GlobalsMessage.chipData[QueryTypes.values.indexOf(elementType)]["route"] + "/";
+                GlobalsArgs.actualRoute = route;
+                GlobalsArgs.transfertArg = List.from([element, heroTag]);
+                Navigator.pushNamed(context, route, arguments: element);
               },
               onDoubleTap: null,
               onLongPress: null,
@@ -243,13 +257,20 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        poster_path != null ? ProgressiveImage(
-                          placeholder: AssetImage("assets/loading.png"),
-                          thumbnail: NetworkImage(GlobalsData.thumbImgSize + poster_path, scale: 1),
-                          image: NetworkImage(GlobalsData.imgSize + poster_path, scale: 1),
-                          width: 100,
-                          height: 150,
-                          fit: BoxFit.cover,
+                        posterPath != null ? Hero(
+                          tag: heroTag, 
+                          transitionOnUserGestures: true, 
+                          child: ProgressiveImage(
+                            placeholder: AssetImage("assets/loading.png"),
+                            thumbnail: NetworkImage(GlobalsData.thumbImgSize + posterPath, scale: 1),
+                            image: NetworkImage(GlobalsData.imgSize + posterPath, scale: 1),
+                            width: 100,
+                            height: 150,
+                            fit: BoxFit.cover,
+                            fadeDuration: Duration(milliseconds: 150),
+                            blur: 2,
+
+                          )
                         ) : Container(),
                         Padding(
                           child: Container(),
@@ -392,14 +413,27 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(56),
-          child: AnimatedContainer( 
-            duration: Duration(milliseconds: 500),
-            height: 56,
-            transform: _displaySortBar ? Matrix4.translationValues(0, 0, 0) : Matrix4.translationValues(0, -56, 0),
-            curve: Curves.ease,
-            child: Theme(data: Theme.of(context).copyWith(accentColor: GlobalsColor.darkGreen), child: SingleChildScrollView(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(56),
+        child: AnimatedContainer( 
+          decoration: BoxDecoration(
+            boxShadow: _displayShadowSortBar ? [BoxShadow(
+              color: Colors.grey,
+              offset: Offset(0, 0),
+              blurRadius: 4,
+              spreadRadius: 1
+            )] : null,
+            color: Colors.white,
+          ),
+          duration: Duration(milliseconds: 500),
+          height: 56,
+          transform: _displaySortBar ? Matrix4.translationValues(0, 0, 0) : Matrix4.translationValues(0, -56, 0),
+          curve: Curves.ease,
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              accentColor: GlobalsColor.darkGreen,
+            ), 
+            child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               controller: _rowChipTypeController,
               child: Row(
@@ -426,36 +460,42 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                         //Sinon on met la page initial
                         else if (!_resultsPageController.hasClients && selected){
                           _resultsPageController = PageController(initialPage: index);
+                          _resultsPageController.addListener(syncScrollBar);
                         }
                       },
                     ),
                   ));
                 }),
               ),
-            )
+            ),
           ),
         ),
       ),
       body: Theme(
-        child: _resultsView != null ? _resultsView : AnimatedContainer(
-          duration: Duration(milliseconds: 500),
+        child: _resultsView != null ?  _resultsView : AnimatedOpacity(
+          opacity: _dispAnimationHomeSearch ? 1 : 0,
+          duration: Duration(milliseconds: 500), 
           curve: Curves.ease,
-          transform: _dispAnimationHomeSearch ? Matrix4.translationValues(0, 0, 0) : Matrix4.translationValues(0, 50, 0),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 25, bottom: 25), 
-                child: Center(
-                  child: Icon(Icons.local_movies,
-                    size: 100
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.ease,
+            transform: _dispAnimationHomeSearch ? Matrix4.translationValues(0, 0, 0) : Matrix4.translationValues(0, 50, 0),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 25, bottom: 25), 
+                  child: Center(
+                    child: Icon(Icons.local_movies,
+                      size: 100
+                    )
                   )
+                ),
+                Text(GlobalsMessage.defaultSearchMessage,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.w500),
                 )
-              ),
-              Text(GlobalsMessage.defaultSearchMessage,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.w500),
-              )
-            ],
+              ],
+            ),
           ),
         ),
         data: Theme.of(context).copyWith(accentColor: GlobalsColor.darkGreen),
