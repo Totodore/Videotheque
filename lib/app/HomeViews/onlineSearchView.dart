@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:progressive_image/progressive_image.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/tmdbQueries.dart';
@@ -76,7 +77,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
       _rowChipTypeController.animateTo(
         animatePos,
         duration: Duration(milliseconds: 200),
-        curve: Curves.ease
+        curve: Curves.linear
       );
   }
 
@@ -281,7 +282,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                     ),
                   ),
                   Divider(
-                    color: GlobalsColor.darkGreen,
+                    color: GlobalsMessage.chipData[QueryTypes.values.indexOf(elementType)]["color"],
                     height: 2,
                     thickness: 2,
                   ),
@@ -378,35 +379,63 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
     setState(() {
       _resultsView = PageView.builder(
         itemBuilder: (BuildContext context, int index) {
-          if (_loadedSiblings[QueryTypes.values[index]] != false) {
-            return _loadedSiblings[QueryTypes.values[index]];
-          } else {
-            return Container( 
-              child: Center( 
-                child: Padding(
-                  padding: EdgeInsets.only(top: 55),
-                  child: SizedBox(
-                    height: 65,
-                    width: 65,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3,
-                      valueColor: AlwaysStoppedAnimation(GlobalsColor.darkGreen),
+          // if (_loadedSiblings[QueryTypes.values[index]] != false) {
+          //   return _loadedSiblings[QueryTypes.values[index]];
+          // } else {
+            return ListView.builder(itemBuilder: (BuildContext context, int index) {
+              return Card(
+                elevation: 5,
+                borderOnForeground: true,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                margin: EdgeInsets.all(6),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      title: SkeletonAnimation(child: Container(width: MediaQuery.of(context).size.width*0.7, height: 20, color: Colors.grey[300])),
                     ),
-                  ),
+                    Container(
+                      padding: EdgeInsets.all(7),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          SkeletonAnimation(
+                            child: Container(
+                              width: 100,
+                              height: 150,
+                              color: Colors.grey[300],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 7),
+                            child: Column(children: List.generate(4, (int index) {
+                              return Theme(
+                                data: ThemeData(backgroundColor: Colors.grey[300]),
+                                child: SkeletonAnimation(
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width*0.5, 
+                                    height: 5
+                                  )
+                                )
+                              );
+                            })),            
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      color: GlobalsMessage.chipData[1]["color"],
+                      height: 2,
+                      thickness: 2,
+                    ),
+                  ],
                 ),
-              )
-            );
-          }
-        },
-        controller: _resultsPageController,
-        itemCount: GlobalsMessage.chipData.length,
-        onPageChanged: (int index) {
-          setState(() {
-            _selectedSort = QueryTypes.values[index];
-            // _rowChipTypeController.animateTo(offset)
-          });
-        },
-      );
+              );      
+            });
+          // }
+        });
     });
   }
 
@@ -441,17 +470,20 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                 children: List<Widget>.generate(GlobalsMessage.chipData.length, (int index) {
                   return Padding(
                     padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                    child: Theme(data: Theme.of(context).copyWith(splashColor: GlobalsColor.green),child: ChoiceChip(
+                    child: Theme(data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[index]["splash_color"]),child: ChoiceChip(
                       pressElevation: 3,
                       elevation: 1,
                       backgroundColor: Colors.transparent,
-                      avatarBorder: CircleBorder(side: BorderSide(width: 3, color: Colors.grey)),
-                      selectedColor: GlobalsColor.fadedGreen,
-                      labelStyle: TextStyle(color: GlobalsColor.green, fontWeight: FontWeight.w600),
+                      avatarBorder: CircleBorder(side: BorderSide(width: 4, color: GlobalsMessage.chipData[index]["color"])),
+                      selectedColor: GlobalsMessage.chipData[index]["selected_color"],
+                      labelStyle: TextStyle(color: GlobalsMessage.chipData[index]["color"], fontWeight: FontWeight.w600),
                       shadowColor: GlobalsColor.darkGreenDisabled,
-                      label: Text(GlobalsMessage.chipData[index]["name"]),
+                      label: Row(children: <Widget>[
+                        GlobalsMessage.chipData[index]["icon"] != null ? Icon(GlobalsMessage.chipData[index]["icon"], color: GlobalsMessage.chipData[index]["color"]) : Padding(padding: EdgeInsets.all(0)), 
+                        GlobalsMessage.chipData[index]["icon"] != null ? Padding(padding: EdgeInsets.only(right: 10)) : Padding(padding: EdgeInsets.all(0)), 
+                        Text(GlobalsMessage.chipData[index]["name"])
+                      ]),
                       selected: GlobalsMessage.chipData[index]["type"] == _selectedSort,
-
                       onSelected: (bool selected) {
                         setState(() => selected == true ? _selectedSort = GlobalsMessage.chipData[index]["type"] : null);
                         //Si la liste view est créée on la fait bouger

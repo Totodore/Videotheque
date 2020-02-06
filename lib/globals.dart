@@ -47,35 +47,59 @@ class GlobalsMessage {
   static const String tv = "Séries TV";
   static const String companies = "Companies"; 
 
-  static const List<Map<dynamic, dynamic>> chipData = [
+  static List<Map<dynamic, dynamic>> chipData = [
     {
       "name": general,
       "type": QueryTypes.all,
+      "color": Color(0XFF636363),
+      "selected_color": Color(0XFF636363).withAlpha(50),
+      "splash_color": Color(0XFF636363).withAlpha(100),
+      // "splash_color": Color(0XFF636363),
     },
     {
       "name": movie,
       "type": QueryTypes.movie,
       "route": "movie",
+      "color": Color(0xFF00574B),
+      "selected_color": Color(0xFF00574B).withAlpha(50),
+      "splash_color": Color(0xFF00574B).withAlpha(100),
+      "icon": Icons.movie
     },
     {
       "name": person,
       "type": QueryTypes.person,
-      "route": "person"
-    },
-    {
-      "name": collection,
-      "type": QueryTypes.collection,
-      "route": "collection"
+      "route": "person",
+      "color": Color(0xFFc70000),
+      "selected_color": Color(0xFFc70000).withAlpha(50),
+      "splash_color": Color(0xFFc70000).withAlpha(100),
+      "icon": Icons.person
     },
     {
       "name": tv,
       "type": QueryTypes.tv,
-      "route": "tv"
+      "route": "tv",
+      "color": Color(0xFF7c0091),
+      "selected_color": Color(0xFF7c0091).withAlpha(50),
+      "splash_color": Color(0xFF7c0091).withAlpha(100),
+      "icon": Icons.tv
+    },
+    {
+      "name": collection,
+      "type": QueryTypes.collection,
+      "route": "collection",
+      "color": Color(0xFFfbb32d),
+      "selected_color": Color(0xFFfbb32d).withAlpha(50),
+      "splash_color": Color(0xFFfbb32d).withAlpha(100),
+      "icon": Icons.subscriptions
     },
     {
       "name": companies,
       "type": QueryTypes.companies,
-      "route": "companies"
+      "route": "companies",
+      "color": Color(0XFF2f26c9),
+      "selected_color": Color(0XFF2f26c9).withAlpha(50),
+      "splash_color": Color(0XFF2f26c9).withAlpha(100),
+      "icon": Icons.business
     }
   ]; 
 }

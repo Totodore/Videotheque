@@ -208,8 +208,8 @@ enum QueryTypes {
   all,
   movie,
   person,
-  collection,
   tv,
+  collection,
   companies
 }
 enum SortingTypes {
