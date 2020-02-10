@@ -54,7 +54,7 @@ class GlobalsMessage {
       "color": Color(0XFF636363),
       "selected_color": Color(0XFF636363).withAlpha(50),
       "splash_color": Color(0XFF636363).withAlpha(100),
-      // "splash_color": Color(0XFF636363),
+      "icon": Icons.apps
     },
     {
       "name": movie,
@@ -95,7 +95,7 @@ class GlobalsMessage {
     {
       "name": companies,
       "type": QueryTypes.companies,
-      "route": "companies",
+      "route": "company",
       "color": Color(0XFF2f26c9),
       "selected_color": Color(0XFF2f26c9).withAlpha(50),
       "splash_color": Color(0XFF2f26c9).withAlpha(100),

@@ -1,3 +1,4 @@
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Videotheque/app/account.dart';
@@ -23,35 +24,35 @@ class AppState extends State<App> {
   
   @override
   Widget build(BuildContext context) {
-    final MainAppRoute args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        selectedItemColor: Colors.black,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: GlobalsColor.lightGreen,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        onTap: (int index) {
+      bottomNavigationBar: BottomNavyBar(
+        selectedIndex:  _currentIndex,
+        backgroundColor: Colors.white,
+        showElevation: true,
+        onItemSelected: (int index) {
           setState(() {
             _currentIndex = index;
           });
         },
+        iconSize: 25,
         items: [
-          BottomNavigationBarItem(
+          BottomNavyBarItem( 
             icon: Icon(Icons.home),
-            title: Text("Accueil"),
-            activeIcon: Icon(Icons.home),
+            title: Text(
+              "Accueil",
+              textAlign: TextAlign.center,
+            ),
+            activeColor: Colors.green,
           ),
-          BottomNavigationBarItem(
+          BottomNavyBarItem( 
             icon: Icon(Icons.video_library),
-            title: Text("Ma Vidéothèque"),
-            activeIcon: Icon(Icons.video_library),
+            title: Text("Vidéothèque"),
+            activeColor: Colors.green,
           ),
-          BottomNavigationBarItem(
+          BottomNavyBarItem( 
             icon: Icon(Icons.account_circle),
             title: Text("Mon compte"),
-            activeIcon: Icon(Icons.account_circle),
+            activeColor: Colors.green,
           )
         ],
       ),
