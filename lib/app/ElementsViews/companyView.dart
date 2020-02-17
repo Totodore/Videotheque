@@ -1,4 +1,5 @@
 import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/tmdbQueries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -34,6 +35,7 @@ class CompanyViewState extends State<CompanyView> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(_preLoadData["name"]),
+          backgroundColor: GlobalsMessage.chipData[QueryTypes.values.indexOf(QueryTypes.companies)]["color"],
         ),
       )
     );

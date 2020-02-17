@@ -1,3 +1,4 @@
+import 'package:Videotheque/app/HomeViews/onlineSearchView.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,7 @@ class AppState extends State<App> {
   List<Widget> _children = [
     HomeApp(),
     Library(),
+    OnlineSearchView(),
     Account(),
   ];
   int _currentIndex = 0;
@@ -42,17 +44,31 @@ class AppState extends State<App> {
               "Accueil",
               textAlign: TextAlign.center,
             ),
-            activeColor: Colors.green,
+            activeColor: GlobalsColor.darkGreen,
           ),
           BottomNavyBarItem( 
             icon: Icon(Icons.video_library),
-            title: Text("Vidéothèque"),
-            activeColor: Colors.green,
+            title: Text(
+              "Vidéothèque",
+              textAlign: TextAlign.center,
+            ),
+            activeColor: GlobalsColor.darkGreen,
+          ),
+          BottomNavyBarItem( 
+            icon: Icon(Icons.search),
+            title: Text(
+              "Recherche",
+              textAlign: TextAlign.center,
+            ),
+            activeColor: GlobalsColor.darkGreen,
           ),
           BottomNavyBarItem( 
             icon: Icon(Icons.account_circle),
-            title: Text("Mon compte"),
-            activeColor: Colors.green,
+            title: Text(
+              "Mon compte",
+              textAlign: TextAlign.center,
+            ),
+            activeColor: GlobalsColor.darkGreen,
           )
         ],
       ),

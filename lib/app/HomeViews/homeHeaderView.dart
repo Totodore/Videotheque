@@ -25,31 +25,6 @@ class HomeAppState extends State<HomeApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( //Default app BAR
-        leading: Icon(Icons.subscriptions,
-          color: GlobalsColor.darkGreen,
-          size: 38,
-        ),
-        title: Text("Vidéothèque",
-          style: TextStyle(
-            fontFamily: "Aladin",
-            fontSize: 35,
-            fontWeight: FontWeight.bold,
-            color: GlobalsColor.darkGreen,
-          ),
-        ),
-        backgroundColor: GlobalsColor.lightGreen,
-        elevation: 2,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search,
-              color: GlobalsColor.darkGreen,
-              size: 35,
-            ),
-            onPressed: () => setState(() => Navigator.pushNamed(context, "/search")),
-          )
-        ],
-      ),
       body: HomeBodyView(),
     );
   }

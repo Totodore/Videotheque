@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:skeleton_text/skeleton_text.dart';
@@ -24,13 +26,16 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
   PageController _resultsPageController = PageController(initialPage: 0);
   ScrollController _pageResultsController = ScrollController();
   ScrollController _rowChipTypeController = ScrollController();
+  TextEditingController _searchInputController = TextEditingController();
+  FocusNode _inputFocusNode = FocusNode();
   QueryTypes _selectedSort = QueryTypes.all;
   String _currentQuery;
   PageView _resultsView;
   bool _dispAnimationHomeSearch = false;
   Future _delayOkSearch;
   double _appBarElevation = 0;
-  bool _pinAppBar = true;
+  double _sortBarTop = GlobalsData.initSortBarPos;
+  double _oldOffsetScroll = 0;
 
   Map<QueryTypes, dynamic> _loadedSiblings; //List which represent number of view loaded
   //List which represent offset of result per view
@@ -53,7 +58,6 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
       if (_pageResultsController.offset > _pageResultsController.position.maxScrollExtent - 40 && !_reachBottomLoadedView[actualQueryType]) {
         //On incrémente l'offset correspondant à la view actuelle
         _offsetLoadedView[actualQueryType] += 1;
-        print(_offsetLoadedView[actualQueryType].toString() + " test");
         _reachBottomLoadedView[actualQueryType] = true; //On dit qu'on a attein le bottom de la view
         searchQuery(_currentQuery, _offsetLoadedView[actualQueryType]);
       }
@@ -64,6 +68,20 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
       else  {//Sinon on l'affiche;
         setState(() => _appBarElevation = 0);
       }
+      //On scroll down we hide keyboard and we hide SearchBar
+      if (_pageResultsController.offset > _oldOffsetScroll && _sortBarTop > GlobalsData.endSortBarPos) {
+        _sortBarTop -= _pageResultsController.offset - _oldOffsetScroll;
+        _sortBarTop < GlobalsData.endSortBarPos ? _sortBarTop = GlobalsData.endSortBarPos : null;
+        _inputFocusNode.unfocus();
+        // _pageResultsController.animateTo(_oldOffsetScroll, duration: Duration(milliseconds: 0), curve: Curves.linear);
+      }
+      //On scroll up we show SearchBar
+      else if (_pageResultsController.offset < _oldOffsetScroll && _sortBarTop < GlobalsData.initSortBarPos) {
+        _sortBarTop += _oldOffsetScroll - _pageResultsController.offset;
+        _sortBarTop > GlobalsData.initSortBarPos ? _sortBarTop = GlobalsData.initSortBarPos : null;
+        // _pageResultsController.animateTo(_oldOffsetScroll, duration: Duration(milliseconds: 0), curve: Curves.linear);
+      }
+      _oldOffsetScroll = _pageResultsController.offset;
       // if (_pageResultsController.position.pixels )
     });
     Future.delayed(const Duration(milliseconds: 10), () {
@@ -73,15 +91,51 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
     });
   }
 
+  //Scrollbar horizontal for page View
   void syncScrollBar() async {
+      //Sync ScrollBar page View with sort Bar 
       double ratio = _resultsPageController.offset/_resultsPageController.position.maxScrollExtent;
       double animatePos = _rowChipTypeController.position.maxScrollExtent*ratio;
       setState(() => _appBarElevation = 0);
       _rowChipTypeController.animateTo(
         animatePos,
         duration: Duration(milliseconds: 200),
-        curve: Curves.ease
+        curve: Curves.linear
       );
+      //Show titleBar on slide ScrollBar
+      double pageWidth = _resultsPageController.position.maxScrollExtent/GlobalsMessage.chipData.length;
+      //Offset between the two pages
+      double actualRelativeOffset;
+      if (_resultsPageController.position.userScrollDirection == ScrollDirection.forward)
+        actualRelativeOffset = _resultsPageController.offset - (_resultsPageController.page.floor())*(pageWidth+60);
+      else
+        actualRelativeOffset = _resultsPageController.offset - (_resultsPageController.page.ceil())*(pageWidth+60);
+      double ratioRelativeOffset = (actualRelativeOffset/pageWidth).abs()/1.2;
+      print("Ratio : " + ratioRelativeOffset.toString());
+      setState(() {
+        if (_sortBarTop < GlobalsData.initSortBarPos && _sortBarTop >= GlobalsData.endSortBarPos) {
+          _sortBarTop = GlobalsData.deltaSortBarPos*(1-ratioRelativeOffset) + GlobalsData.endSortBarPos;
+          print(_sortBarTop);
+        }
+      });
+  }
+
+  void clearView() {
+    _searchInputController.clear();
+    setState(() {
+      _currentQuery = null;
+      _resultsView = null;
+      _loadedSiblings = null; //List which represent number of view loaded
+      _dataLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return null;})); 
+      _offsetLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return 1;}));
+      _reachBottomLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return false;}));
+      _dispAnimationHomeSearch = false;
+      Future.delayed(const Duration(milliseconds: 10), () {
+        setState(() {
+          _dispAnimationHomeSearch = true;
+        });
+      });
+    });
   }
 
   Future<ListView> buildView(QueryTypes queryType, [int offset = 1]) async {
@@ -364,7 +418,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
     }
     //Check if query is empty if yes we abort
     if (query == null || query.isEmpty) {
-      Navigator.popAndPushNamed(context, "/search");
+      clearView();
       return;
     }
 
@@ -378,7 +432,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
   }
 
   ListView buildSkeleton() {
-    return ListView.builder(itemCount: QueryTypes.values.length, itemBuilder: (BuildContext context, int index) {
+    return ListView.builder(itemCount: QueryTypes.values.length, controller: _pageResultsController,itemBuilder: (BuildContext context, int index) {
       return Card(
         elevation: 5,
         borderOnForeground: true,
@@ -390,7 +444,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
             ListTile( //Skeleton for title
               title: SkeletonAnimation(child: Container(
                 width: MediaQuery.of(context).size.width*0.7, 
-                height: 23, 
+                height: 25, 
                 decoration: BoxDecoration(
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -444,11 +498,9 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
   }
 
   void buildListView() {
-    // print("building : ");
     setState(() {
       _resultsView = PageView.builder(
         controller: _resultsPageController,
-
         onPageChanged: (int index) {
           setState(() {
             _selectedSort = QueryTypes.values[index];
@@ -468,121 +520,185 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back,
-            color: GlobalsColor.darkGreen,
-            size: 38,
-          ),
-          onPressed: () => setState(() => Navigator.pop(context)),
-        ),
-        title: TextField(
-          autofocus: true,
-          textInputAction: TextInputAction.search,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(0),
-            hintText: "Nouvelle recherche",
-            focusColor: GlobalsColor.darkGreen,
-            border: null,
-            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: GlobalsColor.darkGreen, width: 2)),
-          ),
-          cursorColor: Colors.black,
-          onSubmitted: (String query) async {
-            searchQuery(query);
-          },
-          onChanged: (String query) async {
-            //We launch the query on the onlineSearchView
-            if (_delayOkSearch != null) { //Si ya un future en cours on l'annule
-              _delayOkSearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("future canceled"));
-            } 
-            //On créé un nouveau future qui va lancera la query
-            _delayOkSearch = Future.delayed(Duration(milliseconds: 250), () {
-              _delayOkSearch = null;
-              searchQuery(query);
-            });
-          },
-        ),
-        backgroundColor: GlobalsColor.lightGreen,
-        elevation: _appBarElevation,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(56),
-          child: Theme(
-            data: Theme.of(context).copyWith(
-              accentColor: GlobalsColor.darkGreen,
-              backgroundColor: Colors.white,
-            ), 
-            child: Container(color: Colors.white, child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              controller: _rowChipTypeController,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: List<Widget>.generate(GlobalsMessage.chipData.length, (int index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                    child: Theme(data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[index]["splash_color"]),child: ChoiceChip(
-                      pressElevation: 3,
-                      elevation: 1,
-                      backgroundColor: Colors.transparent,
-                      avatarBorder: CircleBorder(side: BorderSide(width: 4, color: GlobalsMessage.chipData[index]["color"])),
-                      selectedColor: GlobalsMessage.chipData[index]["selected_color"],
-                      labelStyle: TextStyle(color: GlobalsMessage.chipData[index]["color"], fontWeight: FontWeight.w600),
-                      shadowColor: GlobalsColor.darkGreenDisabled,
-                      label: Row(children: <Widget>[
-                        Icon(
-                          GlobalsMessage.chipData[index]["icon"], 
-                          color: GlobalsMessage.chipData[index]["color"]
-                        ), 
-                          Padding(padding: EdgeInsets.only(right: 10)), 
-                          Text(GlobalsMessage.chipData[index]["name"])
-                      ]),
-                      selected: GlobalsMessage.chipData[index]["type"] == _selectedSort,
-                      onSelected: (bool selected) {
-                        setState(() => selected == true ? _selectedSort = GlobalsMessage.chipData[index]["type"] : null);
-                        //Si la liste view est créée on la fait bouger
-                        if (_resultsPageController.hasClients && selected)
-                          _resultsPageController.animateToPage(index, curve: Curves.ease, duration: Duration(milliseconds: 200));
-                        //Sinon on met la page initial
-                        else if (!_resultsPageController.hasClients && selected){
-                          setState(() {
-                            _resultsPageController = PageController(initialPage: index);
-                            _resultsPageController.addListener(syncScrollBar);                          
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(200),
+          child: Stack(
+            overflow: Overflow.visible,
+            children: <Widget>[
+                ClipRRect(
+                  // borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                  // clipper: OvalRightBorderClipper(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: GlobalsColor.darkGreen,
+                    ), 
+                    padding: EdgeInsets.only(left: 5, top: 26, right: 10, bottom: 3),
+                    margin: EdgeInsets.only(bottom: _sortBarTop - 23),
+                    child: ListTile(  
+                      contentPadding: EdgeInsets.all(0),
+                      leading: Container( 
+                        height: 35,
+                        width: 35,
+                        margin: EdgeInsets.only(left: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.grey.withAlpha(50),
+                        ),
+                        padding: EdgeInsets.all(0),
+                        child: AnimatedSwitcher(
+                          child: _searchInputController.text.length > 0 ? IconButton(
+                            padding: EdgeInsets.all(0),
+                            icon: Icon(Icons.close,
+                              size: 28,
+                            ),
+                            onPressed: () => clearView(),
+                          ) : IconButton(
+                            padding: EdgeInsets.all(0),
+                            icon: Icon(
+                              Icons.search,
+                              size: 28,
+
+                            ),
+                            onPressed: null,                          
+                          ),
+                          duration: Duration(milliseconds: 300)
+                        ),
+                      ),
+                      title: TextField(
+                        focusNode: _inputFocusNode,
+                        controller: _searchInputController,
+                        textInputAction: TextInputAction.search,
+                        cursorColor: Color(0xFFebebeb),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(left: -6),
+                          hintText: "Nouvelle recherche",
+                          focusColor: GlobalsColor.darkGreen,
+                          border: InputBorder.none,
+                          focusedBorder: null,
+                          hintStyle: TextStyle(
+                            color: Color(0xFFebebeb).withAlpha(180)
+                          )
+                        ),   
+                        style: TextStyle(
+                          color: Color(0xFFebebeb),
+                          fontSize: 18.5,
+                          fontWeight: FontWeight.w400
+                        ),
+                        onSubmitted: (String query) async {
+                          searchQuery(query);
+                        },
+                        onChanged: (String query) async {
+                          //We launch the query on the onlineSearchView
+                          if (_delayOkSearch != null) { //Si ya un future en cours on l'annule
+                            _delayOkSearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("future canceled"));
+                          } 
+                          //On créé un nouveau future qui va lancera la query
+                          _delayOkSearch = Future.delayed(Duration(milliseconds: 250), () {
+                            _delayOkSearch = null;
+                            searchQuery(query);
                           });
-                        }
-                      },
+                        },
+                      ),
                     ),
-                  ));
-                }),
+                  ),
+                ),
+              AnimatedPositioned(
+                duration: Duration(microseconds: 800),
+                curve: Curves.linear,
+                top: _sortBarTop,
+                width: MediaQuery.of(context).size.width,
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey[600],
+                        blurRadius: 3,
+                        offset: Offset(0, 5),
+                        spreadRadius: -5
+                      ),
+                    ],
+                    color: Colors.white
+                  ),
+                  margin: EdgeInsets.only(top: 0),
+                  padding: EdgeInsets.symmetric(vertical: 3),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    controller: _rowChipTypeController,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: List<Widget>.generate(GlobalsMessage.chipData.length, (int index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                          child: Theme(data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[index]["splash_color"]),child: ChoiceChip(
+                            labelPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 7),
+                            pressElevation: 3,
+                            elevation: 1,
+                            backgroundColor: Colors.transparent,
+                            avatarBorder: CircleBorder(side: BorderSide(width: 4, color: GlobalsMessage.chipData[index]["color"])),
+                            selectedColor: GlobalsMessage.chipData[index]["selected_color"],
+                            labelStyle: TextStyle(color: GlobalsMessage.chipData[index]["color"], fontWeight: FontWeight.w600),
+                            shadowColor: GlobalsColor.darkGreenDisabled,
+                            label: Row(children: <Widget>[
+                              Icon(
+                                GlobalsMessage.chipData[index]["icon"], 
+                                color: GlobalsMessage.chipData[index]["color"]
+                              ), 
+                                Padding(padding: EdgeInsets.only(right: 10)), 
+                                Text(GlobalsMessage.chipData[index]["name"])
+                            ]),
+                            selected: GlobalsMessage.chipData[index]["type"] == _selectedSort,
+                            onSelected: (bool selected) {
+                              setState(() => selected == true ? _selectedSort = GlobalsMessage.chipData[index]["type"] : null);
+                              //Si la liste view est créée on la fait bouger
+                              if (_resultsPageController.hasClients && selected) {
+                                _resultsPageController.animateToPage(index, curve: Curves.ease, duration: Duration(milliseconds: 200));
+                              }
+                              //Sinon on met la page initial
+                              else if (!_resultsPageController.hasClients && selected){
+                                setState(() {
+                                  _resultsPageController = PageController(initialPage: index);
+                                  _resultsPageController.addListener(syncScrollBar);                          
+                                });
+                              }
+                            }),
+                          )
+                        );
+                      }),
+                    )),
+                  )
               ),
-            ),
-          )),
-        ),
+            ]
+          )
       ),
       body: Theme(
         data: Theme.of(context).copyWith(accentColor: GlobalsColor.darkGreen),
-        child: _resultsView != null ? _resultsView : AnimatedOpacity(
-          opacity: _dispAnimationHomeSearch ? 1 : 0,
-          duration: Duration(milliseconds: 500), 
-          curve: Curves.ease,
-          
-          child: AnimatedContainer(
-            duration: Duration(milliseconds: 500),
+        child: Padding(
+          padding: EdgeInsets.only(top: 0),
+          child: _resultsView != null ? _resultsView : AnimatedOpacity(
+            opacity: _dispAnimationHomeSearch ? 1 : 0,
+            duration: Duration(milliseconds: 500), 
             curve: Curves.ease,
-            transform: _dispAnimationHomeSearch ? Matrix4.translationValues(0, 0, 0) : Matrix4.translationValues(0, 50, 0),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 65, bottom: 25), 
-                  child: Center(
-                    child: Icon(Icons.local_movies,
-                      size: 100
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              curve: Curves.ease,
+              transform: _dispAnimationHomeSearch ? Matrix4.translationValues(0, 0, 0) : Matrix4.translationValues(0, 50, 0),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 65, bottom: 25), 
+                    child: Center(
+                      child: Icon(Icons.local_movies,
+                        size: 100
+                      )
                     )
+                  ),
+                  Text(GlobalsMessage.defaultSearchMessage,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.w500),
                   )
-                ),
-                Text(GlobalsMessage.defaultSearchMessage,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                )
-              ],
+                ],
+              ),
             ),
           ),
         ),

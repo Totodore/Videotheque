@@ -6,6 +6,8 @@ class GlobalsColor {
   static final darkGreen = Color(0xFF00574B);
   static final darkGreenDisabled = Color(0xFF00574B).withAlpha(100);
   static final green = Color(0xFF295f5f);
+  static final splashGreen = Color(0xFF00574B).withAlpha(100);
+
   static final fadedGreen = Color(0x6597C5A6);
   static final lightGreen = Color(0xFF008577);
   static final lightGreen2 = Color(0xFF5b9fae);
@@ -27,6 +29,10 @@ class GlobalsData {
   static const String imgSize = "https://image.tmdb.org/t/p/w500/";
   static const String thumbImgSize = "https://image.tmdb.org/t/p/w92/";
   static const String midThumbImgSize = "https://image.tmdb.org/t/p/w185/";
+
+  static const double initSortBarPos = 83;
+  static const double endSortBarPos = 25;
+  static const double deltaSortBarPos = initSortBarPos - endSortBarPos;
 }
 
 
