@@ -1,4 +1,5 @@
 import 'package:Videotheque/app/HomeViews/onlineSearchView.dart';
+import 'package:Videotheque/tmdbQueries.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class AppState extends State<App> {
     OnlineSearchView(),
     Account(),
   ];
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   
   @override
   Widget build(BuildContext context) {

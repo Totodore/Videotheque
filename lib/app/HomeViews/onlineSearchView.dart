@@ -24,9 +24,9 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
 
   static final Duration _animationInitDelay = Duration(milliseconds: 500); 
 
-  PageController _resultsPageController = PageController(initialPage: 0);
-  ScrollController _pageResultsController = ScrollController();
-  ScrollController _rowChipTypeController = ScrollController();
+  PageController _resultsPageController = PageController(initialPage: 0, keepPage: true);
+  ScrollController _pageResultsController = ScrollController(keepScrollOffset: true);
+  ScrollController _rowChipTypeController = ScrollController(keepScrollOffset: true);
   TextEditingController _searchInputController = TextEditingController();
   FocusNode _inputFocusNode = FocusNode();
   QueryTypes _selectedSort = QueryTypes.all;
@@ -548,7 +548,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: GlobalsColor.darkGreen,
-                    ), 
+                    ),
                     padding: EdgeInsets.only(left: 5, top: GlobalsData.endSortBarPos, right: 10, bottom: 3),
                     margin: EdgeInsets.only(bottom: _sortBarTop - 23),
                     child: ListTile(  
@@ -610,7 +610,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                             _delayOkSearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("future canceled"));
                           } 
                           //On créé un nouveau future qui va lancera la query
-                          _delayOkSearch = Future.delayed(Duration(milliseconds: 250), () {
+                          _delayOkSearch = Future.delayed(Duration(milliseconds: 500), () {
                             _delayOkSearch = null;
                             searchQuery(query);
                           });

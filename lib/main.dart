@@ -11,6 +11,7 @@ import 'app/ElementsViews/companyView.dart';
 import 'webApp.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
     title: 'Vidéothèque',
     color: Color(0xFF008577),

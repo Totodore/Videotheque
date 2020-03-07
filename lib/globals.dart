@@ -33,6 +33,7 @@ class GlobalsData {
   static double initSortBarPos = 59;  //Default value
   static double endSortBarPos = 24.0;
   static double deltaSortBarPos = initSortBarPos - endSortBarPos;
+
 }
 
 

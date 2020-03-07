@@ -31,7 +31,11 @@ dependencies:
   progressive_image: ^1.0.1
   bottom_navy_bar: ^5.3.2
   flutter_custom_clippers: ^1.1.0
-
+  drop_cap_text: ^1.0.7
+  background_app_bar: ^1.0.1
+  flutter_speed_dial: ^1.2.5
+  community_material_icon: ^3.5.95
+  flutter_star_rating: ^0.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -60,6 +64,9 @@ flutter:
     - family: itty
       fonts:
         - asset: fonts/itty.otf
+    - family: Rubik
+      fonts: 
+        - asset: fonts/Rubik-Medium.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

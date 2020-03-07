@@ -140,16 +140,12 @@ class TMDBQueries {
     String url  = "https://api.themoviedb.org/3/movie/$id?api_key=$key&language=$lang";
 
     Map<String, dynamic> returner;
-    if (actualQuerySearch != null) {
-      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
-    }
-    actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await actualQuerySearch;
-    actualQuerySearch = null;
+    Future<Response> queryFuture;
+    queryFuture = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
+    Response response = await queryFuture;
     if (response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
-      // GlobalsFunc.snackBar(context, GlobalsMessage.defaultError);
       returner = Map.from({
         "error": GlobalsMessage.defaultError,
       });
@@ -161,16 +157,12 @@ class TMDBQueries {
     String url = "https://api.themoviedb.org/3/person/$id?api_key=$key&language=$lang";
 
     Map<String, dynamic> returner;
-    if (actualQuerySearch != null) {
-      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
-    }
-    actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await actualQuerySearch;
-    actualQuerySearch = null;
+    Future<Response> queryFuture;
+    queryFuture = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
+    Response response = await queryFuture;
     if (response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
-      // GlobalsFunc.snackBar(context, GlobalsMessage.defaultError);
       returner = Map.from({
         "error": GlobalsMessage.defaultError,
       });
@@ -182,16 +174,12 @@ class TMDBQueries {
     String url = "https://api.themoviedb.org/3/genre/movie/list?api_key=$key&language=$lang";
 
     Map<String, dynamic> returner;
-    if (actualQuerySearch != null) {
-      actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
-    }
-    actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await actualQuerySearch;
-    actualQuerySearch = null;
+    Future<Response> queryFuture;
+    queryFuture = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
+    Response response = await queryFuture;
     if (response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
-      // GlobalsFunc.snackBar(context, GlobalsMessage.defaultError);
       returner = Map.from({
         "error": GlobalsMessage.defaultError,
       });
