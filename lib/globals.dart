@@ -30,9 +30,9 @@ class GlobalsData {
   static const String thumbImgSize = "https://image.tmdb.org/t/p/w92/";
   static const String midThumbImgSize = "https://image.tmdb.org/t/p/w185/";
 
-  static const double initSortBarPos = 83;
-  static const double endSortBarPos = 25;
-  static const double deltaSortBarPos = initSortBarPos - endSortBarPos;
+  static double initSortBarPos = 59;  //Default value
+  static double endSortBarPos = 24.0;
+  static double deltaSortBarPos = initSortBarPos - endSortBarPos;
 }
 
 

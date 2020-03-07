@@ -20,8 +20,9 @@ class OnlineSearchView extends StatefulWidget {
 
 class OnlineSearchViewState extends State<OnlineSearchView> {
 
-
   static GlobalKey<OnlineSearchViewState> searchViewKey = GlobalKey<OnlineSearchViewState>();
+
+  static final Duration _animationInitDelay = Duration(milliseconds: 500); 
 
   PageController _resultsPageController = PageController(initialPage: 0);
   ScrollController _pageResultsController = ScrollController();
@@ -32,6 +33,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
   String _currentQuery;
   PageView _resultsView;
   bool _dispAnimationHomeSearch = false;
+  bool _endAnimationHomeSearch = false;
   Future _delayOkSearch;
   double _appBarElevation = 0;
   double _sortBarTop = GlobalsData.initSortBarPos;
@@ -48,6 +50,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
   @override 
   void initState() {
     super.initState();
+
     //Quand on scroll latéralement on fait bouger les chips aussi
     _resultsPageController.addListener(syncScrollBar);
     
@@ -87,6 +90,19 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
     Future.delayed(const Duration(milliseconds: 10), () {
       setState(() {
         _dispAnimationHomeSearch = true;
+      });
+      Future.delayed(_animationInitDelay, () {
+        setState(() {
+          _endAnimationHomeSearch = true;
+        });
+      });
+    });
+    //On delay ca pour avoir accès au context
+    Future.delayed(Duration.zero, () {
+      setState(() {
+          GlobalsData.endSortBarPos = MediaQuery.of(context).padding.top;
+          GlobalsData.initSortBarPos = 59 + GlobalsData.endSortBarPos;
+          _sortBarTop = GlobalsData.initSortBarPos;
       });
     });
   }
@@ -521,7 +537,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(200),
+        preferredSize: Size.fromHeight(175 + GlobalsData.endSortBarPos),
           child: Stack(
             overflow: Overflow.visible,
             children: <Widget>[
@@ -533,7 +549,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                     decoration: BoxDecoration(
                       color: GlobalsColor.darkGreen,
                     ), 
-                    padding: EdgeInsets.only(left: 5, top: 26, right: 10, bottom: 3),
+                    padding: EdgeInsets.only(left: 5, top: GlobalsData.endSortBarPos, right: 10, bottom: 3),
                     margin: EdgeInsets.only(bottom: _sortBarTop - 23),
                     child: ListTile(  
                       contentPadding: EdgeInsets.all(0),
@@ -604,9 +620,9 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                   ),
                 ),
               AnimatedPositioned(
-                duration: Duration(microseconds: 800),
-                curve: Curves.linear,
-                top: _sortBarTop,
+                duration: _animationInitDelay,
+                curve: Curves.ease,
+                top: _dispAnimationHomeSearch ? _sortBarTop : GlobalsData.endSortBarPos,
                 width: MediaQuery.of(context).size.width,
                 child: Container(
                   decoration: BoxDecoration(
@@ -677,10 +693,10 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
           padding: EdgeInsets.only(top: 0),
           child: _resultsView != null ? _resultsView : AnimatedOpacity(
             opacity: _dispAnimationHomeSearch ? 1 : 0,
-            duration: Duration(milliseconds: 500), 
+            duration: _animationInitDelay, 
             curve: Curves.ease,
             child: AnimatedContainer(
-              duration: Duration(milliseconds: 500),
+              duration: _animationInitDelay,
               curve: Curves.ease,
               transform: _dispAnimationHomeSearch ? Matrix4.translationValues(0, 0, 0) : Matrix4.translationValues(0, 50, 0),
               child: Column(
