@@ -35,7 +35,9 @@ dependencies:
   background_app_bar: ^1.0.1
   flutter_speed_dial: ^1.2.5
   community_material_icon: ^3.5.95
-  flutter_star_rating: ^0.0.3
+  intl: ^0.16.1
+
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -187,6 +187,23 @@ class TMDBQueries {
     return returner;
   }
 
+  static Future<Map<String, dynamic>> getMovieCredits(String id) async {
+    String url = "https://api.themoviedb.org/3/movie/$id/credits?api_key=$key";
+
+    Map<String, dynamic> returner;
+    Future<Response> queryFuture;
+    queryFuture = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
+    Response response = await queryFuture;
+    if (response.statusCode == 200) {
+      returner = jsonDecode(response.body);
+    } else {
+      returner = Map.from({
+        "error": GlobalsMessage.defaultError,
+      });
+    }
+    return returner;
+  }
+
   static Future<Map<String, dynamic>> getDiscover() async {
 
   }

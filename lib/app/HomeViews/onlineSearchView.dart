@@ -342,7 +342,6 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                             fit: BoxFit.cover,
                             fadeDuration: Duration(milliseconds: 150),
                             blur: 2,
-
                           )
                         ) : Container(),
                         Padding(

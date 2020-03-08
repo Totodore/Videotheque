@@ -125,13 +125,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.5"
-  flutter_star_rating:
-    dependency: "direct main"
-    description:
-      name: flutter_star_rating
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.3"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -163,6 +156,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.4"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.16.1"
   js:
     dependency: transitive
     description:
