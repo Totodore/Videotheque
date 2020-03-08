@@ -1,41 +1,39 @@
-filename, language, YAML, Dart, Groovy, Properties, Swift, Markdown, C++, XML, Project.pbxproj, JSON, Kotlin, comment, blank, total
-/home/theodore/dev/Videotheque/videotheque_flutter/README.md, Markdown, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 7, 17
-/home/theodore/dev/Videotheque/videotheque_flutter/android/app/build.gradle, Groovy, 0, 0, 53, 0, 0, 0, 0, 0, 0, 0, 0, 3, 12, 68
-/home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/debug/AndroidManifest.xml, XML, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 3, 1, 8
-/home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/main/AndroidManifest.xml, XML, 0, 0, 0, 0, 0, 0, 0, 24, 0, 0, 0, 7, 1, 32
-/home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/main/kotlin/com/example/videotheque_flutter/MainActivity.kt, Kotlin, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 3, 13
-/home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/main/res/drawable/launch_background.xml, XML, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 7, 2, 13
-/home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/main/res/values/styles.xml, XML, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 2, 1, 9
-/home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/profile/AndroidManifest.xml, XML, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 3, 1, 8
-/home/theodore/dev/Videotheque/videotheque_flutter/android/build.gradle, Groovy, 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 32
-/home/theodore/dev/Videotheque/videotheque_flutter/android/gradle.properties, Properties, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5
-/home/theodore/dev/Videotheque/videotheque_flutter/android/gradle/wrapper/gradle-wrapper.properties, Properties, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 1, 1, 7
-/home/theodore/dev/Videotheque/videotheque_flutter/android/settings.gradle, Groovy, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 16
-/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner.xcodeproj/project.pbxproj, Project.pbxproj, 0, 0, 0, 0, 0, 0, 0, 0, 478, 0, 0, 27, 14, 519
-/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/AppDelegate.swift, Swift, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 2, 14
-/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json, JSON, 0, 0, 0, 0, 0, 0, 0, 0, 0, 122, 0, 0, 1, 123
-/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json, JSON, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 0, 0, 1, 24
-/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md, Markdown, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 5
-/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Base.lproj/LaunchScreen.storyboard, XML, 0, 0, 0, 0, 0, 0, 0, 36, 0, 0, 0, 1, 1, 38
-/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Base.lproj/Main.storyboard, XML, 0, 0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 1, 1, 27
-/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Runner-Bridging-Header.h, C++, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/Connexion/connexionForm.dart, Dart, 0, 316, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 11, 332
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/Connexion/mainConnexion.dart, Dart, 0, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 68
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/Connexion/subscriptionForm.dart, Dart, 0, 224, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 6, 231
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/collectionView.dart, Dart, 0, 121, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 136
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/companyView.dart, Dart, 0, 34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 41
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/movieView.dart, Dart, 0, 121, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 136
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/personView.dart, Dart, 0, 121, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 134
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/tvView.dart, Dart, 0, 121, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 136
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/HomeViews/homeBodyView.dart, Dart, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 17
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/HomeViews/homeHeaderView.dart, Dart, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 31
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/HomeViews/onlineSearchView.dart, Dart, 0, 571, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49, 31, 651
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/account.dart, Dart, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 25
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/appMain.dart, Dart, 0, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 88
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/librarie.dart, Dart, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 15
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/globals.dart, Dart, 0, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 130
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/main.dart, Dart, 0, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 31
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/tmdbQueries.dart, Dart, 0, 185, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 25, 219
-/home/theodore/dev/Videotheque/videotheque_flutter/lib/webApp.dart, Dart, 0, 108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 120
-/home/theodore/dev/Videotheque/videotheque_flutter/pubspec.yaml, YAML, 38, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 43, 13, 94
-Total, -, 38, 2280, 92, 9, 12, 13, 1, 103, 478, 145, 10, 162, 271, 3614
+filename, language, YAML, Groovy, Dart, Properties, Markdown, C++, XML, Swift, JSON, comment, blank, total
+/home/theodore/dev/Videotheque/videotheque_flutter/README.md, Markdown, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 7, 17
+/home/theodore/dev/Videotheque/videotheque_flutter/android/app/build.gradle, Groovy, 0, 53, 0, 0, 0, 0, 0, 0, 0, 3, 12, 68
+/home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/debug/AndroidManifest.xml, XML, 0, 0, 0, 0, 0, 0, 4, 0, 0, 3, 1, 8
+/home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/main/AndroidManifest.xml, XML, 0, 0, 0, 0, 0, 0, 24, 0, 0, 7, 1, 32
+/home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/main/res/drawable/launch_background.xml, XML, 0, 0, 0, 0, 0, 0, 4, 0, 0, 7, 2, 13
+/home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/main/res/values/styles.xml, XML, 0, 0, 0, 0, 0, 0, 6, 0, 0, 2, 1, 9
+/home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/profile/AndroidManifest.xml, XML, 0, 0, 0, 0, 0, 0, 4, 0, 0, 3, 1, 8
+/home/theodore/dev/Videotheque/videotheque_flutter/android/build.gradle, Groovy, 0, 27, 0, 0, 0, 0, 0, 0, 0, 0, 5, 32
+/home/theodore/dev/Videotheque/videotheque_flutter/android/gradle.properties, Properties, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 1, 5
+/home/theodore/dev/Videotheque/videotheque_flutter/android/gradle/wrapper/gradle-wrapper.properties, Properties, 0, 0, 0, 5, 0, 0, 0, 0, 0, 1, 1, 7
+/home/theodore/dev/Videotheque/videotheque_flutter/android/settings.gradle, Groovy, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 4, 16
+/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/AppDelegate.swift, Swift, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 2, 14
+/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json, JSON, 0, 0, 0, 0, 0, 0, 0, 0, 122, 0, 1, 123
+/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json, JSON, 0, 0, 0, 0, 0, 0, 0, 0, 23, 0, 1, 24
+/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md, Markdown, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 2, 5
+/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Base.lproj/LaunchScreen.storyboard, XML, 0, 0, 0, 0, 0, 0, 36, 0, 0, 1, 1, 38
+/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Base.lproj/Main.storyboard, XML, 0, 0, 0, 0, 0, 0, 25, 0, 0, 1, 1, 27
+/home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Runner-Bridging-Header.h, C++, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/Connexion/connexionForm.dart, Dart, 0, 0, 316, 0, 0, 0, 0, 0, 0, 5, 11, 332
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/Connexion/mainConnexion.dart, Dart, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 5, 68
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/Connexion/subscriptionForm.dart, Dart, 0, 0, 224, 0, 0, 0, 0, 0, 0, 1, 6, 231
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/collectionView.dart, Dart, 0, 0, 121, 0, 0, 0, 0, 0, 0, 0, 15, 136
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/companyView.dart, Dart, 0, 0, 36, 0, 0, 0, 0, 0, 0, 0, 7, 43
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/movieView.dart, Dart, 0, 0, 545, 0, 0, 0, 0, 0, 0, 4, 24, 573
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/personView.dart, Dart, 0, 0, 121, 0, 0, 0, 0, 0, 0, 0, 13, 134
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/tvView.dart, Dart, 0, 0, 121, 0, 0, 0, 0, 0, 0, 0, 15, 136
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/HomeViews/homeBodyView.dart, Dart, 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 3, 17
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/HomeViews/homeHeaderView.dart, Dart, 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 7, 31
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/HomeViews/onlineSearchView.dart, Dart, 0, 0, 652, 0, 0, 0, 0, 0, 0, 42, 29, 723
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/account.dart, Dart, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 4, 25
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/appMain.dart, Dart, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0, 9, 89
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/app/librarie.dart, Dart, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 2, 15
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/globals.dart, Dart, 0, 0, 117, 0, 0, 0, 0, 0, 0, 0, 16, 133
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/main.dart, Dart, 0, 0, 29, 0, 0, 0, 0, 0, 0, 0, 3, 32
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/tmdbQueries.dart, Dart, 0, 0, 191, 0, 0, 0, 0, 0, 0, 6, 27, 224
+/home/theodore/dev/Videotheque/videotheque_flutter/lib/webApp.dart, Dart, 0, 0, 108, 0, 0, 0, 0, 0, 0, 0, 12, 120
+/home/theodore/dev/Videotheque/videotheque_flutter/pubspec.yaml, YAML, 46, 0, 0, 0, 0, 0, 0, 0, 0, 43, 14, 103
+Total, -, 46, 92, 2796, 9, 13, 1, 103, 12, 145, 129, 266, 3612

@@ -15,6 +15,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:intl/intl.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 class MovieView extends StatefulWidget {
   static ScrollController scrollController = ScrollController();
@@ -38,6 +39,7 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
   List<InputChip> _selectedTags = [];
   FocusNode _addTagFocusNode = FocusNode();
   TextEditingController _addTagController = TextEditingController();
+  KeyboardVisibilityNotification _keyboardVisibilityNotification = KeyboardVisibilityNotification();
 
   bool _dispGenreList = false;
   bool _dispInfoList = false;
@@ -53,10 +55,24 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
       lowerBound: 0,
       upperBound: 45 * pi/180,
     );
+
     getTagList();
     getInfoList();
     getMovieCredits();
+
     super.initState();
+
+    _keyboardVisibilityNotification.addNewListener(
+      onHide: () {
+        if (_addTagFocusNode.hasFocus)
+          _addTagFocusNode.unfocus();
+      }
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Wrap buildGenreTags() {
@@ -283,6 +299,28 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
     });
   }
 
+  Widget buildTagChipInput(String tag) {
+    return InputChip(
+      label: Text(tag),
+      labelPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 7),
+      pressElevation: 3,
+      elevation: 1,
+      backgroundColor: Colors.transparent,
+      labelStyle: TextStyle(color: GlobalsMessage.chipData[1]["color"], fontWeight: FontWeight.w600),
+      shadowColor: GlobalsColor.darkGreenDisabled,
+      avatar: CircleAvatar(
+        backgroundColor: Colors.transparent,
+        child: Icon(Icons.close, color: GlobalsMessage.chipData[1]["color"]),
+      ),
+      onPressed: () {
+        print(this);
+        setState(() {
+          _selectedTags.removeAt(_selectedTags.length-1);
+        });
+      },
+    );
+  }
+
   Widget buildTagInput() {
     return TextField(
       controller: _addTagController,
@@ -312,6 +350,8 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
         ) : null,
       ),
       onSubmitted: (String text) {
+        if (text.length > 0)
+          _selectedTags.add(buildTagChipInput(text));
         _addTagController.clear();
         _addTagFocusNode.unfocus();
         setState(() {
@@ -330,24 +370,7 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
           _addTagController.clear();
           setState(() {
             String tag = text.split(" ")[0];
-            _selectedTags.add(InputChip(
-              label: Text(tag),
-              labelPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 7),
-              pressElevation: 3,
-              elevation: 1,
-              backgroundColor: Colors.transparent,
-              labelStyle: TextStyle(color: GlobalsMessage.chipData[1]["color"], fontWeight: FontWeight.w600),
-              shadowColor: GlobalsColor.darkGreenDisabled,
-              avatar: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Icon(Icons.close, color: GlobalsMessage.chipData[1]["color"]),
-              ),
-              onPressed: () {
-                setState(() {
-                  _selectedTags.removeLast();
-                });
-              },
-            ));
+            _selectedTags.add(buildTagChipInput(tag));
           });
         }
       },
@@ -561,7 +584,7 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
               padding: EdgeInsets.symmetric(horizontal: 16),
                 // color: Colors.blue,
               decoration: BoxDecoration(
-                color: GlobalsColor.darkGreenDisabled,
+                color: GlobalsColor.plainDarkGreenDisabled,
                 shape: BoxShape.rectangle,
               ),
             ),
