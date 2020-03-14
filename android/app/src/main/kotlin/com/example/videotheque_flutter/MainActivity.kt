@@ -1,4 +1,4 @@
-package com.example.videotheque_flutter
+package com.scriptis.videotheque
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

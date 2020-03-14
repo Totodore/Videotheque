@@ -23,6 +23,7 @@ class GlobalsData {
   static Map genreList = Map();
 
   static const String apiKey = "a6499d6e1a486416773626640f79de9d";
+  static const String ytApiKey = "AIzaSyAJgzmg3zxU6nhQOOlb6EZ2NN4i5-yJsYo";
   static const String lang = "fr-FR";
   
   static const String backdropSize = "https://image.tmdb.org/t/p/w780/";

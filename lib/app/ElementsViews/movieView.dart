@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:vector_math/vector_math.dart' as vector;
 import 'dart:math';
 
 import 'package:Videotheque/globals.dart';
@@ -15,7 +16,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:intl/intl.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MovieView extends StatefulWidget {
   static ScrollController scrollController = ScrollController();
@@ -26,17 +28,20 @@ class MovieView extends StatefulWidget {
   }
 }
 
-class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixin {
+class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
 
   Map _preLoadData = Map();
   Map _infosMap = Map();
   Map _genreList = Map();
   Map _creditsMap = Map();
+  Map _similarMap = Map();
+  Map _trailerMap = Map();
   List _ownGenreList = List();
 
   AnimationController _rotationAnimationController;
+  AnimationController _chipShakeAnimationController;
 
-  List<InputChip> _selectedTags = [];
+  List<Widget> _selectedTags = [];
   FocusNode _addTagFocusNode = FocusNode();
   TextEditingController _addTagController = TextEditingController();
   KeyboardVisibilityNotification _keyboardVisibilityNotification = KeyboardVisibilityNotification();
@@ -44,6 +49,8 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
   bool _dispGenreList = false;
   bool _dispInfoList = false;
   bool _dispCredits = false;
+  bool _dispSimilar = false;
+  bool _dispMovieTrailer = false;
 
   @override
   void initState() {
@@ -56,16 +63,23 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
       upperBound: 45 * pi/180,
     );
 
+    _chipShakeAnimationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 50),
+    );
+    _chipShakeAnimationController.repeat();
     getTagList();
     getInfoList();
     getMovieCredits();
+    getMovieSimilar();
+    getMovieTrailer();
 
     super.initState();
 
     _keyboardVisibilityNotification.addNewListener(
       onHide: () {
         if (_addTagFocusNode.hasFocus)
-          _addTagFocusNode.unfocus();
+          setState(() => _addTagFocusNode.unfocus());
       }
     );
   }
@@ -87,19 +101,15 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
       }
       return ActionChip(
         label: Text(tagName),
-        labelPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 7),
-        pressElevation: 3,
-        elevation: 1,
-        backgroundColor: Colors.transparent,
-        labelStyle: TextStyle(color: GlobalsMessage.chipData[1]["color"], fontWeight: FontWeight.w600),
-        shadowColor: GlobalsColor.darkGreenDisabled,
+        labelStyle: TextStyle(color: GlobalsColor.darkGreen, fontWeight: FontWeight.w600),
         avatar: CircleAvatar(
           backgroundColor: Colors.transparent,
-          child: Icon(Icons.label_outline, color: GlobalsMessage.chipData[1]["color"]),
+          child: Icon(Icons.label_outline, color: GlobalsColor.darkGreen),
         ),
         onPressed: () {
           print(tagId);
         },
+        
       );
     });
     if (_ownGenreList != null) {
@@ -108,13 +118,8 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
       }
     }
     tagsChips.add(ActionChip(
-      pressElevation: 3,
-      elevation: 1,
-      backgroundColor: Colors.transparent,
-      labelStyle: TextStyle(color: GlobalsMessage.chipData[1]["color"], fontWeight: FontWeight.w600),
-      labelPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 7),
-      shadowColor: GlobalsColor.darkGreenDisabled,
-      label: Icon(Icons.add, color: GlobalsMessage.chipData[1]["color"]),
+      labelStyle: TextStyle(color: GlobalsColor.darkGreen, fontWeight: FontWeight.w600),
+      label: Icon(Icons.edit, color: GlobalsColor.darkGreen),
       onPressed: () {
         _addTagFocusNode.requestFocus();
       },
@@ -142,15 +147,10 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
         }
         return ActionChip(
           label: Text(_infosMap[_infosMap.keys.toList()[index]]),
-          labelPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 7),
-          pressElevation: 3,
-          elevation: 1,
-          backgroundColor: Colors.transparent,
-          labelStyle: TextStyle(color: GlobalsMessage.chipData[1]["color"], fontWeight: FontWeight.w600),
-          shadowColor: GlobalsColor.darkGreenDisabled,
+          labelStyle: TextStyle(color: GlobalsColor.darkGreen, fontWeight: FontWeight.w600),
           avatar: CircleAvatar(
             backgroundColor: Colors.transparent,
-            child: Icon(Icons.info_outline, color: GlobalsMessage.chipData[1]["color"]),
+            child: Icon(Icons.info_outline, color: GlobalsColor.darkGreen),
           ),
           onPressed: () {},
         );
@@ -158,40 +158,189 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
     );
   }
 
-  Widget buildCredits(data) {
-    String subTitle;
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: List.generate(data.length, (int index) {
-          if (data[index]["character"] != null)
-            subTitle = data[index]["character"];
-          else if (data[index]["deparment"] != null)
-            subTitle = data[index]["deparment"];
-          else
-          subTitle = "";
-          return Card(
-            elevation: 3,
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: Column(
-              children: <Widget>[
-                data[index]["profile_path"] != null ? ProgressiveImage(
-                  placeholder: AssetImage("assets/loading.png"),
-                  thumbnail: NetworkImage(GlobalsData.thumbImgSize + data[index]["profile_path"], scale: 1),
-                  image: NetworkImage(GlobalsData.imgSize + data[index]["profile_path"], scale: 1),
-                  width: 100,
-                  height: 150,
-                  fit: BoxFit.cover,
-                  fadeDuration: Duration(milliseconds: 150),
-                  blur: 2,
-                ) : Padding(padding: EdgeInsets.zero),
-                Text(data[index]["name"]),
-                Text(subTitle)
-              ],
+  Widget buildCaroussel(data, QueryTypes type) {
+    var toRemove = [];
+
+    if (type == QueryTypes.person) {
+      for(var i = 0;i<data.length;i++){
+        var ele = data[i];
+        for(var i2 = i+1;i2<data.length;i2++){
+          var ele2 = data[i2];
+          if(ele["id"] == ele2["id"])
+            toRemove.add(ele2);
+        }
+      }
+      for(var ele in toRemove)
+        data.remove(ele);
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: List.generate(data.length, (int index) {
+            String name;
+            String img_url;
+
+            if (data[index]["profile_path"] != null) {
+              img_url = data[index]["profile_path"];
+              name = data[index]["name"];
+            } else if (data[index]["poster_path"] != null) {
+              img_url = data[index]["poster_path"];
+              name = data[index]["title"];       
+            } else 
+              return Padding(padding: EdgeInsets.all(0));
+
+            return Card(
+              elevation: 1,
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: InkWell(
+                  onTap: () {
+                    
+                  },
+                  splashColor: GlobalsMessage.chipData[1]["splash_color"],
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                        clipBehavior: Clip.hardEdge,
+                        child: ProgressiveImage(
+                          placeholder: AssetImage("assets/loading.png"),
+                          thumbnail: NetworkImage(GlobalsData.thumbImgSize + img_url, scale: 1),
+                          image: NetworkImage(GlobalsData.imgSize + img_url, scale: 1),
+                          width: 100,
+                          height: 150,
+                          fit: BoxFit.cover,
+                          fadeDuration: Duration(milliseconds: 150),
+                          blur: 2,                      
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
+                        child: Text(name, style: TextStyle(fontWeight: FontWeight.w700),),
+                      ),
+                    ],
+                  ),
+                ),
+            );
+          })
+        ),
+      ),
+    );
+  }
+
+  Widget buildTagChipInput(String tag) {
+    InputChip inputChip;
+    inputChip = InputChip(
+        label: Text(tag),
+        labelStyle: TextStyle(color: GlobalsColor.darkGreen, fontWeight: FontWeight.w600),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+          side: BorderSide(width: 0.7, style: BorderStyle.solid, color: Colors.red)
+        ),
+        avatar: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          child: Icon(Icons.label, color: GlobalsColor.darkGreen),
+        ),
+        onPressed: () {
+          setState(() {
+            _selectedTags.remove(inputChip);
+          });
+        },
+      );
+    return PositionedTransition(
+      rect: RelativeRectTween(begin: RelativeRect.fromLTRB(10, 0, 0, 0), end: RelativeRect.fromLTRB(0, 0, 10, 0)).animate(_chipShakeAnimationController),
+      child: inputChip
+    );
+  }
+
+  Widget buildTagInput() {
+    return Column(
+      children: <Widget>[
+        Container(
+          height: 50,
+          margin: EdgeInsets.zero,
+          padding: EdgeInsets.zero,
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Wrap(
+              direction: Axis.horizontal,
+              children: _selectedTags,
+              spacing: 8,
             ),
-          );
-        })
+          ),
+        ),
+        Container(
+          transform: Matrix4.translationValues(0, -15, 0),
+          child: TextField(
+            controller: _addTagController,
+            buildCounter: null,
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            cursorColor: GlobalsColor.darkGreenDisabled,
+            focusNode: _addTagFocusNode,
+            textAlignVertical: TextAlignVertical.center,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              color: GlobalsColor.darkGreen,
+              fontSize: 17,
+            ),
+            decoration: InputDecoration(
+              focusedBorder: InputBorder.none,
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(left: 5),
+              hintText: "Entrez un ou plusieurs tag à ajouter",
+            ),
+            onSubmitted: (String text) {
+              //Si ya du texte
+              if (text.length > 0)
+                _selectedTags.add(buildTagChipInput(text));
+
+              _addTagController.clear();
+              _addTagFocusNode.unfocus();
+              setState(() {
+                for (var element in _selectedTags) {
+                  //Si le tag existe pas déj) ont l'ajoute
+                  if (!_ownGenreList.contains(element))
+                    _ownGenreList.add(element);
+                }
+                // _selectedTags = []; //On vide selectedTags
+              });
+            },
+            onChanged: (String text) {
+              if (text.contains(" ")) {
+                _addTagController.clear();
+                String tag = text.split(" ")[0];
+                setState(() {
+                  _selectedTags.add(buildTagChipInput(tag));
+                });
+              }
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  Widget buildTrailer(Map data, BuildContext context) {
+    if (data["site"] != "YouTube") return Padding(padding: EdgeInsets.zero);
+    return Padding(
+      padding: const EdgeInsets.only(left: 75, right: 75, bottom: 30, top: 10),
+      child: ActionChip(
+        avatar: CircleAvatar(
+          child: Icon(CommunityMaterialIcons.youtube, color: GlobalsColor.darkGreen, size: 25,),
+          backgroundColor: Colors.transparent,
+        ),
+        label: Text("Trailer du film", style: TextStyle(fontSize: 20)), 
+        labelStyle: TextStyle(color: GlobalsColor.darkGreen, fontWeight: FontWeight.w600),
+        onPressed: () {
+          launch("https://youtube.com/watch?v="+data["key"]);
+          print(data["key"]);
+        },
       ),
     );
   }
@@ -218,7 +367,6 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
           child: Chip(
             padding: EdgeInsets.all(0),
             labelPadding: EdgeInsets.all(0),
-            elevation: 1,
             backgroundColor: Colors.transparent,
             shadowColor: GlobalsColor.darkGreenDisabled,
             label: Container(width: 100, decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.all(Radius.circular(50))))
@@ -229,48 +377,48 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
   }
 
   Widget buildSkeletonCarrousel() {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      children: List.generate(10, (int index) {
-        return Card(
-          elevation: 3,
-          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          child: Column(
-            children: <Widget>[
-              SkeletonAnimation(
-                child: Container(
-                  width: 100,
-                  height: 150,
-                  color: Colors.grey[300],
-                ),
-              ),
-              SkeletonAnimation(
-                child: Container(
-                  width: 50, 
-                  height: 13,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.all(Radius.circular(4)),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: List.generate(10, (int index) {
+            return Card(
+              elevation: 1,
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: Column(
+                children: <Widget>[
+                  SkeletonAnimation(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5), 
+                        color: Colors.grey[300],
+                      ),
+                      width: 100,
+                      height: 150,
+                    ),
                   ),
-                )
-              ),
-              SkeletonAnimation(
-                child: Container(
-                  width: 50, 
-                  height: 13,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                  SkeletonAnimation(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                      width: 50, 
+                      height: 13,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                    )
                   ),
-                )
-              )
-            ],
-          ),
-        );
-      })
+                ],
+              ),
+            );
+          })
+        ),
+      ),
     );
   }
-
+  
   void getTagList() async {
     _genreList = await TMDBQueries.getTagList();
     setState(() {
@@ -298,84 +446,19 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
       _dispCredits = true;
     });
   }
-
-  Widget buildTagChipInput(String tag) {
-    return InputChip(
-      label: Text(tag),
-      labelPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 7),
-      pressElevation: 3,
-      elevation: 1,
-      backgroundColor: Colors.transparent,
-      labelStyle: TextStyle(color: GlobalsMessage.chipData[1]["color"], fontWeight: FontWeight.w600),
-      shadowColor: GlobalsColor.darkGreenDisabled,
-      avatar: CircleAvatar(
-        backgroundColor: Colors.transparent,
-        child: Icon(Icons.close, color: GlobalsMessage.chipData[1]["color"]),
-      ),
-      onPressed: () {
-        print(this);
-        setState(() {
-          _selectedTags.removeAt(_selectedTags.length-1);
-        });
-      },
-    );
+  void getMovieSimilar() async {
+    _similarMap = await TMDBQueries.getMovieSimilar(_preLoadData["id"].toString());
+    setState(() {
+      _dispSimilar = true;
+    });
+  }
+  void getMovieTrailer() async {
+    _trailerMap = await TMDBQueries.getMovieTrailer(_preLoadData["id"].toString());
+    setState(() {
+      _dispMovieTrailer = true;
+    });
   }
 
-  Widget buildTagInput() {
-    return TextField(
-      controller: _addTagController,
-      buildCounter: null,
-      keyboardType: TextInputType.text,
-      textInputAction: TextInputAction.done,
-      cursorColor: GlobalsColor.darkGreenDisabled,
-      focusNode: _addTagFocusNode,
-      textAlignVertical: TextAlignVertical.center,
-      textAlign: TextAlign.left,
-      style: TextStyle(
-        color: GlobalsColor.darkGreen,
-        fontSize: 17,
-      ),
-      decoration: InputDecoration(
-        focusedBorder: InputBorder.none,
-        border: InputBorder.none,
-        contentPadding: EdgeInsets.only(left: 5),
-        hintText: "Entrez un ou plusieurs tag à ajouter",
-        // contentPadding: EdgeInsets.only(left: 5),
-        prefixIcon: _selectedTags != null ? Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: Wrap(
-            children: _selectedTags,
-            spacing: 8,
-          ),
-        ) : null,
-      ),
-      onSubmitted: (String text) {
-        if (text.length > 0)
-          _selectedTags.add(buildTagChipInput(text));
-        _addTagController.clear();
-        _addTagFocusNode.unfocus();
-        setState(() {
-          for (var element in _selectedTags) {
-            if (!_ownGenreList.contains(element))
-              _ownGenreList.add(element);
-          }
-          _selectedTags = [];        
-        });
-      },
-      onChanged: (String text) {
-        if (_selectedTags.length == 3) {
-          _addTagController.clear();
-        }
-        else if (text.contains(" ")) {
-          _addTagController.clear();
-          setState(() {
-            String tag = text.split(" ")[0];
-            _selectedTags.add(buildTagChipInput(tag));
-          });
-        }
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -419,8 +502,9 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
           ),
         ],
       ),
-
       body: Stack(
+        overflow: Overflow.visible,
+        fit: StackFit.expand,
         children: <Widget>[
           CustomScrollView(
             physics: BouncingScrollPhysics(),
@@ -467,118 +551,146 @@ class MovieViewState extends State<MovieView> with SingleTickerProviderStateMixi
                   ),
                 ),
               ),
-
-              SliverFillRemaining(
-                hasScrollBody: true,
-                fillOverscroll: false,
-                child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0, right: 10, top: 10, bottom: 0),
-                        child: DropCapText(
-                          _preLoadData["overview"] != null ? _preLoadData["overview"] : "",
-                          style: TextStyle(
-                            fontSize: 17,
-                          ),
-                          dropCapPadding: EdgeInsets.only(right: 15),
-                          textAlign: TextAlign.justify,
-                          overflow: TextOverflow.fade,
-                          dropCap: DropCap(
-                            height: 240, 
-                            width: 160,
-                            child: Card(
-                              elevation: 3,
-                              margin: EdgeInsets.only(bottom: 0),
-                              child: Hero( 
-                                tag: heroTag,
-                                child: ProgressiveImage(
-                                  placeholder: AssetImage("assets/loading.png"),
-                                  thumbnail: NetworkImage(GlobalsData.thumbImgSize + _preLoadData["poster_path"], scale: 1),
-                                  image: NetworkImage(GlobalsData.imgSize + _preLoadData["poster_path"], scale: 1),
-                                  width: 160,
-                                  height: 240,
-                                  fit: BoxFit.cover,
-                                ),
+              SliverList( 
+                delegate: SliverChildListDelegate([
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10, top: 10, bottom: 0),
+                      child: DropCapText(
+                        _preLoadData["overview"] != null ? _preLoadData["overview"] : "",
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                        dropCapPadding: EdgeInsets.only(right: 15),
+                        textAlign: TextAlign.justify,
+                        overflow: TextOverflow.fade,
+                        dropCap: DropCap(
+                          height: 240, 
+                          width: 160,
+                          child: Card(
+                            elevation: 3,
+                            margin: EdgeInsets.only(bottom: 0),
+                            child: Hero( 
+                              tag: heroTag,
+                              child: ProgressiveImage(
+                                placeholder: AssetImage("assets/loading.png"),
+                                thumbnail: NetworkImage(GlobalsData.thumbImgSize + _preLoadData["poster_path"], scale: 1),
+                                image: NetworkImage(GlobalsData.imgSize + _preLoadData["poster_path"], scale: 1),
+                                width: 160,
+                                height: 240,
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width - 20,
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(top: 0),
-                        transform: Matrix4.translationValues(0, -5, 0),
-                        child: Theme(
-                          data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
-                          child: AnimatedCrossFade(
-                            firstChild: buildSkeletonTags(_preLoadData["genre_ids"].length),
-                            secondChild: _dispGenreList ? buildGenreTags() : Padding(padding: EdgeInsets.all(0)),
-                            crossFadeState: _dispGenreList ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                            duration: Duration(milliseconds: 200),
-                          ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width - 20,
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      alignment: Alignment.topLeft,
+                      padding: EdgeInsets.only(top: 0),
+                      transform: Matrix4.translationValues(0, -5, 0),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
+                        child: AnimatedCrossFade(
+                          firstChild: buildSkeletonTags(_preLoadData["genre_ids"].length),
+                          secondChild: _dispGenreList ? buildGenreTags() : Padding(padding: EdgeInsets.all(0)),
+                          crossFadeState: _dispGenreList ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                          duration: Duration(milliseconds: 200),
                         ),
                       ),
-                      buildDivider(),
-                      Container(
-                        width: MediaQuery.of(context).size.width - 20,
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(top: 0),
-                        child: Theme(
-                          data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
-                          child: AnimatedSwitcher(
-                            child: !_dispInfoList ? buildSkeletonTags(5) : buildInfoTags(),
-                            duration: Duration(milliseconds: 200),
-                          ),
+                    ),
+                    buildDivider(),
+                    Container(
+                      width: MediaQuery.of(context).size.width - 20,
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      alignment: Alignment.topLeft,
+                      padding: EdgeInsets.only(top: 0),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
+                        child: AnimatedSwitcher(
+                          child: !_dispInfoList ? buildSkeletonTags(5) : buildInfoTags(),
+                          duration: Duration(milliseconds: 200),
                         ),
                       ),
-                      buildDivider(),
-                      Text("Casting"),
-                      Container(
-                        width: MediaQuery.of(context).size.width - 20,
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(top: 0),
-                        child: Theme(
-                          data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
-                          child: AnimatedSwitcher(
-                            child: !_dispCredits ? buildSkeletonCarrousel() : buildCredits(_creditsMap["cast"]),
-                            duration: Duration(milliseconds: 200),
-                          ),
+                    ),
+                    buildDivider(),
+                    Text("Casting"),
+                    Container(
+                      width: MediaQuery.of(context).size.width - 20,
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      alignment: Alignment.topLeft,
+                      padding: EdgeInsets.only(top: 0),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
+                        child: AnimatedSwitcher(
+                          child: !_dispCredits ? buildSkeletonCarrousel() : buildCaroussel(_creditsMap["cast"], QueryTypes.person),
+                          duration: Duration(milliseconds: 200),
                         ),
                       ),
-                      buildDivider(),
-                      Text("Équipe"),
-                      Container(
-                        width: MediaQuery.of(context).size.width - 20,
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(top: 0),
-                        child: Theme(
-                          data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
-                          child: AnimatedSwitcher(
-                            child: !_dispCredits ? buildSkeletonCarrousel() : buildCredits(_creditsMap["crew"]),
-                            duration: Duration(milliseconds: 200),
-                          ),
+                    ),
+                    buildDivider(),
+                    Text("Équipe"),
+                    Container(
+                      width: MediaQuery.of(context).size.width - 20,
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      alignment: Alignment.topLeft,
+                      padding: EdgeInsets.only(top: 0),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
+                        child: AnimatedSwitcher(
+                          child: !_dispCredits ? buildSkeletonCarrousel() : buildCaroussel(_creditsMap["crew"], QueryTypes.person),
+                          duration: Duration(milliseconds: 200),
                         ),
                       ),
-                    ]
-                  ),
+                    ),
+                    buildDivider(),
+                    Text("Similaire"),
+                    Container(
+                      width: MediaQuery.of(context).size.width - 20,
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      alignment: Alignment.topLeft,
+                      padding: EdgeInsets.only(top: 0),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
+                        child: AnimatedSwitcher(
+                          child: !_dispSimilar ? buildSkeletonCarrousel() : buildCaroussel(_similarMap["results"], QueryTypes.movie),
+                          duration: Duration(milliseconds: 200),
+                        ),
+                      ),
+                    ),
+                    buildDivider(),
+                    _dispMovieTrailer ? Center(
+                      child: Theme(
+                        data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
+                        child: buildTrailer(_trailerMap["results"][0], context),
+                      ),
+                    ) : Padding(padding: EdgeInsets.zero),
+                  ]
+                ),
               ),
             ],
           ),
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 200),
+            child: _addTagFocusNode.hasFocus ? InkWell(
+              onTap: () => _addTagFocusNode.unfocus(),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.black.withOpacity(0.5),
+              ),
+            ) : null,
+          ),
           AnimatedPositioned(
             width: MediaQuery.of(context).size.width,
-            height: 50,
-            bottom: _addTagFocusNode.hasFocus ? 0 : -50,
+            height: 100,
+            bottom: _addTagFocusNode.hasFocus ? 0 : -100,
             left: 0,
             duration: Duration(milliseconds: 200),
             child: Container(
               child: buildTagInput(), 
-              height: 50,
+              height: 100,
               width: MediaQuery.of(context).size.width,
               clipBehavior: Clip.none,
               padding: EdgeInsets.symmetric(horizontal: 16),

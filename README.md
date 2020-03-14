@@ -1,4 +1,4 @@
-# videotheque
+# Vidéotheque
 
 A new Flutter project.
 

@@ -36,8 +36,7 @@ dependencies:
   flutter_speed_dial: ^1.2.5
   community_material_icon: ^3.5.95
   intl: ^0.16.1
-  keyboard_visibility: ^0.5.6
-
+  flutter_keyboard_visibility: ^0.7.0
   
 dev_dependencies:
   flutter_test:

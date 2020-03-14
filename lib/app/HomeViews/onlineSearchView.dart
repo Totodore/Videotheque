@@ -275,11 +275,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                         child: Icon(knownForElement["media_type"] == "movie" ? Icons.movie : Icons.tv, color: Colors.grey,),
                         backgroundColor: Colors.transparent,
                       ),
-                      pressElevation: 3,
-                      elevation: 1,
-                      backgroundColor: Colors.transparent,
                       labelStyle: TextStyle(color: GlobalsColor.green),
-                      shadowColor: GlobalsColor.darkGreenDisabled,
                       label: Text(knownForElement["title"] != null ? knownForElement["title"] : knownForElement["name"], style: TextStyle(fontSize: 13),),
                       onPressed: () {
                         //TODO: implement actionChip;
@@ -646,14 +642,8 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                         return Padding(
                           padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                           child: Theme(data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[index]["splash_color"]),child: ChoiceChip(
-                            labelPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 7),
-                            pressElevation: 3,
-                            elevation: 1,
-                            backgroundColor: Colors.transparent,
-                            avatarBorder: CircleBorder(side: BorderSide(width: 4, color: GlobalsMessage.chipData[index]["color"])),
-                            selectedColor: GlobalsMessage.chipData[index]["selected_color"],
                             labelStyle: TextStyle(color: GlobalsMessage.chipData[index]["color"], fontWeight: FontWeight.w600),
-                            shadowColor: GlobalsColor.darkGreenDisabled,
+                            selectedColor: GlobalsMessage.chipData[index]["selected_color"],
                             label: Row(children: <Widget>[
                               Icon(
                                 GlobalsMessage.chipData[index]["icon"], 
