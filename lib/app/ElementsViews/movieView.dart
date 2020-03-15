@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:vector_math/vector_math.dart' as vector;
 import 'dart:math';
 
 import 'package:Videotheque/globals.dart';
@@ -18,6 +17,7 @@ import 'package:skeleton_text/skeleton_text.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uuid/uuid.dart';
 
 class MovieView extends StatefulWidget {
   static ScrollController scrollController = ScrollController();
@@ -31,17 +31,18 @@ class MovieView extends StatefulWidget {
 class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
 
   Map _preLoadData = Map();
-  Map _infosMap = Map();
-  Map _genreList = Map();
-  Map _creditsMap = Map();
-  Map _similarMap = Map();
-  Map _trailerMap = Map();
-  List _ownGenreList = List();
+  Map _infosMap = {};
+  Map _genreList = {};
+  Map _creditsMap = {};
+  Map _similarMap = {};
+  Map _trailerMap = {};
+  Map<String, Widget> _ownGenreList = {};
+  Map<String, Widget> _selectedTags = {};
+  Map<String, String> _ownGenreIds = {};
 
   AnimationController _rotationAnimationController;
   AnimationController _chipShakeAnimationController;
 
-  List<Widget> _selectedTags = [];
   FocusNode _addTagFocusNode = FocusNode();
   TextEditingController _addTagController = TextEditingController();
   KeyboardVisibilityNotification _keyboardVisibilityNotification = KeyboardVisibilityNotification();
@@ -90,6 +91,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
   }
 
   Wrap buildGenreTags() {
+    List<String> tagNames = [];
     List<Widget> tagsChips = List<Widget>.generate(_preLoadData["genre_ids"].length, (int index) {
       int tagId = _preLoadData["genre_ids"][index];
       String tagName;
@@ -99,6 +101,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
           break;
         }
       }
+      tagNames.add(tagName.toLowerCase());
       return ActionChip(
         label: Text(tagName),
         labelStyle: TextStyle(color: GlobalsColor.darkGreen, fontWeight: FontWeight.w600),
@@ -112,9 +115,27 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
         
       );
     });
-    if (_ownGenreList != null) {
-      for (Widget element in _ownGenreList) {
-        tagsChips.add(element);
+    //Pour chaque tag non ajouté dans la liste on en créé un nouveau avec un nouvel id compris
+    for (String key in _ownGenreList.keys) {
+      if (!tagNames.contains(key.toLowerCase())) {
+        tagsChips.add(
+          ActionChip(
+            label: Text(key),
+            labelStyle: TextStyle(color: GlobalsColor.darkGreen, fontWeight: FontWeight.w600),
+            avatar: CircleAvatar(
+              backgroundColor: Colors.transparent,
+              child: Icon(Icons.label, color: GlobalsColor.darkGreen),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+              side: BorderSide(width: 0.7, style: BorderStyle.solid, color: GlobalsColor.darkGreen)
+            ),
+            onPressed: () {
+              print(key);
+            },
+          )
+        );
+        _ownGenreIds[Uuid().v1()] = key;
       }
     }
     tagsChips.add(ActionChip(
@@ -160,7 +181,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
 
   Widget buildCaroussel(data, QueryTypes type) {
     var toRemove = [];
-
+    //Si ya plusieurs fois la même personne on enlève
     if (type == QueryTypes.person) {
       for(var i = 0;i<data.length;i++){
         var ele = data[i];
@@ -173,7 +194,6 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
       for(var ele in toRemove)
         data.remove(ele);
     }
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: SingleChildScrollView(
@@ -183,11 +203,16 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
           children: List.generate(data.length, (int index) {
             String name;
             String img_url;
+            String heroTag = Uuid().v1();
 
-            if (data[index]["profile_path"] != null) {
+            String route = "/element/"+GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["route"] + "/";
+            GlobalsArgs.actualRoute = route;
+            GlobalsArgs.transfertArg = [data[index], heroTag];
+
+            if (type == QueryTypes.person && data[index]["profile_path"] != null) {
               img_url = data[index]["profile_path"];
               name = data[index]["name"];
-            } else if (data[index]["poster_path"] != null) {
+            } else if (type == QueryTypes.movie && data[index]["poster_path"] != null) {
               img_url = data[index]["poster_path"];
               name = data[index]["title"];       
             } else 
@@ -197,24 +222,25 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
               elevation: 1,
               margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: InkWell(
-                  onTap: () {
-                    
-                  },
+                  onTap: () => Navigator.pushNamed(context, route),
                   splashColor: GlobalsMessage.chipData[1]["splash_color"],
                   child: Column(
                     children: <Widget>[
                       Container(
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
                         clipBehavior: Clip.hardEdge,
-                        child: ProgressiveImage(
-                          placeholder: AssetImage("assets/loading.png"),
-                          thumbnail: NetworkImage(GlobalsData.thumbImgSize + img_url, scale: 1),
-                          image: NetworkImage(GlobalsData.imgSize + img_url, scale: 1),
-                          width: 100,
-                          height: 150,
-                          fit: BoxFit.cover,
-                          fadeDuration: Duration(milliseconds: 150),
-                          blur: 2,                      
+                        child: Hero(
+                          tag: heroTag,
+                          child: ProgressiveImage(
+                            placeholder: AssetImage("assets/loading.png"),
+                            thumbnail: NetworkImage(GlobalsData.thumbImgSize + img_url, scale: 1),
+                            image: NetworkImage(GlobalsData.imgSize + img_url, scale: 1),
+                            width: 100,
+                            height: 150,
+                            fit: BoxFit.cover,
+                            fadeDuration: Duration(milliseconds: 150),
+                            blur: 2,                      
+                          ),
                         ),
                       ),
                       Padding(
@@ -232,13 +258,13 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
   }
 
   Widget buildTagChipInput(String tag) {
-    InputChip inputChip;
-    inputChip = InputChip(
+    ActionChip inputChip;
+    inputChip = ActionChip(
         label: Text(tag),
         labelStyle: TextStyle(color: GlobalsColor.darkGreen, fontWeight: FontWeight.w600),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
-          side: BorderSide(width: 0.7, style: BorderStyle.solid, color: Colors.red)
+          side: BorderSide(width: 0.7, style: BorderStyle.solid, color: GlobalsColor.darkGreen)
         ),
         avatar: CircleAvatar(
           backgroundColor: Colors.transparent,
@@ -246,14 +272,11 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
         ),
         onPressed: () {
           setState(() {
-            _selectedTags.remove(inputChip);
+            _selectedTags.removeWhere((key, value) => (key == tag));
           });
         },
       );
-    return PositionedTransition(
-      rect: RelativeRectTween(begin: RelativeRect.fromLTRB(10, 0, 0, 0), end: RelativeRect.fromLTRB(0, 0, 10, 0)).animate(_chipShakeAnimationController),
-      child: inputChip
-    );
+    return inputChip;
   }
 
   Widget buildTagInput() {
@@ -261,15 +284,26 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
       children: <Widget>[
         Container(
           height: 50,
-          margin: EdgeInsets.zero,
+          margin: EdgeInsets.zero,  
           padding: EdgeInsets.zero,
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Wrap(
-              direction: Axis.horizontal,
-              children: _selectedTags,
-              spacing: 8,
+            child: AnimatedSwitcher(
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return ScaleTransition(child: child, scale: animation);
+              },
+              duration: Duration(milliseconds: 200),
+              child: _selectedTags.length > 0 ? Wrap(
+                direction: Axis.horizontal,
+                children: _selectedTags.values.toList(),
+                spacing: 8,
+              ) : Text(" Appuyer sur un tag pour le supprimer", 
+                style: TextStyle(
+                  color: GlobalsColor.darkGreen.withOpacity(0.5),
+                  fontSize: 17,
+                ),
+              ),
             ),
           ),
         ),
@@ -297,26 +331,27 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
             onSubmitted: (String text) {
               //Si ya du texte
               if (text.length > 0)
-                _selectedTags.add(buildTagChipInput(text));
+                _selectedTags[text] = buildTagChipInput(text);
 
               _addTagController.clear();
               _addTagFocusNode.unfocus();
               setState(() {
-                for (var element in _selectedTags) {
-                  //Si le tag existe pas déj) ont l'ajoute
-                  if (!_ownGenreList.contains(element))
-                    _ownGenreList.add(element);
+                for (var key in _selectedTags.keys) {
+                  //Si le tag existe pas déjà ont l'ajoute
+                  if (!_ownGenreList.keys.contains(key))
+                    _ownGenreList[key] = _selectedTags[key];
                 }
-                // _selectedTags = []; //On vide selectedTags
               });
             },
             onChanged: (String text) {
               if (text.contains(" ")) {
                 _addTagController.clear();
-                String tag = text.split(" ")[0];
-                setState(() {
-                  _selectedTags.add(buildTagChipInput(tag));
-                });
+                text = text.replaceAll(' ', '');
+                if (text.length > 0 && !_selectedTags.keys.contains(text)) {
+                  setState(() {
+                    _selectedTags[text] = buildTagChipInput(text);
+                  });
+                }
               }
             },
           ),

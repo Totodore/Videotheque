@@ -6,6 +6,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:skeleton_text/skeleton_text.dart';
+import 'package:uuid/uuid.dart';
+
 
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/tmdbQueries.dart';
@@ -207,7 +209,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
           Map element = Map.from(_dataLoadedView[queryType][index]);
           String title = ""; 
           String posterPath = "";
-          String heroTag = "image_search#"+index.toString();
+          String heroTag = Uuid().v1();
           IconData icon;
           Widget infos = Container();
           //Switch pour savoir sur quel element on travail

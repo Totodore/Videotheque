@@ -37,6 +37,7 @@ dependencies:
   community_material_icon: ^3.5.95
   intl: ^0.16.1
   flutter_keyboard_visibility: ^0.7.0
+  uuid: ^2.0.4
   
 dev_dependencies:
   flutter_test:
