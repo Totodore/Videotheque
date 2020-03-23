@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:math';
 
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/tmdbQueries.dart';
@@ -15,7 +14,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
@@ -40,28 +38,26 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
   Map<String, Widget> _selectedTags = {};
   Map<String, String> _ownGenreIds = {};
 
-  AnimationController _rotationAnimationController;
+  AnimationController _menuAnimationController;
   AnimationController _chipShakeAnimationController;
 
   FocusNode _addTagFocusNode = FocusNode();
   TextEditingController _addTagController = TextEditingController();
-  KeyboardVisibilityNotification _keyboardVisibilityNotification = KeyboardVisibilityNotification();
 
   bool _dispGenreList = false;
   bool _dispInfoList = false;
   bool _dispCredits = false;
   bool _dispSimilar = false;
   bool _dispMovieTrailer = false;
+  
+  bool _forceHideTag = false;
 
   @override
   void initState() {
     _preLoadData = GlobalsArgs.transfertArg[0];
-    _rotationAnimationController = AnimationController(
+    _menuAnimationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 200),
-      value: 0,
-      lowerBound: 0,
-      upperBound: 45 * pi/180,
     );
 
     _chipShakeAnimationController = AnimationController(
@@ -69,6 +65,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
       duration: Duration(milliseconds: 50),
     );
     _chipShakeAnimationController.repeat();
+
     getTagList();
     getInfoList();
     getMovieCredits();
@@ -77,12 +74,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
 
     super.initState();
 
-    _keyboardVisibilityNotification.addNewListener(
-      onHide: () {
-        if (_addTagFocusNode.hasFocus)
-          setState(() => _addTagFocusNode.unfocus());
-      }
-    );
+    
   }
 
   @override
@@ -90,7 +82,11 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  Wrap buildGenreTags() {
+  bool _keyboardIsVisible() {
+    return !(MediaQuery.of(context).viewInsets.bottom == 0.0);
+  }
+
+  Widget buildGenreTags() {
     List<String> tagNames = [];
     List<Widget> tagsChips = List<Widget>.generate(_preLoadData["genre_ids"].length, (int index) {
       int tagId = _preLoadData["genre_ids"][index];
@@ -145,37 +141,43 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
         _addTagFocusNode.requestFocus();
       },
     ));
-    return Wrap(
-      direction: Axis.horizontal,
-      alignment: WrapAlignment.start,
-      spacing: 8,
-      runSpacing: 0,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      children: tagsChips,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Wrap(
+        direction: Axis.horizontal,
+        alignment: WrapAlignment.start,
+        spacing: 8,
+        runSpacing: 0,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: tagsChips,
+      ),
     );
   }
 
-  Wrap buildInfoTags() {
-    return Wrap(
-      direction: Axis.horizontal,
-      alignment: WrapAlignment.start,
-      spacing: 8,
-      runSpacing: 0,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      children: List<Widget>.generate(_infosMap.length, (int index) {
-        if (_infosMap[_infosMap.keys.toList()[index]] == null) {
-          return Padding(padding: EdgeInsets.all(0));
-        }
-        return ActionChip(
-          label: Text(_infosMap[_infosMap.keys.toList()[index]]),
-          labelStyle: TextStyle(color: GlobalsColor.darkGreen, fontWeight: FontWeight.w600),
-          avatar: CircleAvatar(
-            backgroundColor: Colors.transparent,
-            child: Icon(Icons.info_outline, color: GlobalsColor.darkGreen),
-          ),
-          onPressed: () {},
-        );
-      }),
+  Widget buildInfoTags() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Wrap(
+        direction: Axis.horizontal,
+        alignment: WrapAlignment.start,
+        spacing: 8,
+        runSpacing: 0,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: List<Widget>.generate(_infosMap.length, (int index) {
+          if (_infosMap[_infosMap.keys.toList()[index]] == null) {
+            return Padding(padding: EdgeInsets.all(0));
+          }
+          return ActionChip(
+            label: Text(_infosMap[_infosMap.keys.toList()[index]]),
+            labelStyle: TextStyle(color: GlobalsColor.darkGreen, fontWeight: FontWeight.w600),
+            avatar: CircleAvatar(
+              backgroundColor: Colors.transparent,
+              child: Icon(Icons.info_outline, color: GlobalsColor.darkGreen),
+            ),
+            onPressed: () {},
+          );
+        }),
+      ),
     );
   }
 
@@ -183,8 +185,12 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
     var toRemove = [];
     //Si ya plusieurs fois la même personne on enlève
     if (type == QueryTypes.person) {
-      for(var i = 0;i<data.length;i++){
+      for(var i = 0; i<data.length; i++){
         var ele = data[i];
+        if (ele["poster_path"] == null && ele["profile_path"] == null) {
+          toRemove.add(ele);
+          continue;
+        }
         for(var i2 = i+1;i2<data.length;i2++){
           var ele2 = data[i2];
           if(ele["id"] == ele2["id"])
@@ -207,22 +213,23 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
 
             String route = "/element/"+GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["route"] + "/";
             GlobalsArgs.actualRoute = route;
-            GlobalsArgs.transfertArg = [data[index], heroTag];
 
-            if (type == QueryTypes.person && data[index]["profile_path"] != null) {
+            if (type == QueryTypes.person) {
               img_url = data[index]["profile_path"];
               name = data[index]["name"];
-            } else if (type == QueryTypes.movie && data[index]["poster_path"] != null) {
+            } else if (type == QueryTypes.movie) {
               img_url = data[index]["poster_path"];
               name = data[index]["title"];       
-            } else 
-              return Padding(padding: EdgeInsets.all(0));
+            }
 
             return Card(
               elevation: 1,
               margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: InkWell(
-                  onTap: () => Navigator.pushNamed(context, route),
+                  onTap: () {
+                    GlobalsArgs.transfertArg = [data[index], heroTag];
+                    Navigator.pushNamed(context, route);
+                  },
                   splashColor: GlobalsMessage.chipData[1]["splash_color"],
                   child: Column(
                     children: <Widget>[
@@ -245,7 +252,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
-                        child: Text(name, style: TextStyle(fontWeight: FontWeight.w700),),
+                        child: Text(name, style: TextStyle(fontWeight: FontWeight.w700)),
                       ),
                     ],
                   ),
@@ -382,11 +389,38 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
 
   Widget buildDivider() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.only(right: 10, left: 10, top: 5),
       child: Divider(
         color: GlobalsColor.darkGreen,
         height: 2,
         thickness: 2,
+      ),
+    );
+  }
+
+  Widget buildTitle(String text) {
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: <BoxShadow>[BoxShadow(
+            color: Colors.grey,
+            spreadRadius: -1,
+            blurRadius: 2,
+            offset: Offset(0, 1.5)
+          )],
+          color: Colors.white,
+        ),
+        transform: Matrix4.translationValues(0, -13, 0),
+        padding: EdgeInsets.all(5),
+        child: Text(text,
+          maxLines: 1,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 15
+          ),
+        ),
       ),
     );
   }
@@ -500,21 +534,35 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
     String heroTag = "";
     heroTag = GlobalsArgs.transfertArg[1];
     GlobalsData.endSortBarPos = MediaQuery.of(context).padding.top;
-    return Scaffold(       
+
+    //Handle tag keyboard down    
+    _forceHideTag = !_keyboardIsVisible();
+    Future.delayed(Duration(milliseconds: 200), () async {
+      _forceHideTag = false;
+    });
+    if (!_keyboardIsVisible() && _addTagFocusNode.hasFocus) {    
+      setState(() {
+        _addTagFocusNode.unfocus();
+      });
+    }
+
+    return Scaffold(
       floatingActionButton: SpeedDial(
         animationSpeed: 200,
         backgroundColor: GlobalsMessage.chipData[1]["color"],
         elevation: 3,
-        child: RotationTransition(
-          turns: _rotationAnimationController.drive(Tween<double>(begin: 0, end: 45 * pi/180)),
-          child: Icon(Icons.add, color: Colors.white, size: 24),
+        child: AnimatedIcon(
+          icon: AnimatedIcons.menu_close,
+          color: Colors.white,
+          size: 25,
+          progress: _menuAnimationController,
         ),
-        overlayOpacity: 0.2,
+        overlayOpacity: 0.75,
         onOpen: () {
-          _rotationAnimationController.forward();
+          _menuAnimationController.forward();
         },
         onClose: () {
-          _rotationAnimationController.reverse();
+          _menuAnimationController.reverse();
         },
         curve: Curves.ease,
         overlayColor: Colors.transparent,
@@ -524,16 +572,22 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
             backgroundColor: Colors.white,
             child: Icon(CommunityMaterialIcons.eye_outline, color: GlobalsColor.darkGreen, size: 24),
             onTap: () {},
+            label: "Ajouter aux films vus",
+            labelStyle: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w700),
           ),
           SpeedDialChild(
             backgroundColor: Colors.white,
             child: Icon(CommunityMaterialIcons.plus_box_outline, color: GlobalsColor.darkGreen, size: 24),
             onTap: () {},
+            label: "Ajouter aux films à voir",
+            labelStyle: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w700),
           ),
           SpeedDialChild(
             backgroundColor: Colors.white,
             child: Icon(Icons.favorite_border, color: GlobalsColor.darkGreen, size: 24),
             onTap: () {},
+            label: "Ajouter aux favoris",
+            labelStyle: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w700),
           ),
         ],
       ),
@@ -546,29 +600,26 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
             slivers: <Widget>[
               SliverAppBar(
                 forceElevated: true,
-                backgroundColor: Colors.transparent,
+                backgroundColor: GlobalsColor.darkGreen,
                 pinned: true,
                 snap: false,
                 floating: false,
                 stretchTriggerOffset: 70,
                 onStretchTrigger: () async => Navigator.pop(context),
                 stretch: true,
-                expandedHeight: 175 + GlobalsData.endSortBarPos,
+                expandedHeight: _preLoadData["backdrop_path"] != null ? 175 + GlobalsData.endSortBarPos : kToolbarHeight,
                 elevation: 3,
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back,
-                    color: GlobalsMessage.chipData[1]["color"],
-                    // color: Colors.white,
+                    color: _preLoadData["backdrop_path"] != null ? GlobalsMessage.chipData[1]["color"] : Colors.white,
                     size: 38,
                   ),
                   onPressed: () => Navigator.pop(context),
                 ),
                 title: Text(_preLoadData["title"] != null ? _preLoadData["title"] : _preLoadData["original_title"],
-                  // style: TextStyle(color: GlobalsMessage.chipData[1]["color"]),
                   style: TextStyle(color: Colors.white),
-                ),
-                
-                flexibleSpace: BackgroundFlexibleSpaceBar(
+                ),                
+                flexibleSpace: _preLoadData["backdrop_path"] != null ? BackgroundFlexibleSpaceBar(
                   title: Text(""),
                   collapseMode: CollapseMode.parallax,
                   background: ProgressiveImage(
@@ -584,7 +635,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
                     repeat: ImageRepeat.noRepeat,
                     matchTextDirection: true,
                   ),
-                ),
+                ) : null,
               ),
               SliverList( 
                 delegate: SliverChildListDelegate([
@@ -628,7 +679,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
                       child: Theme(
                         data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
                         child: AnimatedCrossFade(
-                          firstChild: buildSkeletonTags(_preLoadData["genre_ids"].length),
+                          firstChild: buildSkeletonTags(_preLoadData["genre_ids"].length + 1),
                           secondChild: _dispGenreList ? buildGenreTags() : Padding(padding: EdgeInsets.all(0)),
                           crossFadeState: _dispGenreList ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                           duration: Duration(milliseconds: 200),
@@ -650,7 +701,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
                       ),
                     ),
                     buildDivider(),
-                    Text("Casting"),
+                    buildTitle("Casting"),
                     Container(
                       width: MediaQuery.of(context).size.width - 20,
                       margin: EdgeInsets.symmetric(horizontal: 10),
@@ -665,7 +716,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
                       ),
                     ),
                     buildDivider(),
-                    Text("Équipe"),
+                    buildTitle("Équipe"),
                     Container(
                       width: MediaQuery.of(context).size.width - 20,
                       margin: EdgeInsets.symmetric(horizontal: 10),
@@ -680,7 +731,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
                       ),
                     ),
                     buildDivider(),
-                    Text("Similaire"),
+                    buildTitle("Similaire"),
                     Container(
                       width: MediaQuery.of(context).size.width - 20,
                       margin: EdgeInsets.symmetric(horizontal: 10),
@@ -708,7 +759,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
           ),
           AnimatedSwitcher(
             duration: Duration(milliseconds: 200),
-            child: _addTagFocusNode.hasFocus ? InkWell(
+            child: _addTagFocusNode.hasFocus && !_forceHideTag ? InkWell(
               onTap: () => _addTagFocusNode.unfocus(),
               child: Container(
                 width: MediaQuery.of(context).size.width,
@@ -720,7 +771,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
           AnimatedPositioned(
             width: MediaQuery.of(context).size.width,
             height: 100,
-            bottom: _addTagFocusNode.hasFocus ? 0 : -100,
+            bottom: _addTagFocusNode.hasFocus && !_forceHideTag ? 0 : -100,
             left: 0,
             duration: Duration(milliseconds: 200),
             child: Container(

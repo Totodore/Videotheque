@@ -35,9 +35,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
   String _currentQuery;
   PageView _resultsView;
   bool _dispAnimationHomeSearch = false;
-  bool _endAnimationHomeSearch = false;
   Future _delayOkSearch;
-  double _appBarElevation = 0;
   double _sortBarTop = GlobalsData.initSortBarPos;
   double _oldOffsetScroll = 0;
 
@@ -66,13 +64,6 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
         _reachBottomLoadedView[actualQueryType] = true; //On dit qu'on a attein le bottom de la view
         searchQuery(_currentQuery, _offsetLoadedView[actualQueryType]);
       }
-      //Si on scroll vers le bas et que la barre est affichée on la cache
-      if (_pageResultsController.position.pixels > 5) {
-        setState(() => _appBarElevation = 3);
-      }
-      else  {//Sinon on l'affiche;
-        setState(() => _appBarElevation = 0);
-      }
       //On scroll down we hide keyboard and we hide SearchBar
       if (_pageResultsController.offset > _oldOffsetScroll && _sortBarTop > GlobalsData.endSortBarPos) {
         _sortBarTop -= _pageResultsController.offset - _oldOffsetScroll;
@@ -93,11 +84,6 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
       setState(() {
         _dispAnimationHomeSearch = true;
       });
-      Future.delayed(_animationInitDelay, () {
-        setState(() {
-          _endAnimationHomeSearch = true;
-        });
-      });
     });
     //On delay ca pour avoir accès au context
     Future.delayed(Duration.zero, () {
@@ -114,7 +100,6 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
       //Sync ScrollBar page View with sort Bar 
       double ratio = _resultsPageController.offset/_resultsPageController.position.maxScrollExtent;
       double animatePos = _rowChipTypeController.position.maxScrollExtent*ratio;
-      setState(() => _appBarElevation = 0);
       _rowChipTypeController.animateTo(
         animatePos,
         duration: Duration(milliseconds: 200),

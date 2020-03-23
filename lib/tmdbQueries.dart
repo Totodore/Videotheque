@@ -18,9 +18,16 @@ class TMDBQueries {
       actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await actualQuerySearch;
+    Response response;
+    bool error = false;
+    try {
+      response = await actualQuerySearch;
+    } on TypeError catch(e) {
+      error = true;
+      print("Erreur du turfu qui vient trs de je ne sais où");
+    }
     actualQuerySearch = null;
-    if (response.statusCode == 200) {
+    if (!error && response.statusCode == 200) {
       returner = jsonDecode(response.body) as Map<String, dynamic>;
     } else {
       // GlobalsFunc.snackBar(context, GlobalsMessage.defaultError);
@@ -28,7 +35,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return returner;
+    return TMDBQueries.sortNoContent(returner);
   }
 
   static Future<Map<String, dynamic>> onlineSearchMovie(String query, [int offset = 1]) async {
@@ -39,9 +46,16 @@ class TMDBQueries {
       actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await actualQuerySearch;
+    Response response;
+    bool error = false;
+    try {
+      response = await actualQuerySearch;
+    } on TypeError catch(e) {
+      error = true;
+      print("Erreur du turfu qui vient trs de je ne sais où");
+    }
     actualQuerySearch = null;
-    if (response.statusCode == 200) {
+    if (!error && response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
       // GlobalsFunc.snackBar(context, GlobalsMessage.defaultError);
@@ -49,7 +63,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return returner;
+    return TMDBQueries.sortNoContent(returner);
   }
 
   static Future<Map<String, dynamic>> onlineSearchPerson(String query, [int offset = 1]) async {
@@ -60,9 +74,16 @@ class TMDBQueries {
       actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await actualQuerySearch;
+    Response response;
+    bool error = false;
+    try {
+      response = await actualQuerySearch;
+    } on TypeError catch(e) {
+      error = true;
+      print("Erreur du turfu qui vient trs de je ne sais où");
+    }
     actualQuerySearch = null;
-    if (response.statusCode == 200) {
+    if (!error && response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
       // GlobalsFunc.snackBar(context, GlobalsMessage.defaultError);
@@ -70,7 +91,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return returner;
+    return TMDBQueries.sortNoContent(returner);
   }
 
   static Future<Map<String, dynamic>> onlineSearchCollection(String query, [int offset = 1]) async {
@@ -81,9 +102,16 @@ class TMDBQueries {
       actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await actualQuerySearch;
+    Response response;
+    bool error = false;
+    try {
+      response = await actualQuerySearch;
+    } on TypeError catch(e) {
+      error = true;
+      print("Erreur du turfu qui vient trs de je ne sais où");
+    }
     actualQuerySearch = null;
-    if (response.statusCode == 200) {
+    if (!error && response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
       // GlobalsFunc.snackBar(context, GlobalsMessage.defaultError);
@@ -91,7 +119,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return returner;
+    return TMDBQueries.sortNoContent(returner);
   }
 
   static Future<Map<String, dynamic>> onlineSearchTV(String query, [int offset = 1]) async {
@@ -102,9 +130,16 @@ class TMDBQueries {
       actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await actualQuerySearch;
+    Response response;
+    bool error = false;
+    try {
+      response = await actualQuerySearch;
+    } on TypeError catch(e) {
+      error = true;
+      print("Erreur du turfu qui vient trs de je ne sais où");
+    }
     actualQuerySearch = null;
-    if (response.statusCode == 200) {
+    if (!error && response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
       // GlobalsFunc.snackBar(context, GlobalsMessage.defaultError);
@@ -112,7 +147,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return returner;
+    return TMDBQueries.sortNoContent(returner);
   }
 
   static Future<Map<String, dynamic>> onlineSearchCompanies(String query, [int offset = 1]) async {
@@ -123,9 +158,16 @@ class TMDBQueries {
       actualQuerySearch.timeout(Duration(microseconds: 0)).catchError((onError) {print("");});
     }
     actualQuerySearch = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await actualQuerySearch;
+    Response response;
+    bool error = false;
+    try {
+      response = await actualQuerySearch;
+    } on TypeError catch(e) {
+      error = true;
+      print("Erreur du turfu qui vient trs de je ne sais où");
+    }
     actualQuerySearch = null;
-    if (response.statusCode == 200) {
+    if (!error && response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
       // GlobalsFunc.snackBar(context, GlobalsMessage.defaultError);
@@ -133,7 +175,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return returner;
+    return TMDBQueries.sortNoContent(returner);
   }
 
   static Future<Map<String, dynamic>> getMovie(String id) async {
@@ -142,15 +184,22 @@ class TMDBQueries {
     Map<String, dynamic> returner;
     Future<Response> queryFuture;
     queryFuture = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await queryFuture;
-    if (response.statusCode == 200) {
+    Response response;
+    bool error = false;
+    try {
+      response = await queryFuture;
+    } on TypeError catch(e) {
+      error = true;
+      print("Erreur qui vient de je ne sais où");
+    }
+    if (!error && response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
       returner = Map.from({
         "error": GlobalsMessage.defaultError,
       });
     }
-    return returner;
+    return TMDBQueries.sortNoContent(returner);
   }
 
   static Future<Map<String, dynamic>> getPerson(String id) async {
@@ -159,15 +208,22 @@ class TMDBQueries {
     Map<String, dynamic> returner;
     Future<Response> queryFuture;
     queryFuture = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await queryFuture;
-    if (response.statusCode == 200) {
+    Response response;
+    bool error = false;
+    try {
+      response = await queryFuture;
+    } on TypeError catch(e) {
+      error = true;
+      print("Erreur qui vient de je ne sais où");
+    }
+    if (!error && response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
       returner = Map.from({
         "error": GlobalsMessage.defaultError,
       });
     }
-    return returner;
+    return TMDBQueries.sortNoContent(returner);
   }
 
   static Future<Map<String, dynamic>> getTagList() async {
@@ -176,15 +232,22 @@ class TMDBQueries {
     Map<String, dynamic> returner;
     Future<Response> queryFuture;
     queryFuture = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await queryFuture;
-    if (response.statusCode == 200) {
+    Response response;
+    bool error = false;
+    try {
+      response = await queryFuture;
+    } on TypeError catch(e) {
+      error = true;
+      print("Erreur qui vient de je ne sais où");
+    }
+    if (!error && response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
       returner = Map.from({
         "error": GlobalsMessage.defaultError,
       });
     }
-    return returner;
+    return TMDBQueries.sortNoContent(returner);
   }
 
   static Future<Map<String, dynamic>> getMovieCredits(String id) async {
@@ -193,15 +256,22 @@ class TMDBQueries {
     Map<String, dynamic> returner;
     Future<Response> queryFuture;
     queryFuture = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await queryFuture;
-    if (response.statusCode == 200) {
+    Response response;
+    bool error = false;
+    try {
+      response = await queryFuture;
+    } on TypeError catch(e) {
+      error = true;
+      print("Erreur qui vient de je ne sais où"); 
+    }
+    if (!error && response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
       returner = Map.from({
         "error": GlobalsMessage.defaultError,
       });
     }
-    return returner;
+    return TMDBQueries.sortNoContent(returner);
   }
 
   static Future<Map<String, dynamic>> getMovieSimilar(String id) async {
@@ -210,15 +280,22 @@ class TMDBQueries {
     Map<String, dynamic> returner;
     Future<Response> queryFuture;
     queryFuture = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await queryFuture;
-    if (response.statusCode == 200) {
+    Response response;
+    bool error = false;
+    try {
+      response = await queryFuture;
+    } on TypeError catch(e) {
+      error = true;
+      print("Erreur qui vient de je ne sais où");
+    }
+    if (!error && response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
       returner = Map.from({
         "error": GlobalsMessage.defaultError,
       });
     }
-    return returner;
+    return TMDBQueries.sortNoContent(returner);
   }
 
   static Future<Map<String, dynamic>> getMovieTrailer(String id) async {
@@ -227,19 +304,44 @@ class TMDBQueries {
     Map<String, dynamic> returner;
     Future<Response> queryFuture;
     queryFuture = GlobalsFunc.fetchData(url).catchError((onError) => returner = Map.from({"error": GlobalsMessage.defaultError}));
-    Response response = await queryFuture;
-    if (response.statusCode == 200) {
+    Response response;
+    bool error = false;
+    try {
+      response = await queryFuture;
+    } on TypeError catch(e) {
+      error = true;
+      print("Erreur qui vient de je ne sais où");
+    }
+    if (!error && response.statusCode == 200) {
       returner = jsonDecode(response.body);
     } else {
       returner = Map.from({
         "error": GlobalsMessage.defaultError,
       });
     }
-    return returner;
+    return TMDBQueries.sortNoContent(returner);
   }
 
   static Future<Map<String, dynamic>> getDiscover() async {
 
+  }
+
+  static Map<String, dynamic> sortNoContent(Map<String, dynamic> toSort) {
+    List<dynamic> toRemove = [];
+    if (toSort["results"] == null)
+      return toSort;
+    for (var value in toSort["results"]) {
+      if (value["overview"] == null 
+      || value["overview"].length < 3
+      || (value["poster_path"] == null
+      && value["profile_path"] == null)) {
+        toRemove.add(value);
+      }
+    };
+    for (var value in toRemove)
+      toSort["results"].remove(value);
+
+    return toSort;
   }
 }
 
