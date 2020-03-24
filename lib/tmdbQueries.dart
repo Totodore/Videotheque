@@ -35,7 +35,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return TMDBQueries.sortNoContent(returner);
+    return TMDBQueries.sortNoContent(returner, QueryTypes.all);
   }
 
   static Future<Map<String, dynamic>> onlineSearchMovie(String query, [int offset = 1]) async {
@@ -63,7 +63,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return TMDBQueries.sortNoContent(returner);
+    return TMDBQueries.sortNoContent(returner, QueryTypes.movie);
   }
 
   static Future<Map<String, dynamic>> onlineSearchPerson(String query, [int offset = 1]) async {
@@ -91,7 +91,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return TMDBQueries.sortNoContent(returner);
+    return TMDBQueries.sortNoContent(returner, QueryTypes.person);
   }
 
   static Future<Map<String, dynamic>> onlineSearchCollection(String query, [int offset = 1]) async {
@@ -119,7 +119,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return TMDBQueries.sortNoContent(returner);
+    return TMDBQueries.sortNoContent(returner, QueryTypes.collection);
   }
 
   static Future<Map<String, dynamic>> onlineSearchTV(String query, [int offset = 1]) async {
@@ -147,7 +147,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return TMDBQueries.sortNoContent(returner);
+    return TMDBQueries.sortNoContent(returner, QueryTypes.tv);
   }
 
   static Future<Map<String, dynamic>> onlineSearchCompanies(String query, [int offset = 1]) async {
@@ -175,7 +175,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return TMDBQueries.sortNoContent(returner);
+    return TMDBQueries.sortNoContent(returner, QueryTypes.companies);
   }
 
   static Future<Map<String, dynamic>> getMovie(String id) async {
@@ -199,7 +199,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return TMDBQueries.sortNoContent(returner);
+    return returner;
   }
 
   static Future<Map<String, dynamic>> getPerson(String id) async {
@@ -223,7 +223,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return TMDBQueries.sortNoContent(returner);
+    return returner;
   }
 
   static Future<Map<String, dynamic>> getTagList() async {
@@ -247,7 +247,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return TMDBQueries.sortNoContent(returner);
+    return returner;
   }
 
   static Future<Map<String, dynamic>> getMovieCredits(String id) async {
@@ -271,7 +271,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return TMDBQueries.sortNoContent(returner);
+    return returner;
   }
 
   static Future<Map<String, dynamic>> getMovieSimilar(String id) async {
@@ -295,7 +295,7 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return TMDBQueries.sortNoContent(returner);
+    return returner;
   }
 
   static Future<Map<String, dynamic>> getMovieTrailer(String id) async {
@@ -319,25 +319,26 @@ class TMDBQueries {
         "error": GlobalsMessage.defaultError,
       });
     }
-    return TMDBQueries.sortNoContent(returner);
+    return returner;
   }
 
   static Future<Map<String, dynamic>> getDiscover() async {
 
   }
 
-  static Map<String, dynamic> sortNoContent(Map<String, dynamic> toSort) {
+  static Map<String, dynamic> sortNoContent(Map<String, dynamic> toSort, QueryTypes queryTypes) {
     List<dynamic> toRemove = [];
     if (toSort["results"] == null)
       return toSort;
     for (var value in toSort["results"]) {
-      if (value["overview"] == null 
-      || value["overview"].length < 3
-      || (value["poster_path"] == null
-      && value["profile_path"] == null)) {
+      String mediaType = value["media_type"] == null ? GlobalsMessage.chipData[QueryTypes.values.indexOf(queryTypes)]["route"] : value["media_type"];
+      // print(mediaType);
+      if ((mediaType == "movie" && value["overview"].length < 3) 
+      || (mediaType == "movie" && value["poster_path"] == null)
+      || (mediaType == "person" && value["profile_path"] == null)) {
         toRemove.add(value);
       }
-    };
+    }
     for (var value in toRemove)
       toSort["results"].remove(value);
 

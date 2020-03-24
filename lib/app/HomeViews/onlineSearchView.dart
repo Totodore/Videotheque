@@ -20,30 +20,28 @@ class OnlineSearchView extends StatefulWidget {
   }
 }
 
-class OnlineSearchViewState extends State<OnlineSearchView> {
+class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderStateMixin {
 
   static GlobalKey<OnlineSearchViewState> searchViewKey = GlobalKey<OnlineSearchViewState>();
 
   static final Duration _animationInitDelay = Duration(milliseconds: 500); 
 
-  PageController _resultsPageController = PageController(initialPage: 0, keepPage: true);
-  ScrollController _pageResultsController = ScrollController(keepScrollOffset: true);
-  ScrollController _rowChipTypeController = ScrollController(keepScrollOffset: true);
+  TabController _resultsPageController;
+  // ScrollController _pageResultsController = ScrollController(keepScrollOffset: true);
   TextEditingController _searchInputController = TextEditingController();
   FocusNode _inputFocusNode = FocusNode();
   QueryTypes _selectedSort = QueryTypes.all;
   String _currentQuery;
-  PageView _resultsView;
+  List<Widget> _resultsView;
   bool _dispAnimationHomeSearch = false;
   Future _delayOkSearch;
-  double _sortBarTop = GlobalsData.initSortBarPos;
-  double _oldOffsetScroll = 0;
+  // double _oldOffsetScroll = 0;
 
   Map<QueryTypes, dynamic> _loadedSiblings; //List which represent number of view loaded
   //List which represent offset of result per view
   Map<QueryTypes, List> _dataLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return null;})); 
   //offset actuel de chaque view
-  Map<QueryTypes, int> _offsetLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return 1;}));
+  // Map<QueryTypes, int> _offsetLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return 1;}));
   //si on a atteint le bas du bottom correspondant à la view
   Map<QueryTypes, bool> _reachBottomLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return false;}));
 
@@ -51,76 +49,34 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
   void initState() {
     super.initState();
 
-    //Quand on scroll latéralement on fait bouger les chips aussi
-    _resultsPageController.addListener(syncScrollBar);
-    
-    //Si on arrive en bas de page
-    _pageResultsController.addListener(() async {
-      QueryTypes actualQueryType = QueryTypes.values[_resultsPageController.page.toInt()];
-
-      if (_pageResultsController.offset > _pageResultsController.position.maxScrollExtent - 40 && !_reachBottomLoadedView[actualQueryType]) {
-        //On incrémente l'offset correspondant à la view actuelle
-        _offsetLoadedView[actualQueryType] += 1;
-        _reachBottomLoadedView[actualQueryType] = true; //On dit qu'on a attein le bottom de la view
-        searchQuery(_currentQuery, _offsetLoadedView[actualQueryType]);
-      }
-      //On scroll down we hide keyboard and we hide SearchBar
-      if (_pageResultsController.offset > _oldOffsetScroll && _sortBarTop > GlobalsData.endSortBarPos) {
-        _sortBarTop -= _pageResultsController.offset - _oldOffsetScroll;
-        _sortBarTop < GlobalsData.endSortBarPos ? _sortBarTop = GlobalsData.endSortBarPos : null;
-        _inputFocusNode.unfocus();
-        // _pageResultsController.animateTo(_oldOffsetScroll, duration: Duration(milliseconds: 0), curve: Curves.linear);
-      }
-      //On scroll up we show SearchBar
-      else if (_pageResultsController.offset < _oldOffsetScroll && _sortBarTop < GlobalsData.initSortBarPos) {
-        _sortBarTop += _oldOffsetScroll - _pageResultsController.offset;
-        _sortBarTop > GlobalsData.initSortBarPos ? _sortBarTop = GlobalsData.initSortBarPos : null;
-        // _pageResultsController.animateTo(_oldOffsetScroll, duration: Duration(milliseconds: 0), curve: Curves.linear);
-      }
-      _oldOffsetScroll = _pageResultsController.offset;
-      // if (_pageResultsController.position.pixels )
+    _resultsPageController = TabController(vsync: this, length: QueryTypes.values.length, initialIndex: 0);
+    _resultsPageController.addListener(() {
+      print(_resultsPageController.index);
+      setState(() {
+        _selectedSort = QueryTypes.values[_resultsPageController.index];
+      });
     });
+    //Si on arrive en bas de page
+    // _pageResultsController.addListener(() async {
+    //   QueryTypes actualQueryType = QueryTypes.values[_resultsPageController.index];
+
+    //   if (_pageResultsController.offset > _pageResultsController.position.maxScrollExtent - 40 && !_reachBottomLoadedView[actualQueryType]) {
+    //     //On incrémente l'offset correspondant à la view actuelle
+    //     _offsetLoadedView[actualQueryType] += 1;
+    //     _reachBottomLoadedView[actualQueryType] = true; //On dit qu'on a attein le bottom de la view
+    //     searchQuery(_currentQuery, _offsetLoadedView[actualQueryType]);
+    //   }
+    //   //On scroll down we hide keyboard and we hide SearchBar
+    //   if (_pageResultsController.offset > _oldOffsetScroll && _inputFocusNode.hasFocus) {
+    //     _inputFocusNode.unfocus();
+    //   }
+    //   _oldOffsetScroll = _pageResultsController.offset;
+    // });
     Future.delayed(const Duration(milliseconds: 10), () {
       setState(() {
         _dispAnimationHomeSearch = true;
       });
     });
-    //On delay ca pour avoir accès au context
-    Future.delayed(Duration.zero, () {
-      setState(() {
-          GlobalsData.endSortBarPos = MediaQuery.of(context).padding.top;
-          GlobalsData.initSortBarPos = 59 + GlobalsData.endSortBarPos;
-          _sortBarTop = GlobalsData.initSortBarPos;
-      });
-    });
-  }
-
-  //Scrollbar horizontal for page View
-  void syncScrollBar() async {
-      //Sync ScrollBar page View with sort Bar 
-      double ratio = _resultsPageController.offset/_resultsPageController.position.maxScrollExtent;
-      double animatePos = _rowChipTypeController.position.maxScrollExtent*ratio;
-      _rowChipTypeController.animateTo(
-        animatePos,
-        duration: Duration(milliseconds: 200),
-        curve: Curves.linear
-      );
-      //Show titleBar on slide ScrollBar
-      double pageWidth = _resultsPageController.position.maxScrollExtent/GlobalsMessage.chipData.length;
-      //Offset between the two pages
-      double actualRelativeOffset;
-      if (_resultsPageController.position.userScrollDirection == ScrollDirection.forward)
-        actualRelativeOffset = _resultsPageController.offset - (_resultsPageController.page.floor())*(pageWidth+60);
-      else
-        actualRelativeOffset = _resultsPageController.offset - (_resultsPageController.page.ceil())*(pageWidth+60);
-      double ratioRelativeOffset = (actualRelativeOffset/pageWidth).abs()/1.2;
-      print("Ratio : " + ratioRelativeOffset.toString());
-      setState(() {
-        if (_sortBarTop < GlobalsData.initSortBarPos && _sortBarTop >= GlobalsData.endSortBarPos) {
-          _sortBarTop = GlobalsData.deltaSortBarPos*(1-ratioRelativeOffset) + GlobalsData.endSortBarPos;
-          print(_sortBarTop);
-        }
-      });
   }
 
   void clearView() {
@@ -130,7 +86,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
       _resultsView = null;
       _loadedSiblings = null; //List which represent number of view loaded
       _dataLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return null;})); 
-      _offsetLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return 1;}));
+      // _offsetLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return 1;}));
       _reachBottomLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) {return false;}));
       _dispAnimationHomeSearch = false;
       Future.delayed(const Duration(milliseconds: 10), () {
@@ -141,9 +97,9 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
     });
   }
 
-  Future<ListView> buildView(QueryTypes queryType, [int offset = 1]) async {
+  Future<List<Widget>> buildView(QueryTypes queryType, [int offset = 1]) async {
     Map result;
-    ListView _searchResults;
+    List<Widget> _searchResults;
 
     //On fait la requête en fx de queryType
     switch (queryType) {
@@ -183,12 +139,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
       else 
         _dataLoadedView[queryType].addAll(result["results"]);
 
-      _searchResults = ListView.builder(
-        controller: _pageResultsController,
-        itemCount: _dataLoadedView[queryType].length,
-        scrollDirection: Axis.vertical,
-
-        itemBuilder: (BuildContext context, int index) {
+      _searchResults = List.generate(_dataLoadedView[queryType].length, (int index) {
           //Déclaration des différents composants;
           QueryTypes elementType;
           Map element = Map.from(_dataLoadedView[queryType][index]);
@@ -348,8 +299,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
       );
     } //Si ya des erreurs on les affiches 
     else if (result["error"] != null){
-      _searchResults = ListView(
-        children: <Widget>[
+      _searchResults = <Widget>[
           Padding(
             padding: EdgeInsets.only(top: 100), 
             child: Center(
@@ -361,27 +311,24 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
           Text(GlobalsMessage.defaultError,
             textAlign: TextAlign.center,
           )
-        ]
-      );
+        ];
       GlobalsFunc.snackBar(context, result["error"]);
     } //Et si ya rien on met que ya rien 
     else {
-      _searchResults = ListView(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(top: 75, bottom: 25), 
-            child: Center(
-              child: Icon(Icons.not_interested, 
-                size: 100
-              )
+      _searchResults = <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 75, bottom: 25), 
+          child: Center(
+            child: Icon(Icons.not_interested, 
+              size: 100
             )
-          ),
-          Text(GlobalsMessage.noResults,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.w500),
           )
-        ]
-      );
+        ),
+        Text(GlobalsMessage.noResults,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.w500),
+        )
+      ];
     }
 
     return _searchResults;
@@ -391,7 +338,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
   void handleBuildView(bool newQuery, int index, [int offset = 1]) {
     QueryTypes queryType = QueryTypes.values[index];
     //Quand on a fini de get la view,
-    buildView(queryType, offset).then((ListView newView) {
+    buildView(queryType, offset).then((List<Widget> newView) {
       //On la rajoute dans la liste des views loadés
       _loadedSiblings[queryType] = newView;
       buildListView();  //On rebuild le tout avec la nouvelle view
@@ -429,208 +376,221 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
     buildListView();
   }
 
-  ListView buildSkeleton() {
-    return ListView.builder(itemCount: QueryTypes.values.length, controller: _pageResultsController,itemBuilder: (BuildContext context, int index) {
-      return Card(
-        elevation: 5,
-        borderOnForeground: true,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
-        margin: EdgeInsets.all(6),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile( //Skeleton for title
-              title: SkeletonAnimation(child: Container(
-                width: MediaQuery.of(context).size.width*0.7, 
-                height: 25, 
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                ),
-              )),
-            ),
-            Container(
-              padding: EdgeInsets.all(7),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[ //Skeleton for image
-                  SkeletonAnimation(
-                    child: Container(
-                      width: 100,
-                      height: 150,
-                      color: Colors.grey[300],
-                    ),
-                  ),
-                  Padding(  //Skeleton for text
-                    padding: EdgeInsets.only(left: 20, top: 8),
-                    child: Column(children: List.generate(7, (int index) {
-                      return Padding(padding: EdgeInsets.only(bottom: 7), child: Theme(
-                        data: ThemeData(backgroundColor: Colors.grey[300]),
-                        child: SkeletonAnimation(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width*0.55, 
-                            height: 13,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.all(Radius.circular(4)),
-                            ),
-                          )
-                        )
-                      ));
-                    })),            
-                  ),
-                ],
+  Widget buildSkeleton() {
+    return Card(
+      elevation: 5,
+      borderOnForeground: true,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+      margin: EdgeInsets.all(6),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile( //Skeleton for title
+            title: SkeletonAnimation(child: Container(
+              width: MediaQuery.of(context).size.width*0.7, 
+              height: 25, 
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.all(Radius.circular(6)),
               ),
+            )),
+          ),
+          Container(
+            padding: EdgeInsets.all(7),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[ //Skeleton for image
+                SkeletonAnimation(
+                  child: Container(
+                    width: 100,
+                    height: 150,
+                    color: Colors.grey[300],
+                  ),
+                ),
+                Padding(  //Skeleton for text
+                  padding: EdgeInsets.only(left: 20, top: 8),
+                  child: Column(children: List.generate(7, (int index) {
+                    return Padding(padding: EdgeInsets.only(bottom: 7), child: Theme(
+                      data: ThemeData(backgroundColor: Colors.grey[300]),
+                      child: SkeletonAnimation(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width*0.55, 
+                          height: 13,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                          ),
+                        )
+                      )
+                    ));
+                  })),            
+                ),
+              ],
             ),
-            Divider(
-              color: GlobalsMessage.chipData[1]["color"],
-              height: 2,
-              thickness: 2,
-            ),
-          ],
-        ),
-      );      
-    });
+          ),
+          Divider(
+            color: GlobalsMessage.chipData[1]["color"],
+            height: 2,
+            thickness: 2,
+          ),
+        ],
+      ),
+    );      
   }
 
   void buildListView() {
     setState(() {
-      _resultsView = PageView.builder(
-        controller: _resultsPageController,
-        onPageChanged: (int index) {
-          setState(() {
-            _selectedSort = QueryTypes.values[index];
-          });
-        },
-        itemCount: QueryTypes.values.length,
-        itemBuilder: (BuildContext context, int index) {
-          if (_loadedSiblings[QueryTypes.values[index]] != false) {
-            return _loadedSiblings[QueryTypes.values[index]];
-          } else {
-            return buildSkeleton();
-          }
-        });
+      _resultsView = List.generate(QueryTypes.values.length, (index) {
+        return SafeArea(
+          top: false,
+          bottom: false,
+          child: Builder(builder: (BuildContext context) {
+            return CustomScrollView(
+              key: PageStorageKey<String>(QueryTypes.values[index].toString()),
+              slivers: <Widget>[
+                SliverOverlapInjector(
+                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int indexEl) {
+                      if (_loadedSiblings[QueryTypes.values[index]] != false)
+                        return _loadedSiblings[QueryTypes.values[index]][indexEl];
+                      else return buildSkeleton();
+                    },
+                    childCount: _loadedSiblings[QueryTypes.values[index]] != false ? _loadedSiblings[QueryTypes.values[index]].length : 20
+                  ),
+                  // itemExtent: 300,
+                )
+              ],
+            );
+          }),
+        );
+      });
     });
+  }
+
+  Widget buildIconSearch() {
+    return AnimatedOpacity(
+      opacity: _dispAnimationHomeSearch ? 1 : 0,
+      duration: _animationInitDelay, 
+      curve: Curves.ease,
+      child: AnimatedContainer(
+        duration: _animationInitDelay,
+        curve: Curves.ease,
+        transform: _dispAnimationHomeSearch ? Matrix4.translationValues(0, 0, 0) : Matrix4.translationValues(0, 50, 0),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 65, bottom: 25), 
+              child: Center(
+                child: Icon(Icons.local_movies,
+                  size: 100
+                )
+              )
+            ),
+            Text(GlobalsMessage.defaultSearchMessage,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.w500),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(175 + GlobalsData.endSortBarPos),
-          child: Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-                ClipRRect(
-                  // borderRadius: BorderRadius.circular(50),
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
-                  // clipper: OvalRightBorderClipper(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: GlobalsColor.darkGreen,
+    return DefaultTabController(
+      length: QueryTypes.values.length,
+      child: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool isInnerBoxScrolled) {
+          return <Widget>[ SliverOverlapAbsorber(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            sliver: SliverSafeArea(
+              top: false,
+              sliver: SliverAppBar(
+                elevation: 3,
+                forceElevated: isInnerBoxScrolled,
+                floating: true,
+                pinned: true,
+                snap: true,
+                backgroundColor: GlobalsColor.darkGreen,
+                centerTitle: true,
+                expandedHeight: 2*kToolbarHeight-5,
+                title: TextField(
+                  focusNode: _inputFocusNode,
+                  controller: _searchInputController,
+                  textInputAction: TextInputAction.search,
+                  cursorColor: Color(0xFFebebeb),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(left: -6),
+                    hintText: "Nouvelle recherche",
+                    focusColor: GlobalsColor.darkGreen,
+                    border: InputBorder.none,
+                    focusedBorder: null,
+                    hintStyle: TextStyle(
+                      color: Color(0xFFebebeb).withAlpha(180)
+                    )
+                  ),   
+                  style: TextStyle(
+                    color: Color(0xFFebebeb),
+                    fontSize: 18.5,
+                    fontWeight: FontWeight.w400
+                  ),
+                  onSubmitted: (String query) async {
+                    searchQuery(query);
+                  },
+                  onChanged: (String query) async {
+                    //We launch the query on the onlineSearchView
+                    if (_delayOkSearch != null) { //Si ya un future en cours on l'annule
+                      _delayOkSearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("future canceled"));
+                    } 
+                    //On créé un nouveau future qui va lancera la query
+                    _delayOkSearch = Future.delayed(Duration(milliseconds: 500), () {
+                      _delayOkSearch = null;
+                      searchQuery(query);
+                    });
+                  },
+                ),
+                leading: AnimatedSwitcher(
+                  child: _searchInputController.text.length > 0 ? IconButton(
+                    padding: EdgeInsets.all(0),
+                    icon: Icon(Icons.close,
+                      size: 28,
                     ),
-                    padding: EdgeInsets.only(left: 5, top: GlobalsData.endSortBarPos, right: 10, bottom: 3),
-                    margin: EdgeInsets.only(bottom: _sortBarTop - 23),
-                    child: ListTile(  
-                      contentPadding: EdgeInsets.all(0),
-                      leading: Container( 
-                        height: 35,
-                        width: 35,
-                        margin: EdgeInsets.only(left: 4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey.withAlpha(50),
-                        ),
-                        padding: EdgeInsets.all(0),
-                        child: AnimatedSwitcher(
-                          child: _searchInputController.text.length > 0 ? IconButton(
-                            padding: EdgeInsets.all(0),
-                            icon: Icon(Icons.close,
-                              size: 28,
-                            ),
-                            onPressed: () => clearView(),
-                          ) : IconButton(
-                            padding: EdgeInsets.all(0),
-                            icon: Icon(
-                              Icons.search,
-                              size: 28,
-
-                            ),
-                            onPressed: null,                          
-                          ),
-                          duration: Duration(milliseconds: 300)
-                        ),
-                      ),
-                      title: TextField(
-                        focusNode: _inputFocusNode,
-                        controller: _searchInputController,
-                        textInputAction: TextInputAction.search,
-                        cursorColor: Color(0xFFebebeb),
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: -6),
-                          hintText: "Nouvelle recherche",
-                          focusColor: GlobalsColor.darkGreen,
-                          border: InputBorder.none,
-                          focusedBorder: null,
-                          hintStyle: TextStyle(
-                            color: Color(0xFFebebeb).withAlpha(180)
-                          )
-                        ),   
-                        style: TextStyle(
-                          color: Color(0xFFebebeb),
-                          fontSize: 18.5,
-                          fontWeight: FontWeight.w400
-                        ),
-                        onSubmitted: (String query) async {
-                          searchQuery(query);
-                        },
-                        onChanged: (String query) async {
-                          //We launch the query on the onlineSearchView
-                          if (_delayOkSearch != null) { //Si ya un future en cours on l'annule
-                            _delayOkSearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("future canceled"));
-                          } 
-                          //On créé un nouveau future qui va lancera la query
-                          _delayOkSearch = Future.delayed(Duration(milliseconds: 500), () {
-                            _delayOkSearch = null;
-                            searchQuery(query);
+                    onPressed: () => clearView(),
+                  ) : IconButton(
+                    padding: EdgeInsets.all(0),
+                    icon: Icon(
+                      Icons.search,
+                      size: 28,
+                    ),
+                    onPressed: null,                          
+                  ),
+                  duration: Duration(milliseconds: 300)
+                ),
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(kToolbarHeight - 6), 
+                  child: Material(
+                    child: Theme(
+                      data: ThemeData(highlightColor: Colors.transparent, splashColor: Colors.transparent),
+                      child: TabBar(
+                        indicator: UnderlineTabIndicator(borderSide: BorderSide.none),
+                        onTap: (int index) {
+                          setState(() {
+                            _selectedSort = QueryTypes.values[index];
                           });
                         },
-                      ),
-                    ),
-                  ),
-                ),
-              AnimatedPositioned(
-                duration: _animationInitDelay,
-                curve: Curves.ease,
-                top: _dispAnimationHomeSearch ? _sortBarTop : GlobalsData.endSortBarPos,
-                width: MediaQuery.of(context).size.width,
-                child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey[600],
-                        blurRadius: 3,
-                        offset: Offset(0, 5),
-                        spreadRadius: -5
-                      ),
-                    ],
-                    color: Colors.white
-                  ),
-                  margin: EdgeInsets.only(top: 0),
-                  padding: EdgeInsets.symmetric(vertical: 3),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    controller: _rowChipTypeController,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: List<Widget>.generate(GlobalsMessage.chipData.length, (int index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                          child: Theme(data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[index]["splash_color"]),child: ChoiceChip(
+                        controller: _resultsPageController,
+                        isScrollable: true,
+                        tabs: List<Widget>.generate(GlobalsMessage.chipData.length, (int index) {
+                          return Theme(data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[index]["splash_color"]),child: ChoiceChip(
                             labelStyle: TextStyle(color: GlobalsMessage.chipData[index]["color"], fontWeight: FontWeight.w600),
                             selectedColor: GlobalsMessage.chipData[index]["selected_color"],
+                            backgroundColor: Colors.white,
                             label: Row(children: <Widget>[
                               Icon(
                                 GlobalsMessage.chipData[index]["icon"], 
@@ -642,59 +602,33 @@ class OnlineSearchViewState extends State<OnlineSearchView> {
                             selected: GlobalsMessage.chipData[index]["type"] == _selectedSort,
                             onSelected: (bool selected) {
                               setState(() => selected == true ? _selectedSort = GlobalsMessage.chipData[index]["type"] : null);
-                              //Si la liste view est créée on la fait bouger
-                              if (_resultsPageController.hasClients && selected) {
-                                _resultsPageController.animateToPage(index, curve: Curves.ease, duration: Duration(milliseconds: 200));
-                              }
+                              // //Si la liste view est créée on la fait bouger
+                              // if (_resultsPageController.hasClients && selected) {
+                              //   _resultsPageController.animateToPage(index, curve: Curves.ease, duration: Duration(milliseconds: 200));
+                              // }
                               //Sinon on met la page initial
-                              else if (!_resultsPageController.hasClients && selected){
-                                setState(() {
-                                  _resultsPageController = PageController(initialPage: index);
-                                  _resultsPageController.addListener(syncScrollBar);                          
-                                });
-                              }
+                              // else if (!_resultsPageController.hasClients && selected){
+                              //   setState(() {
+                              //     _resultsPageController = TabController(vsync: this, length: QueryTypes.values.length, initialIndex: index);
+                              //     _resultsPageController.addListener(syncScrollBar);                          
+                              //   });
+                              // }
                             }),
-                          )
-                        );
-                      }),
-                    )),
-                  )
-              ),
-            ]
-          )
-      ),
-      body: Theme(
-        data: Theme.of(context).copyWith(accentColor: GlobalsColor.darkGreen),
-        child: Padding(
-          padding: EdgeInsets.only(top: 0),
-          child: _resultsView != null ? _resultsView : AnimatedOpacity(
-            opacity: _dispAnimationHomeSearch ? 1 : 0,
-            duration: _animationInitDelay, 
-            curve: Curves.ease,
-            child: AnimatedContainer(
-              duration: _animationInitDelay,
-              curve: Curves.ease,
-              transform: _dispAnimationHomeSearch ? Matrix4.translationValues(0, 0, 0) : Matrix4.translationValues(0, 50, 0),
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 65, bottom: 25), 
-                    child: Center(
-                      child: Icon(Icons.local_movies,
-                        size: 100
-                      )
-                    )
+                          );
+                        }),
+                      ),
+                    ),
                   ),
-                  Text(GlobalsMessage.defaultSearchMessage,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  )
-                ],
+                ),
               ),
-            ),
-          ),
+            ), 
+          )]; 
+        },
+        body: TabBarView(
+          controller: _resultsPageController,
+          children: _resultsView != null ? _resultsView : List.generate(QueryTypes.values.length, (int index) => buildIconSearch())
         ),
-      ) //All the pages with the results
+      )
     );
   }
 }

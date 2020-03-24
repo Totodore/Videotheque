@@ -30,6 +30,8 @@ void main() {
     },
     theme: ThemeData.light().copyWith(
       accentColor: GlobalsColor.darkGreenDisabled,
+      primaryColor: Colors.white,
+      brightness: Brightness.light,
       toggleButtonsTheme: ToggleButtonsThemeData(
         borderColor: Colors.grey,
         borderWidth: 1,
