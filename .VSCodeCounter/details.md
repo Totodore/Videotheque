@@ -39,7 +39,7 @@ Total : 37 files,  3217 codes, 129 comments, 266 blanks, all 3612 lines
 | [lib/app/ElementsViews/tvView.dart](/lib/app/ElementsViews/tvView.dart) | Dart | 121 | 0 | 15 | 136 |
 | [lib/app/HomeViews/homeBodyView.dart](/lib/app/HomeViews/homeBodyView.dart) | Dart | 14 | 0 | 3 | 17 |
 | [lib/app/HomeViews/homeHeaderView.dart](/lib/app/HomeViews/homeHeaderView.dart) | Dart | 24 | 0 | 7 | 31 |
-| [lib/app/HomeViews/onlineSearchView.dart](/lib/app/HomeViews/onlineSearchView.dart) | Dart | 652 | 42 | 29 | 723 |
+| [lib/app/HomeViews/SearchView.dart](/lib/app/HomeViews/SearchView.dart) | Dart | 652 | 42 | 29 | 723 |
 | [lib/app/account.dart](/lib/app/account.dart) | Dart | 21 | 0 | 4 | 25 |
 | [lib/app/appMain.dart](/lib/app/appMain.dart) | Dart | 80 | 0 | 9 | 89 |
 | [lib/app/librarie.dart](/lib/app/librarie.dart) | Dart | 13 | 0 | 2 | 15 |

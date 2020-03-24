@@ -1,13 +1,13 @@
-import 'package:Videotheque/app/HomeViews/onlineSearchView.dart';
 import 'package:flutter/material.dart';
 
-import 'Connexion/mainConnexion.dart';
-import 'app/appMain.dart';
-import 'app/ElementsViews/movieView.dart';
-import 'app/ElementsViews/personView.dart';
-import 'app/ElementsViews/tvView.dart';
-import 'app/ElementsViews/collectionView.dart';
-import 'app/ElementsViews/companyView.dart';
+import 'package:Videotheque/Connexion/mainConnexion.dart';
+import 'package:Videotheque/app/appMain.dart';
+import 'package:Videotheque/app/ElementsViews/movieView.dart';
+import 'package:Videotheque/app/ElementsViews/personView.dart';
+import 'package:Videotheque/app/ElementsViews/tvView.dart';
+import 'package:Videotheque/app/ElementsViews/collectionView.dart';
+import 'package:Videotheque/app/ElementsViews/companyView.dart';
+import 'package:Videotheque/app/baseViews/searchView.dart';
 import 'webApp.dart';
 import 'globals.dart';
 
@@ -19,8 +19,8 @@ void main() {
     initialRoute: "/",
     routes: {
       "/": (context) => App(),
-      "/webapp": (context) => WebApp(),
-      "/search": (context) => OnlineSearchView(),
+      "/webapp/": (context) => WebApp(),
+      "/search/": (context) => SearchView(),
       "/connexion/": (context) => Connexion(),
       "/element/movie/": (context) => MovieView(),
       "/element/person/": (context) => PersonView(),

@@ -3,14 +3,14 @@ import 'package:Videotheque/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class Account extends StatefulWidget {
+class AccountView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return AccountState();
+    return AccountViewState();
   }
 }
 
-class AccountState extends State<Account> {
+class AccountViewState extends State<AccountView> {
   
   @override
   Widget build(BuildContext context) {

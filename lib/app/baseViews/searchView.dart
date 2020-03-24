@@ -12,22 +12,21 @@ import 'package:uuid/uuid.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/tmdbQueries.dart';
 
-class OnlineSearchView extends StatefulWidget {
+class SearchView extends StatefulWidget {
   //On récupère la current view
   @override
   State<StatefulWidget> createState() {
-    return OnlineSearchViewState();
+    return SearchViewState();
   }
 }
 
-class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderStateMixin {
+class SearchViewState extends State<SearchView> with TickerProviderStateMixin {
 
-  static GlobalKey<OnlineSearchViewState> searchViewKey = GlobalKey<OnlineSearchViewState>();
+  static GlobalKey<SearchViewState> searchViewKey = GlobalKey<SearchViewState>();
 
   static final Duration _animationInitDelay = Duration(milliseconds: 500); 
 
   TabController _resultsPageController;
-  // ScrollController _pageResultsController = ScrollController(keepScrollOffset: true);
   TextEditingController _searchInputController = TextEditingController();
   FocusNode _inputFocusNode = FocusNode();
   QueryTypes _selectedSort = QueryTypes.all;
@@ -51,7 +50,6 @@ class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderS
 
     _resultsPageController = TabController(vsync: this, length: QueryTypes.values.length, initialIndex: 0);
     _resultsPageController.addListener(() {
-      print(_resultsPageController.index);
       setState(() {
         _selectedSort = QueryTypes.values[_resultsPageController.index];
       });
@@ -170,6 +168,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderS
               break;
           }
           //Switch pour baser l'UI sur l'element en question
+          Color iconColor = GlobalsMessage.chipData[QueryTypes.values.indexOf(elementType)]["color"];
           switch (elementType) {
             case QueryTypes.movie: 
               icon = Icons.movie;
@@ -205,19 +204,26 @@ class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderS
               title = element["name"];
               infos = element["known_for"] != null ? Flexible(
                 child: Wrap(
+                  spacing: 5,
+                  runSpacing: 0,
                   children: List<Widget>.generate(List.from(element["known_for"]).length, (int index) {
                     Map knownForElement = Map.from(element["known_for"][index]);
-
-                    return ActionChip(
-                      avatar: CircleAvatar(
-                        child: Icon(knownForElement["media_type"] == "movie" ? Icons.movie : Icons.tv, color: Colors.grey,),
-                        backgroundColor: Colors.transparent,
+                    return Theme(
+                      data: Theme.of(context).copyWith(splashColor: GlobalsColor.darkGreenDisabled),
+                      child: ActionChip(
+                        avatar: CircleAvatar(
+                          child: Icon(knownForElement["media_type"] == "movie" ? Icons.movie : Icons.tv, color: GlobalsColor.darkGreen),
+                          backgroundColor: Colors.transparent,
+                        ),
+                        labelStyle: TextStyle(color: GlobalsColor.green),
+                        label: Text(knownForElement["title"] != null ? knownForElement["title"] : knownForElement["name"], style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+                        onPressed: () {
+                          String route = "/element/"+GlobalsMessage.chipData[1]["route"] + "/";
+                          GlobalsArgs.actualRoute = route;
+                          GlobalsArgs.transfertArg = List.from([knownForElement, ""]);
+                          Navigator.pushNamed(context, route, arguments: element);
+                        },
                       ),
-                      labelStyle: TextStyle(color: GlobalsColor.green),
-                      label: Text(knownForElement["title"] != null ? knownForElement["title"] : knownForElement["name"], style: TextStyle(fontSize: 13),),
-                      onPressed: () {
-                        //TODO: implement actionChip;
-                      },
                     );
                   })
                 )
@@ -237,7 +243,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderS
               break;
           }
           return Card(
-            elevation: 5,
+            elevation: 2,
             borderOnForeground: true,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
             margin: EdgeInsets.all(6),
@@ -254,11 +260,11 @@ class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderS
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   ListTile(
-                    leading: Icon(icon),
-                    title: title != null ? Text(title) : null,
+                    leading: Icon(icon, color: iconColor),
+                    title: title != null ? Text(title, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),) : null,
                   ),
                   Container(
-                    padding: EdgeInsets.all(7),
+                    padding: EdgeInsets.only(right: 7, left: 7, bottom: 7, top:0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -378,7 +384,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderS
 
   Widget buildSkeleton() {
     return Card(
-      elevation: 5,
+      elevation: 2,
       borderOnForeground: true,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
       margin: EdgeInsets.all(6),
@@ -396,7 +402,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderS
             )),
           ),
           Container(
-            padding: EdgeInsets.all(7),
+            padding: EdgeInsets.only(right: 7, left: 7, bottom: 7, top:0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -448,6 +454,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderS
           bottom: false,
           child: Builder(builder: (BuildContext context) {
             return CustomScrollView(
+              physics: BouncingScrollPhysics(),
               key: PageStorageKey<String>(QueryTypes.values[index].toString()),
               slivers: <Widget>[
                 SliverOverlapInjector(
@@ -493,7 +500,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderS
             ),
             Text(GlobalsMessage.defaultSearchMessage,
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.w500),
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
             )
           ],
         ),
@@ -544,12 +551,12 @@ class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderS
                     searchQuery(query);
                   },
                   onChanged: (String query) async {
-                    //We launch the query on the onlineSearchView
+                    //We launch the query on the SearchView
                     if (_delayOkSearch != null) { //Si ya un future en cours on l'annule
                       _delayOkSearch.timeout(Duration(microseconds: 0)).catchError((onError) => print("future canceled"));
                     } 
                     //On créé un nouveau future qui va lancera la query
-                    _delayOkSearch = Future.delayed(Duration(milliseconds: 500), () {
+                    _delayOkSearch = Future.delayed(Duration(milliseconds: 750), () {
                       _delayOkSearch = null;
                       searchQuery(query);
                     });
@@ -576,7 +583,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderS
                   preferredSize: Size.fromHeight(kToolbarHeight - 6), 
                   child: Material(
                     child: Theme(
-                      data: ThemeData(highlightColor: Colors.transparent, splashColor: Colors.transparent),
+                      data: ThemeData(highlightColor: Colors.transparent, splashColor: Colors.transparent, accentColor: GlobalsColor.darkGreenDisabled),
                       child: TabBar(
                         indicator: UnderlineTabIndicator(borderSide: BorderSide.none),
                         onTap: (int index) {
@@ -586,11 +593,11 @@ class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderS
                         },
                         controller: _resultsPageController,
                         isScrollable: true,
+                        labelPadding: EdgeInsets.symmetric(horizontal: 8),
                         tabs: List<Widget>.generate(GlobalsMessage.chipData.length, (int index) {
                           return Theme(data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[index]["splash_color"]),child: ChoiceChip(
                             labelStyle: TextStyle(color: GlobalsMessage.chipData[index]["color"], fontWeight: FontWeight.w600),
                             selectedColor: GlobalsMessage.chipData[index]["selected_color"],
-                            backgroundColor: Colors.white,
                             label: Row(children: <Widget>[
                               Icon(
                                 GlobalsMessage.chipData[index]["icon"], 
@@ -602,17 +609,7 @@ class OnlineSearchViewState extends State<OnlineSearchView> with TickerProviderS
                             selected: GlobalsMessage.chipData[index]["type"] == _selectedSort,
                             onSelected: (bool selected) {
                               setState(() => selected == true ? _selectedSort = GlobalsMessage.chipData[index]["type"] : null);
-                              // //Si la liste view est créée on la fait bouger
-                              // if (_resultsPageController.hasClients && selected) {
-                              //   _resultsPageController.animateToPage(index, curve: Curves.ease, duration: Duration(milliseconds: 200));
-                              // }
-                              //Sinon on met la page initial
-                              // else if (!_resultsPageController.hasClients && selected){
-                              //   setState(() {
-                              //     _resultsPageController = TabController(vsync: this, length: QueryTypes.values.length, initialIndex: index);
-                              //     _resultsPageController.addListener(syncScrollBar);                          
-                              //   });
-                              // }
+                              _resultsPageController.animateTo(index, duration: Duration(milliseconds: 200));
                             }),
                           );
                         }),

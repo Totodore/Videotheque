@@ -203,6 +203,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         child: Row(
           mainAxisSize: MainAxisSize.max,
@@ -242,7 +243,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
                             placeholder: AssetImage("assets/loading.png"),
                             thumbnail: NetworkImage(GlobalsData.thumbImgSize + img_url, scale: 1),
                             image: NetworkImage(GlobalsData.imgSize + img_url, scale: 1),
-                            width: 100,
+                            width: 120,
                             height: 150,
                             fit: BoxFit.cover,
                             fadeDuration: Duration(milliseconds: 150),
@@ -250,9 +251,16 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-                      Padding(
+                      Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
-                        child: Text(name, style: TextStyle(fontWeight: FontWeight.w700)),
+                        width: 120,
+                        child: Text(name, 
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                          maxLines: 5,
+                          softWrap: true,
+                          textWidthBasis: TextWidthBasis.parent,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ],
                   ),

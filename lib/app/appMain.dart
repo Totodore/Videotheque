@@ -1,11 +1,10 @@
-import 'package:Videotheque/app/HomeViews/onlineSearchView.dart';
-import 'package:Videotheque/tmdbQueries.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 
-import 'package:Videotheque/app/account.dart';
-import 'package:Videotheque/app/HomeViews/homeHeaderView.dart';
-import 'package:Videotheque/app/librarie.dart';
+import 'package:Videotheque/app/baseViews/searchView.dart';
+import 'package:Videotheque/app/baseViews/homeView.dart';
+import 'package:Videotheque/app/baseViews/accountView.dart';
+import 'package:Videotheque/app/baseViews/librarieView.dart';
 import 'package:Videotheque/globals.dart';
 
 class App extends StatefulWidget {
@@ -18,10 +17,10 @@ class App extends StatefulWidget {
 class AppState extends State<App> {
 
   List<Widget> _children = [
-    HomeApp(),
-    Library(),
-    OnlineSearchView(),
-    Account(),
+    HomeView(),
+    LibraryView(),
+    SearchView(),
+    AccountView(),
   ];
   int _currentIndex = 2;
   

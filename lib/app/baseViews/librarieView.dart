@@ -1,13 +1,13 @@
 import 'package:flutter/widgets.dart';
 
-class Library extends StatefulWidget {
+class LibraryView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return LibraryState();
+    return LibraryViewState();
   }
 }
 
-class LibraryState extends State<Library> {
+class LibraryViewState extends State<LibraryView> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView();

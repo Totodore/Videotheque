@@ -78,7 +78,7 @@ Files
 | /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/tvView.dart                             | Dart       |        121 |          0 |         15 |        136 |
 | /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/HomeViews/homeBodyView.dart                           | Dart       |         14 |          0 |          3 |         17 |
 | /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/HomeViews/homeHeaderView.dart                         | Dart       |         24 |          0 |          7 |         31 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/HomeViews/onlineSearchView.dart                       | Dart       |        652 |         42 |         29 |        723 |
+| /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/HomeViews/SearchView.dart                       | Dart       |        652 |         42 |         29 |        723 |
 | /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/account.dart                                          | Dart       |         21 |          0 |          4 |         25 |
 | /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/appMain.dart                                          | Dart       |         80 |          0 |          9 |         89 |
 | /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/librarie.dart                                         | Dart       |         13 |          0 |          2 |         15 |
