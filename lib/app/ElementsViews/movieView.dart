@@ -236,7 +236,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
                     children: <Widget>[
                       Container(
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                        clipBehavior: Clip.hardEdge,
+                        // clipBehavior: Clip.hardEdge,
                         child: Hero(
                           tag: heroTag,
                           child: ProgressiveImage(
@@ -786,7 +786,7 @@ class MovieViewState extends State<MovieView> with TickerProviderStateMixin {
               child: buildTagInput(), 
               height: 100,
               width: MediaQuery.of(context).size.width,
-              clipBehavior: Clip.none,
+              // clipBehavior: Clip.none,
               padding: EdgeInsets.symmetric(horizontal: 16),
                 // color: Colors.blue,
               decoration: BoxDecoration(
