@@ -8,6 +8,7 @@ import 'package:Videotheque/app/ElementsViews/tvView.dart';
 import 'package:Videotheque/app/ElementsViews/collectionView.dart';
 import 'package:Videotheque/app/ElementsViews/companyView.dart';
 import 'package:Videotheque/app/baseViews/searchView.dart';
+import 'package:Videotheque/views/bottom_navigation/bottom_navigation_view.dart';
 import 'webApp.dart';
 import 'globals.dart';
 
@@ -18,7 +19,7 @@ void main() {
     color: Color(0xFF008577),
     initialRoute: "/",
     routes: {
-      "/": (context) => App(),
+      "/": (context) => Scaffold(bottomNavigationBar: BottomNavigationView()),
       "/webapp/": (context) => WebApp(),
       "/search/": (context) => SearchView(),
       "/connexion/": (context) => Connexion(),
@@ -50,7 +51,6 @@ void main() {
           borderRadius: BorderRadius.circular(25),
           side: BorderSide(width: 0.7, style: BorderStyle.solid, color: Colors.grey.withAlpha(100))
         ),
-
       )
     ),
   ));
