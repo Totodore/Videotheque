@@ -1,6 +1,6 @@
-# Vidéotheque
+# Vidéothèque
 
-A new Flutter project.
+Application to handle all your movies/tv shows/actors
 
 ## Getting Started
 
