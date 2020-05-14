@@ -1,6 +1,4 @@
-import 'package:Videotheque/tmdbQueries.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 class GlobalsColor {
   static final darkGreen = Color(0xFF00574B);
@@ -28,9 +26,10 @@ class GlobalsData {
   
   static const String backdropSize = "https://image.tmdb.org/t/p/w780/";
   static const String thumbBackdropSize = "https://image.tmdb.org/t/p/w300/"; 
-  static const String imgSize = "https://image.tmdb.org/t/p/w500/";
-  static const String thumbImgSize = "https://image.tmdb.org/t/p/w92/";
-  static const String midThumbImgSize = "https://image.tmdb.org/t/p/w185/";
+  static const String posterSize = "https://image.tmdb.org/t/p/w500/";
+  static const String thumbPosterSize = "https://image.tmdb.org/t/p/w92/";
+  static const String thumbProfileSize = "https://image.tmdb.org/t/p/w45/";
+  static const String profileSize = "https://image.tmdb.org/t/p/h632/";
 
   static double initSortBarPos = 59;  //Default value
   static double endSortBarPos = 24.0;
@@ -63,7 +62,7 @@ class GlobalsMessage {
       "color": Color(0XFF636363),
       "selected_color": Color(0XFF636363).withAlpha(50),
       "splash_color": Color(0XFF636363).withAlpha(100),
-      "icon": Icons.apps
+      "icon": Icons.apps,
     },
     {
       "name": movie,
@@ -72,16 +71,18 @@ class GlobalsMessage {
       "color": Color(0xFF00574B),
       "selected_color": Color(0xFF00574B).withAlpha(50),
       "splash_color": Color(0xFF00574B).withAlpha(100),
-      "icon": Icons.movie
+      "icon": Icons.movie,
+      "db_route": "movies",
     },
     {
       "name": person,
       "type": QueryTypes.person,
       "route": "person",
-      "color": Color(0xFFc70000),
-      "selected_color": Color(0xFFc70000).withAlpha(50),
-      "splash_color": Color(0xFFc70000).withAlpha(100),
-      "icon": Icons.person
+      "color": Color(0xFF9c0000),
+      "selected_color": Color(0xFF9c0000).withAlpha(50),
+      "splash_color": Color(0xFF9c0000).withAlpha(100),
+      "icon": Icons.person,
+      "db_route": "people",
     },
     {
       "name": tv,
@@ -90,26 +91,29 @@ class GlobalsMessage {
       "color": Color(0xFF7c0091),
       "selected_color": Color(0xFF7c0091).withAlpha(50),
       "splash_color": Color(0xFF7c0091).withAlpha(100),
-      "icon": Icons.tv
+      "icon": Icons.tv,
+      "db_route": "series",
     },
     {
       "name": collection,
       "type": QueryTypes.collection,
       "route": "collection",
-      "color": Color(0xFFfbb32d),
-      "selected_color": Color(0xFFfbb32d).withAlpha(50),
-      "splash_color": Color(0xFFfbb32d).withAlpha(100),
-      "icon": Icons.subscriptions
+      "color": Color(0xFF2f26c9),
+      "selected_color": Color(0xFF2f26c9).withAlpha(50),
+      "splash_color": Color(0xFF2f26c9).withAlpha(100),
+      "icon": Icons.subscriptions,
+      "db_route": "collections",
     },
-    {
-      "name": companies,
-      "type": QueryTypes.companies,
-      "route": "company",
-      "color": Color(0XFF2f26c9),
-      "selected_color": Color(0XFF2f26c9).withAlpha(50),
-      "splash_color": Color(0XFF2f26c9).withAlpha(100),
-      "icon": Icons.business
-    }
+    // {
+    //   "name": companies,
+    //   "type": QueryTypes.companies,
+    //   "route": "company",
+    //   "color": Color(0XFF2f26c9),
+    //   "selected_color": Color(0XFF2f26c9).withAlpha(50),
+    //   "splash_color": Color(0XFF2f26c9).withAlpha(100),
+    //   "icon": Icons.business,
+    //   "db_route": "companies",
+    // }
   ]; 
 }
 
@@ -123,13 +127,52 @@ class GlobalsFunc {
       duration: Duration(seconds: duration),
     ));
   }
-
-  static Future<Response> fetchData(url) {
-    return get(url).timeout(Duration(seconds: 5));
-  }
 }
 
 class GlobalsArgs {
   static dynamic transfertArg;
   static String actualRoute;
+}
+
+
+enum States {
+  Empty,
+  Error,
+  Loading,
+  Added,
+  Nothing
+}
+
+enum ElementsTypes {
+  MainData,
+  GenreTags,
+  InfoTags,
+  MadeByCarrousel,
+  CastingCarrousel,
+  CrewCarrousel,
+  SimilarCarrousel,
+  KnownForMovieCarrousel,
+  KnownForTvCarrousel,
+  SeasonsCarrousel,
+  EpisodesCarrousel,
+  GuestsCarrousel,
+  MoviesCarrousel,
+  YoutubeTrailer,
+}
+
+enum ImageTypes {
+  Backdrop,
+  Profile,
+  Poster,
+  Still
+}
+
+
+enum QueryTypes {
+  all,
+  movie,
+  person,
+  tv,
+  collection,
+  // companies
 }
