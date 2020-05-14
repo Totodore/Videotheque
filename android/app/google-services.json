@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "858114338886",
+    "firebase_url": "https://videotheque-88567.firebaseio.com",
+    "project_id": "videotheque-88567",
+    "storage_bucket": "videotheque-88567.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858114338886:android:b6ced89a76ddd6357e9a47",
+        "android_client_info": {
+          "package_name": "com.scriptis.videotheque"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "858114338886-815b5fqdsi62pk4m5alcuortsuakj4ci.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.scriptis.videotheque",
+            "certificate_hash": "d03963c8ce3d9a5484bb65d40f47bf67fbd655f0"
+          }
+        },
+        {
+          "client_id": "858114338886-375338r7g78k0132oia2smeaf2pmp3uq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOq2FHHejITBBF6dMySFJ9ykN9tIgGqQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "858114338886-375338r7g78k0132oia2smeaf2pmp3uq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

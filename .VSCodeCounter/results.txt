@@ -1,91 +1,156 @@
-Date : 2020-03-08 13:24:27
-Directory : /home/theodore/dev/Videotheque/videotheque_flutter
-Total : 37 files,  3217 codes, 129 comments, 266 blanks, all 3612 lines
+Date : 2020-05-05 18:49:57
+Directory : c:\Dev\Videotheque\videotheque_flutter
+Total : 88 files,  6015 codes, 107 comments, 476 blanks, all 6598 lines
 
 Languages
 +------------+------------+------------+------------+------------+------------+
 | language   | files      | code       | comment    | blank      | total      |
 +------------+------------+------------+------------+------------+------------+
-| Dart       |         18 |      2,796 |         58 |        208 |      3,062 |
+| Dart       |         64 |      5,542 |         55 |        420 |      6,017 |
 | JSON       |          2 |        145 |          0 |          2 |        147 |
-| XML        |          7 |        103 |         24 |          8 |        135 |
-| Groovy     |          3 |         92 |          3 |         21 |        116 |
-| YAML       |          1 |         46 |         43 |         14 |        103 |
+| XML        |          8 |        111 |         24 |          9 |        144 |
+| Groovy     |          4 |        106 |          0 |         23 |        129 |
+| YAML       |          3 |         71 |         27 |         10 |        108 |
+| Properties |          3 |         14 |          1 |          1 |         16 |
 | Markdown   |          2 |         13 |          0 |          9 |         22 |
 | Swift      |          1 |         12 |          0 |          2 |         14 |
-| Properties |          2 |          9 |          1 |          2 |         12 |
 | C++        |          1 |          1 |          0 |          0 |          1 |
 +------------+------------+------------+------------+------------+------------+
 
 Directories
-+------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| path                                                                                                             | files      | code       | comment    | blank      | total      |
-+------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| .                                                                                                                |         37 |      3,217 |        129 |        266 |      3,612 |
-| android                                                                                                          |         10 |        143 |         26 |         29 |        198 |
-| android/app                                                                                                      |          6 |         95 |         25 |         18 |        138 |
-| android/app/src                                                                                                  |          5 |         42 |         22 |          6 |         70 |
-| android/app/src/debug                                                                                            |          1 |          4 |          3 |          1 |          8 |
-| android/app/src/main                                                                                             |          3 |         34 |         16 |          4 |         54 |
-| android/app/src/main/res                                                                                         |          2 |         10 |          9 |          3 |         22 |
-| android/app/src/main/res/drawable                                                                                |          1 |          4 |          7 |          2 |         13 |
-| android/app/src/main/res/values                                                                                  |          1 |          6 |          2 |          1 |          9 |
-| android/app/src/profile                                                                                          |          1 |          4 |          3 |          1 |          8 |
-| android/gradle                                                                                                   |          1 |          5 |          1 |          1 |          7 |
-| android/gradle/wrapper                                                                                           |          1 |          5 |          1 |          1 |          7 |
-| ios                                                                                                              |          7 |        222 |          2 |          8 |        232 |
-| ios/Runner                                                                                                       |          7 |        222 |          2 |          8 |        232 |
-| ios/Runner/Assets.xcassets                                                                                       |          3 |        148 |          0 |          4 |        152 |
-| ios/Runner/Assets.xcassets/AppIcon.appiconset                                                                    |          1 |        122 |          0 |          1 |        123 |
-| ios/Runner/Assets.xcassets/LaunchImage.imageset                                                                  |          2 |         26 |          0 |          3 |         29 |
-| ios/Runner/Base.lproj                                                                                            |          2 |         61 |          2 |          2 |         65 |
-| lib                                                                                                              |         18 |      2,796 |         58 |        208 |      3,062 |
-| lib/Connexion                                                                                                    |          3 |        603 |          6 |         22 |        631 |
-| lib/app                                                                                                          |         11 |      1,748 |         46 |        128 |      1,922 |
-| lib/app/ElementsViews                                                                                            |          5 |        944 |          4 |         74 |      1,022 |
-| lib/app/HomeViews                                                                                                |          3 |        690 |         42 |         39 |        771 |
-+------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
++---------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                    | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                       |         88 |      6,015 |        107 |        476 |      6,598 |
+| android                                                                                                 |         13 |        170 |         23 |         31 |        224 |
+| android\app                                                                                             |          7 |        116 |         22 |         20 |        158 |
+| android\app\src                                                                                         |          6 |         50 |         22 |          7 |         79 |
+| android\app\src\debug                                                                                   |          1 |          4 |          3 |          1 |          8 |
+| android\app\src\main                                                                                    |          4 |         42 |         16 |          5 |         63 |
+| android\app\src\main\res                                                                                |          3 |         18 |          9 |          4 |         31 |
+| android\app\src\main\res\drawable                                                                       |          1 |          7 |          7 |          3 |         17 |
+| android\app\src\main\res\values                                                                         |          2 |         11 |          2 |          1 |         14 |
+| android\app\src\profile                                                                                 |          1 |          4 |          3 |          1 |          8 |
+| android\gradle                                                                                          |          1 |          5 |          1 |          1 |          7 |
+| android\gradle\wrapper                                                                                  |          1 |          5 |          1 |          1 |          7 |
+| ios                                                                                                     |          7 |        222 |          2 |          8 |        232 |
+| ios\Runner                                                                                              |          7 |        222 |          2 |          8 |        232 |
+| ios\Runner\Assets.xcassets                                                                              |          3 |        148 |          0 |          4 |        152 |
+| ios\Runner\Assets.xcassets\AppIcon.appiconset                                                           |          1 |        122 |          0 |          1 |        123 |
+| ios\Runner\Assets.xcassets\LaunchImage.imageset                                                         |          2 |         26 |          0 |          3 |         29 |
+| ios\Runner\Base.lproj                                                                                   |          2 |         61 |          2 |          2 |         65 |
+| lib                                                                                                     |         64 |      5,542 |         55 |        420 |      6,017 |
+| lib\Connexion                                                                                           |          3 |        602 |          6 |         22 |        630 |
+| lib\components                                                                                          |          4 |        155 |          0 |          8 |        163 |
+| lib\controllers                                                                                         |         23 |      1,334 |         28 |        239 |      1,601 |
+| lib\controllers\collection_controller                                                                   |          4 |        218 |          4 |         45 |        267 |
+| lib\controllers\movie_controller                                                                        |          4 |        274 |          5 |         45 |        324 |
+| lib\controllers\person_controller                                                                       |          4 |        225 |          4 |         41 |        270 |
+| lib\controllers\search_controller                                                                       |          4 |        146 |          7 |         33 |        186 |
+| lib\controllers\tv_controller                                                                           |          6 |        463 |          8 |         71 |        542 |
+| lib\views                                                                                               |         30 |      3,030 |          8 |         92 |      3,130 |
+| lib\views\account_view                                                                                  |          1 |          7 |          0 |          1 |          8 |
+| lib\views\collection_view                                                                               |          4 |        475 |          0 |         15 |        490 |
+| lib\views\home_view                                                                                     |          1 |          7 |          0 |          1 |          8 |
+| lib\views\library_view                                                                                  |          1 |          7 |          0 |          1 |          8 |
+| lib\views\movie_view                                                                                    |          5 |        522 |          0 |         19 |        541 |
+| lib\views\person_view                                                                                   |          4 |        437 |          0 |         14 |        451 |
+| lib\views\search_view                                                                                   |          6 |        561 |          8 |         16 |        585 |
+| lib\views\search_view\components                                                                        |          4 |        209 |          0 |          7 |        216 |
+| lib\views\tv_view                                                                                       |          7 |        943 |          0 |         21 |        964 |
++---------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 
 Files
-+------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| filename                                                                                                         | language   | code       | comment    | blank      | total      |
-+------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| /home/theodore/dev/Videotheque/videotheque_flutter/README.md                                                     | Markdown   |         10 |          0 |          7 |         17 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/android/app/build.gradle                                      | Groovy     |         53 |          3 |         12 |         68 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/debug/AndroidManifest.xml                     | XML        |          4 |          3 |          1 |          8 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/main/AndroidManifest.xml                      | XML        |         24 |          7 |          1 |         32 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/main/res/drawable/launch_background.xml       | XML        |          4 |          7 |          2 |         13 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/main/res/values/styles.xml                    | XML        |          6 |          2 |          1 |          9 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/android/app/src/profile/AndroidManifest.xml                   | XML        |          4 |          3 |          1 |          8 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/android/build.gradle                                          | Groovy     |         27 |          0 |          5 |         32 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/android/gradle.properties                                     | Properties |          4 |          0 |          1 |          5 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/android/gradle/wrapper/gradle-wrapper.properties              | Properties |          5 |          1 |          1 |          7 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/android/settings.gradle                                       | Groovy     |         12 |          0 |          4 |         16 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/AppDelegate.swift                                  | Swift      |         12 |          0 |          2 |         14 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json   | JSON       |        122 |          0 |          1 |        123 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json | JSON       |         23 |          0 |          1 |         24 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md     | Markdown   |          3 |          0 |          2 |          5 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Base.lproj/LaunchScreen.storyboard                 | XML        |         36 |          1 |          1 |         38 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Base.lproj/Main.storyboard                         | XML        |         25 |          1 |          1 |         27 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/ios/Runner/Runner-Bridging-Header.h                           | C++        |          1 |          0 |          0 |          1 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/Connexion/connexionForm.dart                              | Dart       |        316 |          5 |         11 |        332 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/Connexion/mainConnexion.dart                              | Dart       |         63 |          0 |          5 |         68 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/Connexion/subscriptionForm.dart                           | Dart       |        224 |          1 |          6 |        231 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/collectionView.dart                     | Dart       |        121 |          0 |         15 |        136 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/companyView.dart                        | Dart       |         36 |          0 |          7 |         43 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/movieView.dart                          | Dart       |        545 |          4 |         24 |        573 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/personView.dart                         | Dart       |        121 |          0 |         13 |        134 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/ElementsViews/tvView.dart                             | Dart       |        121 |          0 |         15 |        136 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/HomeViews/homeBodyView.dart                           | Dart       |         14 |          0 |          3 |         17 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/HomeViews/homeHeaderView.dart                         | Dart       |         24 |          0 |          7 |         31 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/HomeViews/SearchView.dart                       | Dart       |        652 |         42 |         29 |        723 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/account.dart                                          | Dart       |         21 |          0 |          4 |         25 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/appMain.dart                                          | Dart       |         80 |          0 |          9 |         89 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/app/librarie.dart                                         | Dart       |         13 |          0 |          2 |         15 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/globals.dart                                              | Dart       |        117 |          0 |         16 |        133 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/main.dart                                                 | Dart       |         29 |          0 |          3 |         32 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/tmdbQueries.dart                                          | Dart       |        191 |          6 |         27 |        224 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/lib/webApp.dart                                               | Dart       |        108 |          0 |         12 |        120 |
-| /home/theodore/dev/Videotheque/videotheque_flutter/pubspec.yaml                                                  | YAML       |         46 |         43 |         14 |        103 |
-| Total                                                                                                            |            |      3,217 |        129 |        266 |      3,612 |
-+------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
++---------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                | language   | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Dev\Videotheque\videotheque_flutter\README.md                                                        | Markdown   |         10 |          0 |          7 |         17 |
+| c:\Dev\Videotheque\videotheque_flutter\android\app\build.gradle                                         | Groovy     |         66 |          0 |         13 |         79 |
+| c:\Dev\Videotheque\videotheque_flutter\android\app\src\debug\AndroidManifest.xml                        | XML        |          4 |          3 |          1 |          8 |
+| c:\Dev\Videotheque\videotheque_flutter\android\app\src\main\AndroidManifest.xml                         | XML        |         24 |          7 |          1 |         32 |
+| c:\Dev\Videotheque\videotheque_flutter\android\app\src\main\res\drawable\launch_background.xml          | XML        |          7 |          7 |          3 |         17 |
+| c:\Dev\Videotheque\videotheque_flutter\android\app\src\main\res\values\colors.xml                       | XML        |          4 |          0 |          0 |          4 |
+| c:\Dev\Videotheque\videotheque_flutter\android\app\src\main\res\values\styles.xml                       | XML        |          7 |          2 |          1 |         10 |
+| c:\Dev\Videotheque\videotheque_flutter\android\app\src\profile\AndroidManifest.xml                      | XML        |          4 |          3 |          1 |          8 |
+| c:\Dev\Videotheque\videotheque_flutter\android\build.gradle                                             | Groovy     |         27 |          0 |          5 |         32 |
+| c:\Dev\Videotheque\videotheque_flutter\android\gradle.properties                                        | Properties |          5 |          0 |          0 |          5 |
+| c:\Dev\Videotheque\videotheque_flutter\android\gradle\wrapper\gradle-wrapper.properties                 | Properties |          5 |          1 |          1 |          7 |
+| c:\Dev\Videotheque\videotheque_flutter\android\key.properties                                           | Properties |          4 |          0 |          0 |          4 |
+| c:\Dev\Videotheque\videotheque_flutter\android\settings.gradle                                          | Groovy     |         12 |          0 |          4 |         16 |
+| c:\Dev\Videotheque\videotheque_flutter\android\settings_aar.gradle                                      | Groovy     |          1 |          0 |          1 |          2 |
+| c:\Dev\Videotheque\videotheque_flutter\flutter_launcher_icons.yaml                                      | YAML       |          7 |          0 |          3 |         10 |
+| c:\Dev\Videotheque\videotheque_flutter\flutter_native_splash.yaml                                       | YAML       |          5 |          0 |          1 |          6 |
+| c:\Dev\Videotheque\videotheque_flutter\ios\Runner\AppDelegate.swift                                     | Swift      |         12 |          0 |          2 |         14 |
+| c:\Dev\Videotheque\videotheque_flutter\ios\Runner\Assets.xcassets\AppIcon.appiconset\Contents.json      | JSON       |        122 |          0 |          1 |        123 |
+| c:\Dev\Videotheque\videotheque_flutter\ios\Runner\Assets.xcassets\LaunchImage.imageset\Contents.json    | JSON       |         23 |          0 |          1 |         24 |
+| c:\Dev\Videotheque\videotheque_flutter\ios\Runner\Assets.xcassets\LaunchImage.imageset\README.md        | Markdown   |          3 |          0 |          2 |          5 |
+| c:\Dev\Videotheque\videotheque_flutter\ios\Runner\Base.lproj\LaunchScreen.storyboard                    | XML        |         36 |          1 |          1 |         38 |
+| c:\Dev\Videotheque\videotheque_flutter\ios\Runner\Base.lproj\Main.storyboard                            | XML        |         25 |          1 |          1 |         27 |
+| c:\Dev\Videotheque\videotheque_flutter\ios\Runner\Runner-Bridging-Header.h                              | C++        |          1 |          0 |          0 |          1 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\Connexion\connexionForm.dart                                 | Dart       |        315 |          5 |         11 |        331 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\Connexion\mainConnexion.dart                                 | Dart       |         63 |          0 |          5 |         68 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\Connexion\subscriptionForm.dart                              | Dart       |        224 |          1 |          6 |        231 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\components\alert_dialog_component.dart                       | Dart       |         28 |          0 |          3 |         31 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\components\divider_component.dart                            | Dart       |         45 |          0 |          2 |         47 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\components\skeleton_carrousel_component.dart                 | Dart       |         49 |          0 |          1 |         50 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\components\skeleton_tag_component.dart                       | Dart       |         33 |          0 |          2 |         35 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\app_controller.dart                              | Dart       |          8 |          0 |          4 |         12 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\collection_controller\addtag_controller.dart     | Dart       |         36 |          0 |          8 |         44 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\collection_controller\carrousel_controller.dart  | Dart       |         38 |          3 |          9 |         50 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\collection_controller\collection_controller.dart | Dart       |        111 |          1 |         19 |        131 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\collection_controller\tag_controller.dart        | Dart       |         33 |          0 |          9 |         42 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\movie_controller\addtag_controller.dart          | Dart       |         36 |          0 |          8 |         44 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\movie_controller\carrousel_controller.dart       | Dart       |         53 |          3 |          8 |         64 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\movie_controller\movie_controller.dart           | Dart       |        148 |          2 |         20 |        170 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\movie_controller\tag_controller.dart             | Dart       |         37 |          0 |          9 |         46 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\person_controller\addtag_controller.dart         | Dart       |         36 |          0 |          8 |         44 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\person_controller\carrousel_controller.dart      | Dart       |         44 |          3 |          9 |         56 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\person_controller\person_controller.dart         | Dart       |        112 |          1 |         15 |        128 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\person_controller\tag_controller.dart            | Dart       |         33 |          0 |          9 |         42 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\search_controller\icon_search.dart               | Dart       |         13 |          0 |          7 |         20 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\search_controller\loading_controller.dart        | Dart       |         13 |          0 |          7 |         20 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\search_controller\result_controller.dart         | Dart       |         26 |          0 |          6 |         32 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\search_controller\search_controller.dart         | Dart       |         94 |          7 |         13 |        114 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\tv_controller\addtag_controller.dart             | Dart       |         36 |          0 |          8 |         44 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\tv_controller\carrousel_controller.dart          | Dart       |         68 |          7 |          8 |         83 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\tv_controller\episode_controller.dart            | Dart       |         72 |          0 |          9 |         81 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\tv_controller\season_controller.dart             | Dart       |         88 |          0 |         10 |         98 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\tv_controller\tag_controller.dart                | Dart       |         37 |          0 |          9 |         46 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\controllers\tv_controller\tv_controller.dart                 | Dart       |        162 |          1 |         27 |        190 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\globals.dart                                                 | Dart       |        144 |         10 |         22 |        176 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\main.dart                                                    | Dart       |         52 |          0 |          3 |         55 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\tmdbQueries.dart                                             | Dart       |        117 |          3 |         22 |        142 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\account_view\account_view.dart                         | Dart       |          7 |          0 |          1 |          8 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\app_view.dart                                          | Dart       |         71 |          0 |          4 |         75 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\collection_view\addtag_view.dart                       | Dart       |         95 |          0 |          4 |         99 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\collection_view\carrousel_view.dart                    | Dart       |         70 |          0 |          5 |         75 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\collection_view\collection_view.dart                   | Dart       |        244 |          0 |          2 |        246 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\collection_view\tag_view.dart                          | Dart       |         66 |          0 |          4 |         70 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\home_view\home_view.dart                               | Dart       |          7 |          0 |          1 |          8 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\library_view\library_view.dart                         | Dart       |          7 |          0 |          1 |          8 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\movie_view\addtag_view.dart                            | Dart       |         96 |          0 |          4 |        100 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\movie_view\carrousel_view.dart                         | Dart       |         70 |          0 |          5 |         75 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\movie_view\movie_view.dart                             | Dart       |        278 |          0 |          5 |        283 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\movie_view\tag_view.dart                               | Dart       |         53 |          0 |          3 |         56 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\movie_view\trailer_view.dart                           | Dart       |         25 |          0 |          2 |         27 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\person_view\addtag_view.dart                           | Dart       |         96 |          0 |          4 |        100 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\person_view\carrousel_view.dart                        | Dart       |         71 |          0 |          5 |         76 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\person_view\person_view.dart                           | Dart       |        205 |          0 |          1 |        206 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\person_view\tag_view.dart                              | Dart       |         65 |          0 |          4 |         69 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\search_view\components\icon_error.dart                 | Dart       |         26 |          0 |          1 |         27 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\search_view\components\icon_nothing.dart               | Dart       |         26 |          0 |          2 |         28 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\search_view\components\icon_search.dart                | Dart       |         46 |          0 |          2 |         48 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\search_view\components\loading.dart                    | Dart       |        111 |          0 |          2 |        113 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\search_view\result_view.dart                           | Dart       |        187 |          8 |          4 |        199 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\search_view\search_view.dart                           | Dart       |        165 |          0 |          5 |        170 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\tv_view\addtag_view.dart                               | Dart       |         96 |          0 |          4 |        100 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\tv_view\carrousel_view.dart                            | Dart       |         72 |          0 |          4 |         76 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\tv_view\episode_view.dart                              | Dart       |        186 |          0 |          2 |        188 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\tv_view\season_view.dart                               | Dart       |        184 |          0 |          4 |        188 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\tv_view\tag_view.dart                                  | Dart       |         55 |          0 |          3 |         58 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\tv_view\trailer_view.dart                              | Dart       |         26 |          0 |          2 |         28 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\views\tv_view\tv_view.dart                                   | Dart       |        324 |          0 |          2 |        326 |
+| c:\Dev\Videotheque\videotheque_flutter\lib\webApp.dart                                                  | Dart       |        108 |          0 |         12 |        120 |
+| c:\Dev\Videotheque\videotheque_flutter\pubspec.yaml                                                     | YAML       |         59 |         27 |          6 |         92 |
+| Total                                                                                                   |            |      6,015 |        107 |        476 |      6,598 |
++---------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

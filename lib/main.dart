@@ -1,33 +1,32 @@
+import 'package:Videotheque/api/FireauthQueries.dart';
+import 'package:Videotheque/api/fireconfigQueries.dart';
 import 'package:flutter/material.dart';
 
-import 'package:Videotheque/Connexion/mainConnexion.dart';
-import 'package:Videotheque/app/appMain.dart';
-import 'package:Videotheque/app/ElementsViews/movieView.dart';
-import 'package:Videotheque/app/ElementsViews/personView.dart';
-import 'package:Videotheque/app/ElementsViews/tvView.dart';
-import 'package:Videotheque/app/ElementsViews/collectionView.dart';
-import 'package:Videotheque/app/ElementsViews/companyView.dart';
-import 'package:Videotheque/app/baseViews/searchView.dart';
-import 'package:Videotheque/views/bottom_navigation/bottom_navigation_view.dart';
+import 'package:Videotheque/views/app_view.dart';
+import 'package:Videotheque/views/movie_view/movie_view.dart';
+import 'package:Videotheque/views/person_view/person_view.dart';
+import 'package:Videotheque/views/search_view/search_view.dart';
+import 'package:Videotheque/views/collection_view/collection_view.dart';
+import 'package:Videotheque/views/tv_view/tv_view.dart';
+import 'package:Videotheque/views/auth_view.dart/auth_view.dart';
 import 'webApp.dart';
 import 'globals.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
     title: 'Vidéothèque',
     color: Color(0xFF008577),
-    initialRoute: "/",
+    initialRoute: await FireauthQueries.needSignIn ? "/auth" : "/",
     routes: {
-      "/": (context) => Scaffold(bottomNavigationBar: BottomNavigationView()),
+      "/": (context) => AppView(),
+      "/auth": (context) => AuthView(),
       "/webapp/": (context) => WebApp(),
       "/search/": (context) => SearchView(),
-      "/connexion/": (context) => Connexion(),
       "/element/movie/": (context) => MovieView(),
       "/element/person/": (context) => PersonView(),
       "/element/tv/": (context) => TvView(),
       "/element/collection/": (context) => CollectionView(),
-      "/element/company/": (context) => CompanyView(), 
     },
     theme: ThemeData.light().copyWith(
       accentColor: GlobalsColor.darkGreenDisabled,
