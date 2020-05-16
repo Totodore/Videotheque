@@ -41,7 +41,7 @@ class SearchViewState extends State<SearchView> with TickerProviderStateMixin {
                   return <Widget>[
                     SliverOverlapAbsorber(
                       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                      child: SliverSafeArea(
+                      sliver: SliverSafeArea(
                         top: false,
                         sliver: SliverAppBar(
                           elevation: 3,

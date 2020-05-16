@@ -94,7 +94,7 @@ class FireauthQueries {
       await (await FirebaseAuth.instance.currentUser()).delete();
     } on PlatformException catch(e) {
       if (e.code == "ERROR_REQUIRES_RECENT_LOGIN") {
-        res = "Erreur : Cela fait trop trop longtemps que vous ne vous êtes pas connecté, veuilliez vous déconnecter puis vous reconnecter pour pouvoir supprimer votre compte.";
+        res = "Erreur : Cela fait trop trop longtemps que vous ne vous êtes pas connecté, veuillez vous déconnecter puis vous reconnecter pour pouvoir supprimer votre compte.";
       }
       else res = "Une erreur est apparue lors de la suppression de votre compte";
     } on Exception {
@@ -123,7 +123,7 @@ class FireauthQueries {
           res = "Erreur : Mot de passe trop faible";
           break;
         case "ERROR_REQUIRES_RECENT_LOGIN":
-          res = "Erreur : Cela fait trop trop longtemps que vous ne vous êtes pas connecté, veuilliez vous déconnecter puis vous reconnecter pour pouvoir changer votre mot de passe";
+          res = "Erreur : Cela fait trop trop longtemps que vous ne vous êtes pas connecté, veuillez vous déconnecter puis vous reconnecter pour pouvoir changer votre mot de passe";
           break;
         default: res = "Erreur lors de la modification du mot de passe";
       } 
@@ -139,7 +139,7 @@ class FireauthQueries {
     } on PlatformException catch(e) {
       switch (e.code) {
         case "ERROR_REQUIRES_RECENT_LOGIN":
-          res = "Erreur : Cela fait trop trop longtemps que vous ne vous êtes pas connecté, veuilliez vous déconnecter puis vous reconnecter pour pouvoir changer votre email";
+          res = "Erreur : Cela fait trop trop longtemps que vous ne vous êtes pas connecté, veuillez vous déconnecter puis vous reconnecter pour pouvoir changer votre email";
           break;
         case "ERROR_EMAIL_ALREADY_IN_USE":
           res = "Erreur : Cet email est déjà utilisé";
