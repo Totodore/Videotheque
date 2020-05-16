@@ -59,7 +59,7 @@ class AppView extends StatelessWidget {
                 BottomNavyBarItem(
                   icon: Icon(Icons.account_circle),
                   title: Text(
-                    "Compte",
+                    "Mon Compte",
                     textAlign: TextAlign.center,
                   ),
                   activeColor: GlobalsColor.darkGreen,
