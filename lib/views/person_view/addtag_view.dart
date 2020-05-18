@@ -1,4 +1,3 @@
-import 'package:Videotheque/controllers/person_controller/person_controller.dart';
 import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
