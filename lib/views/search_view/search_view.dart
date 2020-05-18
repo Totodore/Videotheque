@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:Videotheque/controllers/search_controller/search_controller.dart';
 import 'package:Videotheque/views/search_view/components/loading.dart';
 import 'package:Videotheque/views/search_view/result_view.dart';

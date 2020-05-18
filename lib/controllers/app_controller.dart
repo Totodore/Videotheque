@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class AppController extends ChangeNotifier {
 
-  int bottomNavPositionIndex = 2;
-  int oldBottomNavPositionIndex = 2;
+  int bottomNavPositionIndex = 1;
+  int oldBottomNavPositionIndex = 1;
   Animation<Offset> slidingAnimation;
   Animation<double> fadingAnimation;
 

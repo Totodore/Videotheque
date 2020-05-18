@@ -19,14 +19,12 @@ class AlertDialogComponent extends StatelessWidget {
         title: title != null ? Text(title) : Padding(padding: EdgeInsets.zero),
         contentPadding: title == null ? EdgeInsets.symmetric(vertical: 5, horizontal: 25) : EdgeInsets.symmetric(vertical: 15, horizontal: 25),
         content: content != null ? SingleChildScrollView(
-          child: IntrinsicHeight(
-            child: Column(
-              children: [
-                Text(content), 
-                inputWidget ?? Padding(padding:EdgeInsets.zero)
-              ]
-            )
-          )
+          child: Column(
+            children: [
+              Text(content), 
+              inputWidget ?? Padding(padding:EdgeInsets.zero)
+            ]
+          ),
         ) : Padding(padding: EdgeInsets.zero),
         contentTextStyle: TextStyle(fontWeight: FontWeight.w600, color: Colors.black, fontSize: 16.5), 
         actions: <Widget>[
