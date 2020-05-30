@@ -1,7 +1,5 @@
 
-import 'package:Videotheque/controllers/search_controller/search_controller.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/api/tmdbQueries.dart';
 import 'package:flutter/material.dart';
 
 class ResultSearchController extends ChangeNotifier {
@@ -20,6 +18,7 @@ class ResultSearchController extends ChangeNotifier {
     String route = "/element/$type/";
     GlobalsArgs.actualRoute = route;
     GlobalsArgs.transfertArg = List.from([data, ""]);
+    GlobalsArgs.isFromLibrary = false;
     Navigator.pushNamed(context, route, arguments: data);
   }
 
@@ -27,6 +26,7 @@ class ResultSearchController extends ChangeNotifier {
     String route = "/element/$type/";
     GlobalsArgs.actualRoute = route;
     GlobalsArgs.transfertArg = List.from([data, heroId]);
+    GlobalsArgs.isFromLibrary = false;
     Navigator.pushNamed(context, route, arguments: data);
   }
 }

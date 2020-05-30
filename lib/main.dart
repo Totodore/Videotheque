@@ -9,11 +9,13 @@ import 'package:Videotheque/views/search_view/search_view.dart';
 import 'package:Videotheque/views/collection_view/collection_view.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
 import 'package:Videotheque/views/auth_view.dart/auth_view.dart';
+import 'package:flutter/services.dart';
 import 'webApp.dart';
 import 'globals.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MaterialApp(
     title: 'Vidéothèque',
     color: Color(0xFF008577),

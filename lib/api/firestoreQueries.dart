@@ -3,6 +3,7 @@ import 'package:Videotheque/api/tmdbQueries.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:uuid/uuid.dart';
 
 class FirestoreQueries {
@@ -16,17 +17,21 @@ class FirestoreQueries {
       for (String key in db["movie"].keys) {
         Map el = db["movie"][key];
         Map data = await TMDBQueries.getMovie(el["id"].toString());
+        List baseTags = List.generate(data["genres"].length, (index) => data["genres"][index]["id"]);
         moviesValues.add({
           "base_id": el["id"],
           "creation_date": (el["date"]/1000).ceil(),
           "title": el["title"],
-          "image_url": el["image_url"],
+          "image_url": data["poster_path"],
           "added_tags": [],
           "popularity": data["popularity"] ?? 0,
-          "base_tags": data["genres"] ?? [],
+          "base_tags": baseTags ?? [],
+          "overview": data["overview"],
+          "backdrop_url": data["backdrop_path"],
           "fav": false,
           "to_see": false,
-          "seen": false
+          "seen": false,
+          "type": "movie"
         });
       }
       for (String key in db["people"].keys) {
@@ -36,13 +41,15 @@ class FirestoreQueries {
           "base_id": el["id"],
           "creation_date": (el["date"]/1000).ceil(),
           "title": el["title"],
-          "image_url": el["image_url"],
+          "image_url": data["profile_path"],
           "added_tags": [],
           "popularity": data["popularity"] ?? 0,
-          "base_tags": data["genre"] ?? [],
+          "base_tags": [],
+          "overview": data["biography"],
           "fav": false,
           "to_see": false,
-          "seen": false
+          "seen": false,
+          "type": "person"
         });
       }
       await Firestore.instance.collection(userId).document("movies").setData(Map.fromIterables(
@@ -97,11 +104,14 @@ class FirestoreQueries {
           "popularity": data["popularity"] ?? 0,
           "image_url": data["poster_path"] ?? data["profile_path"],
           "base_tags": data["genre_ids"] ?? [],
+          "overview": data["overview"] ?? data["biography"],
           "added_tags": [],
           "creation_date": (DateTime.now().millisecondsSinceEpoch/1000).ceil(),
+          "backdrop_url": data["backdrop_path"],
           "fav": false,
           "to_see": false,
-          "seen": false
+          "seen": false,
+          "type": EnumToString.parse(elementType)
         }
       });
     } on Exception catch(e) {
@@ -241,6 +251,35 @@ class FirestoreQueries {
       return false;
     }
     return true;
+  }
+  static Future<Map> getElementsFromOptions(QueryTypes type, Options option, [int limit = -1]) async {
+    try {
+      Map data = {};
+      if (type == QueryTypes.all) {
+        for (QueryTypes typeIterator in List.from(QueryTypes.values)..removeAt(0))
+          data.addAll((await (await _getUserCollection).document(_dbRouteFromElement(typeIterator)).get()).data);
+      } else
+        data = (await (await _getUserCollection).document(_dbRouteFromElement(type)).get()).data;
+      data.removeWhere((key, value) {
+        switch (option) {
+          case Options.Seen:
+            return !value["seen"];
+          case Options.Fav:
+            return !value["fav"];
+          case Options.ToSee:
+            return !value["to_see"];
+          default: return false;
+        }
+      });
+      if (limit > 0) {
+        data = Map.fromIterables(data.keys.take(limit), data.values.take(limit));
+      }
+      return data;
+    } on Exception catch(e) {
+      print(e);
+    } on NoSuchMethodError catch(e) {
+      print("no data");
+    }
   }
 
   //Récupère les données de l'utilisateur courant

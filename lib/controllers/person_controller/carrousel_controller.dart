@@ -36,6 +36,7 @@ class CarrouselController extends ChangeNotifier {
   void onElementTapped(int index, String heroTag) {
     GlobalsArgs.actualRoute = route;
     GlobalsArgs.transfertArg = [carrouselData[index], heroTag];
+    GlobalsArgs.isFromLibrary = false;
     Navigator.push(context, MaterialPageRoute(builder: (context) => type == ElementsTypes.KnownForTvCarrousel ? TvView() : MovieView()));
   }
 

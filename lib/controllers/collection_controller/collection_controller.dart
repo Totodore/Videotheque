@@ -25,6 +25,8 @@ class CollectionController extends ChangeNotifier {
   CollectionController(this.context) {
     heroTag = GlobalsArgs.transfertArg[1];
     data = GlobalsArgs.transfertArg[0];
+    if (GlobalsArgs.isFromLibrary)
+      convertDataToDBData();
 
     fetchDbId().then((id) {
       if (id != null) {//Si le film est ajouté
@@ -33,6 +35,13 @@ class CollectionController extends ChangeNotifier {
       }
     });
     fetchDetails();
+  }
+
+  void convertDataToDBData() {
+    data["poster_path"] = data["image_url"];
+    data["id"] = data["base_id"];
+    data["backdrop_path"] = data["backdrop_url"];
+    data["name"] = data["title"];
   }
 
 

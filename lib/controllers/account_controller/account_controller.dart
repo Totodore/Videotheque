@@ -103,6 +103,7 @@ class AccountController extends ChangeNotifier {
   }
 
   void removeAccount() async {
+    BuildContext scaffoldContext = context;
     await showDialog(context: context, builder: (BuildContext context) {
       return AlertDialogComponent(
         title: "Supprimer mon compte",
@@ -115,7 +116,7 @@ class AccountController extends ChangeNotifier {
           if (res == null)
             Navigator.pushReplacementNamed(context, "/auth");
           else
-            GlobalsFunc.snackBar(context, res);
+            GlobalsFunc.snackBar(scaffoldContext, res);
         },
         onAbort: () { //On abort
           Navigator.pop(context);

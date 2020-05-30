@@ -1,3 +1,7 @@
+import 'package:Videotheque/views/collection_view/collection_view.dart';
+import 'package:Videotheque/views/movie_view/movie_view.dart';
+import 'package:Videotheque/views/person_view/person_view.dart';
+import 'package:Videotheque/views/tv_view/tv_view.dart';
 import 'package:flutter/material.dart';
 
 class GlobalsColor {
@@ -63,6 +67,7 @@ class GlobalsMessage {
       "selected_color": Color(0XFF636363).withAlpha(50),
       "splash_color": Color(0XFF636363).withAlpha(100),
       "icon": Icons.apps,
+      "keyword": "Tous"
     },
     {
       "name": movie,
@@ -73,16 +78,8 @@ class GlobalsMessage {
       "splash_color": Color(0xFF00574B).withAlpha(100),
       "icon": Icons.movie,
       "db_route": "movies",
-    },
-    {
-      "name": person,
-      "type": QueryTypes.person,
-      "route": "person",
-      "color": Color(0xFF9c0000),
-      "selected_color": Color(0xFF9c0000).withAlpha(50),
-      "splash_color": Color(0xFF9c0000).withAlpha(100),
-      "icon": Icons.person,
-      "db_route": "people",
+      "image_type": ImageTypes.Poster,
+      "keyword": "Films"
     },
     {
       "name": tv,
@@ -93,6 +90,20 @@ class GlobalsMessage {
       "splash_color": Color(0xFF7c0091).withAlpha(100),
       "icon": Icons.tv,
       "db_route": "series",
+      "image_type": ImageTypes.Poster,
+      "keyword": "Séries TV"
+    },
+    {
+      "name": person,
+      "type": QueryTypes.person,
+      "route": "person",
+      "color": Color(0xFF9c0000),
+      "selected_color": Color(0xFF9c0000).withAlpha(50),
+      "splash_color": Color(0xFF9c0000).withAlpha(100),
+      "icon": Icons.person,
+      "db_route": "people",
+      "image_type": ImageTypes.Profile,
+      "keyword": "Personnes"
     },
     {
       "name": collection,
@@ -103,6 +114,8 @@ class GlobalsMessage {
       "splash_color": Color(0xFF2f26c9).withAlpha(100),
       "icon": Icons.subscriptions,
       "db_route": "collections",
+      "image_type": ImageTypes.Poster,
+      "keyword": "Collections"
     },
     // {
     //   "name": companies,
@@ -132,6 +145,7 @@ class GlobalsFunc {
 class GlobalsArgs {
   static dynamic transfertArg;
   static String actualRoute;
+  static bool isFromLibrary;
 }
 
 
@@ -157,6 +171,9 @@ enum ElementsTypes {
   EpisodesCarrousel,
   GuestsCarrousel,
   MoviesCarrousel,
+  ToSeeCarrousel,
+  SeenCarrousel,
+  FavCarrousel,
   YoutubeTrailer,
 }
 
@@ -167,12 +184,17 @@ enum ImageTypes {
   Still
 }
 
+enum Options {
+  Seen,
+  ToSee,
+  Fav
+}
 
 enum QueryTypes {
   all,
   movie,
-  person,
   tv,
+  person,
   collection,
   // companies
 }
