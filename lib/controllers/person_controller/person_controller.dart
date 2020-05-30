@@ -25,6 +25,8 @@ class PersonController extends ChangeNotifier {
   PersonController(this.context) {
     heroTag = GlobalsArgs.transfertArg[1];
     preloadData = GlobalsArgs.transfertArg[0];
+    if (GlobalsArgs.isFromLibrary ?? false)
+      convertDataToDBData();
 
     fetchDbId().then((id) {
       if (id != null) {
@@ -35,6 +37,13 @@ class PersonController extends ChangeNotifier {
       fetchKnownForMovies();
       fetchKnownForTv();
     });
+  }
+
+  void convertDataToDBData() {
+    preloadData["profile_path"] = preloadData["image_url"];
+    preloadData["id"] = preloadData["base_id"];
+    preloadData["backdrop_path"] = preloadData["backdrop_url"];
+    preloadData["name"] = preloadData["title"];
   }
 
   Future fetchDbId() async {

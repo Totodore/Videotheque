@@ -38,6 +38,7 @@ class CarrouselController extends ChangeNotifier {
 
   void onElementTapped(int index, String heroTag) {
     GlobalsArgs.actualRoute = route;
+    GlobalsArgs.isFromLibrary = false;
     GlobalsArgs.transfertArg = [carrouselData[index], heroTag];
     switch (type) {
       case ElementsTypes.SimilarCarrousel:

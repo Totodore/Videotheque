@@ -30,11 +30,27 @@ class TvController extends ChangeNotifier {
   TvController(this.context) {
     heroTag = GlobalsArgs.transfertArg[1];
     preloadData = GlobalsArgs.transfertArg[0];
+    if (GlobalsArgs.isFromLibrary ?? false)
+      convertDataToDBData();
 
-    fetchDetails();
-    fetchGenreTags();
-    fetchPeopleCarrousels();
-    fetchSimilarTv();
+    fetchDbId().then((id) {
+      if (id != null) {
+        fetchDbStats();
+        // fetchGenreTags();
+      }
+      fetchDetails();
+      fetchGenreTags();
+      fetchPeopleCarrousels();
+      fetchSimilarTv();
+    });
+  }
+
+  void convertDataToDBData() {
+    preloadData["poster_path"] = preloadData["image_url"];
+    preloadData["genre_ids"] = preloadData["base_tags"];
+    preloadData["id"] = preloadData["base_id"];
+    preloadData["backdrop_path"] = preloadData["backdrop_url"];
+    preloadData["name"] = preloadData["title"];
   }
 
   

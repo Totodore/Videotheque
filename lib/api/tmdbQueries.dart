@@ -27,13 +27,13 @@ class TMDBQueries {
     return TMDBQueries.sortNoContent(await defaultQuery("$api_endpoint/search/collection?api_key=$key&language=$lang&query=$query&page=$offset"), QueryTypes.collection);
   }
 
-  static Future<Map<String, dynamic>> onlineSearchTV(String query, [int offset = 1]) async {
-    return TMDBQueries.sortNoContent(await defaultQuery("$api_endpoint/search/tv?api_key=$key&page=$offset&&query=$query&language=$lang"), QueryTypes.tv);
-  }
-
   // static Future<Map<String, dynamic>> onlineSearchCompanies(String query, [int offset = 1]) async {
   //   return TMDBQueries.sortNoContent(await defaultQuery("$api_endpoint/search/company?api_key=$key&page=$offset&&query=$query&language=$lang"), QueryTypes.companies);
   // }
+
+  static Future<Map<String, dynamic>> onlineSearchTV(String query, [int offset = 1]) async {
+    return TMDBQueries.sortNoContent(await defaultQuery("$api_endpoint/search/multi?api_key=$key&language=$lang&page=$offset&include_adult=false&query=$query"), QueryTypes.tv);
+  }
 
   static Future<Map<String, dynamic>> getMovie(String id) async {
     return defaultQuery("$api_endpoint/movie/$id?api_key=$key&language=$lang");
@@ -126,11 +126,6 @@ class TMDBQueries {
     }
     if (!error && response.statusCode == 200) {
       returner = jsonDecode(response.body);
-    } else {
-      print("Erreur : ${response.statusCode} ${response.body}");
-      returner = Map.from({
-        "error": GlobalsMessage.defaultError,
-      });
     }
     return returner;
   }

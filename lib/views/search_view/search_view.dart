@@ -146,6 +146,7 @@ class SearchViewState extends State<SearchView> with TickerProviderStateMixin {
                 },
                 body: TabBarView(
                   controller: resultsPageController,
+                  physics: BouncingScrollPhysics(),
                   children: List<Widget>.generate(controller.tabLength, (int index) {
                     Widget returner;
                     QueryTypes type = QueryTypes.values[index];

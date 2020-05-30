@@ -134,6 +134,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.7"
+  enum_to_string:
+    dependency: "direct main"
+    description:
+      name: enum_to_string
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.9"
   file:
     dependency: transitive
     description:
@@ -331,13 +338,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.4"
-  neuomorphic_container:
-    dependency: "direct main"
-    description:
-      name: neuomorphic_container
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.3"
   path:
     dependency: transitive
     description:

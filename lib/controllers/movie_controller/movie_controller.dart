@@ -28,6 +28,8 @@ class MovieController extends ChangeNotifier {
   MovieController(this.context) {
     heroTag = GlobalsArgs.transfertArg[1];
     preloadData = GlobalsArgs.transfertArg[0];
+    if (GlobalsArgs.isFromLibrary ?? false)
+      convertDataToDBData();
 
     fetchDbId().then((id) {
       if (id != null) //Si le film est ajouté
@@ -39,6 +41,13 @@ class MovieController extends ChangeNotifier {
       fetchTrailer();
     });
     
+  }
+
+  void convertDataToDBData() {
+    preloadData["poster_path"] = preloadData["image_url"];
+    preloadData["genre_ids"] = preloadData["base_tags"];
+    preloadData["id"] = preloadData["base_id"];
+    preloadData["backdrop_path"] = preloadData["backdrop_url"];
   }
 
   Future fetchDbId() async {
@@ -63,8 +72,8 @@ class MovieController extends ChangeNotifier {
     notifyListeners();
     Map data = await TMDBQueries.getMovie(preloadData["id"].toString());
     loadedInfosTags = [
-      preloadData["release_date"] != null ? "Sortie : " + DateFormat('dd/MM/yyyy').format(DateTime.parse(preloadData["release_date"])) : null,
-      preloadData["vote_average"] != null && preloadData["vote_average"] > 0 ? "${preloadData["vote_average"]} ★" : null,
+      data["release_date"] != null ? "Sortie : " + DateFormat('dd/MM/yyyy').format(DateTime.parse(data["release_date"])) : null,
+      data["vote_average"] != null && data["vote_average"] > 0 ? "${data["vote_average"]} ★" : null,
       data["budget"] != null && data["budget"] > 0 ? "${data["budget"]} \$" : null,
       data["status"] != null ? data["status"] : null,
     ];
