@@ -30,7 +30,7 @@ class GlobalsData {
   
   static const String backdropSize = "https://image.tmdb.org/t/p/w780/";
   static const String thumbBackdropSize = "https://image.tmdb.org/t/p/w300/"; 
-  static const String posterSize = "https://image.tmdb.org/t/p/w500/";
+  static const String posterSize = "https://image.tmdb.org/t/p/w780/";
   static const String thumbPosterSize = "https://image.tmdb.org/t/p/w92/";
   static const String thumbProfileSize = "https://image.tmdb.org/t/p/w45/";
   static const String profileSize = "https://image.tmdb.org/t/p/h632/";
@@ -67,7 +67,8 @@ class GlobalsMessage {
       "selected_color": Color(0XFF636363).withAlpha(50),
       "splash_color": Color(0XFF636363).withAlpha(100),
       "icon": Icons.apps,
-      "keyword": "Tous"
+      "keyword": "Ma Vidéothèque",
+      "library_appBar": "Ma Vidéothèque"
     },
     {
       "name": movie,
@@ -79,7 +80,8 @@ class GlobalsMessage {
       "icon": Icons.movie,
       "db_route": "movies",
       "image_type": ImageTypes.Poster,
-      "keyword": "Films"
+      "keyword": "Films",
+      "library_appBar": "Mes Films"
     },
     {
       "name": tv,
@@ -91,7 +93,8 @@ class GlobalsMessage {
       "icon": Icons.tv,
       "db_route": "series",
       "image_type": ImageTypes.Poster,
-      "keyword": "Séries TV"
+      "keyword": "Séries TV",
+      "library_appBar": "Mes Séries TV"
     },
     {
       "name": person,
@@ -103,7 +106,8 @@ class GlobalsMessage {
       "icon": Icons.person,
       "db_route": "people",
       "image_type": ImageTypes.Profile,
-      "keyword": "Personnes"
+      "keyword": "Personnes",
+      "library_appBar": "Personnes"
     },
     {
       "name": collection,
@@ -115,7 +119,8 @@ class GlobalsMessage {
       "icon": Icons.subscriptions,
       "db_route": "collections",
       "image_type": ImageTypes.Poster,
-      "keyword": "Collections"
+      "keyword": "Collections",
+      "library_appBar": "Mes Collections"
     },
     // {
     //   "name": companies,

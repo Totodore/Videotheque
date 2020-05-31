@@ -281,6 +281,21 @@ class FirestoreQueries {
       print("no data");
     }
   }
+  static Future<Map> getAllElements(QueryTypes type, [int limit, int offset = 0]) async {
+    try {
+      Map data = {};
+      if (type == QueryTypes.all) {
+        for (QueryTypes typeIterator in List.from(QueryTypes.values)..removeAt(0))
+          data.addAll((await (await _getUserCollection).document(_dbRouteFromElement(typeIterator)).get()).data);
+      } else
+        data = (await (await _getUserCollection).document(_dbRouteFromElement(type)).get()).data;
+      return limit != null ? 
+        Map.fromIterables(data.keys.skip(offset).take(limit), data.values.skip(offset).take(limit))
+        : Map.fromIterables(data.keys.skip(offset), data.values.skip(offset));
+    } on Exception catch(e) {
+      print(e);
+    }
+  }
 
   //Récupère les données de l'utilisateur courant
   static Future<CollectionReference> get _getUserCollection async => 
