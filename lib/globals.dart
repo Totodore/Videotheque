@@ -68,7 +68,10 @@ class GlobalsMessage {
       "splash_color": Color(0XFF636363).withAlpha(100),
       "icon": Icons.apps,
       "keyword": "Ma Vidéothèque",
-      "library_appBar": "Ma Vidéothèque"
+      "library_appBar": "Ma Vidéothèque",
+      "library_fav": "Mes favoris",
+      "library_seen": "Vus",
+      "library_to_see": "À voir"
     },
     {
       "name": movie,
@@ -81,7 +84,10 @@ class GlobalsMessage {
       "db_route": "movies",
       "image_type": ImageTypes.Poster,
       "keyword": "Films",
-      "library_appBar": "Mes Films"
+      "library_appBar": "Mes Films",
+      "library_fav": "Mes films favoris",
+      "library_seen": "Mes derniers films vus",
+      "library_to_see": "Mes derniers films à voir"
     },
     {
       "name": tv,
@@ -94,7 +100,10 @@ class GlobalsMessage {
       "db_route": "series",
       "image_type": ImageTypes.Poster,
       "keyword": "Séries TV",
-      "library_appBar": "Mes Séries TV"
+      "library_appBar": "Mes Séries TV",
+      "library_fav": "Mes séries favorites",
+      "library_seen": "Mes dernières séries vues",
+      "library_to_see": "Mes dernières séries à voir"
     },
     {
       "name": person,
@@ -107,7 +116,8 @@ class GlobalsMessage {
       "db_route": "people",
       "image_type": ImageTypes.Profile,
       "keyword": "Personnes",
-      "library_appBar": "Personnes"
+      "library_appBar": "Personnes",
+      "library_fav": "Mes personnes favorites",
     },
     {
       "name": collection,
@@ -120,7 +130,11 @@ class GlobalsMessage {
       "db_route": "collections",
       "image_type": ImageTypes.Poster,
       "keyword": "Collections",
-      "library_appBar": "Mes Collections"
+      "library_appBar": "Mes Collections",
+      "library_fav": "Mes collections favorites",
+      "library_seen": "Mes dernières collections vues",
+      "library_to_see": "Mes dernières collection à voir"
+      
     },
     // {
     //   "name": companies,

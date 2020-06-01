@@ -48,6 +48,9 @@ class CarrouselController extends ChangeNotifier {
   String getImageElement(int index) {
       return carrouselData[index]["image_url"];
   }
+  QueryTypes getElementType(int index) {
+    return EnumToString.fromString(QueryTypes.values, carrouselData[index]["type"]);
+  }
   
   ImageTypes getImageType(int index) {
     QueryTypes type = EnumToString.fromString(QueryTypes.values, carrouselData[index]["type"]);

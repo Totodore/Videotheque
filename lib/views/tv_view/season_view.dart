@@ -1,10 +1,11 @@
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
 import 'package:Videotheque/components/skeleton_tag_component.dart';
-import 'package:Videotheque/views/tv_view/carrousel_view.dart';
+
 import 'package:Videotheque/views/tv_view/tag_view.dart';
 import 'package:Videotheque/views/tv_view/trailer_view.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
+import 'package:Videotheque/views/components/carrousel_view.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -132,7 +133,7 @@ class SeasonView extends StatelessWidget {
                               data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
                               child: AnimatedCrossFade(
                                 firstChild: SkeletonCarrouselComponent(),
-                                secondChild: controller.objectsStates[ElementsTypes.EpisodesCarrousel] == States.Added ? CarrouselView(ElementsTypes.EpisodesCarrousel, controller.carrouselData[ElementsTypes.EpisodesCarrousel], controller.showEpisodeEl) : Padding(padding: EdgeInsets.all(0)),
+                                secondChild: controller.objectsStates[ElementsTypes.EpisodesCarrousel] == States.Added ? CarrouselView(QueryTypes.tv, controller.carrouselData[ElementsTypes.EpisodesCarrousel], controller.showEpisodeEl) : Padding(padding: EdgeInsets.all(0)),
                                 crossFadeState: controller.objectsStates[ElementsTypes.EpisodesCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                                 duration: Duration(milliseconds: 200),
                               ),
@@ -147,7 +148,7 @@ class SeasonView extends StatelessWidget {
                               data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
                               child: AnimatedCrossFade(
                                 firstChild: SkeletonCarrouselComponent(),
-                                secondChild: controller.objectsStates[ElementsTypes.CastingCarrousel] == States.Added ? CarrouselView(ElementsTypes.CastingCarrousel, controller.carrouselData[ElementsTypes.CastingCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                                secondChild: controller.objectsStates[ElementsTypes.CastingCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.CastingCarrousel]) : Padding(padding: EdgeInsets.all(0)),
                                 crossFadeState: controller.objectsStates[ElementsTypes.CastingCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                                 duration: Duration(milliseconds: 200),
                               ),
@@ -162,7 +163,7 @@ class SeasonView extends StatelessWidget {
                               data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
                               child: AnimatedCrossFade(
                                 firstChild: SkeletonCarrouselComponent(),
-                                secondChild: controller.objectsStates[ElementsTypes.CrewCarrousel] == States.Added ? CarrouselView(ElementsTypes.CrewCarrousel, controller.carrouselData[ElementsTypes.CrewCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                                secondChild: controller.objectsStates[ElementsTypes.CrewCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.CrewCarrousel]) : Padding(padding: EdgeInsets.all(0)),
                                 crossFadeState: controller.objectsStates[ElementsTypes.CrewCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                                 duration: Duration(milliseconds: 200),
                               ),

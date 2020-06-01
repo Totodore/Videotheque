@@ -1,22 +1,23 @@
-
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/views/tv_view/tv_view.dart';
+import 'package:Videotheque/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
-import 'package:Videotheque/utils.dart';
-import 'package:Videotheque/controllers/library_controller/carrousel_controller.dart';
+
+import 'package:Videotheque/controllers/components/carrousel_controller.dart';
+
 class CarrouselView extends StatelessWidget {
-  ElementsTypes type;
-  List dataCarrousel;
-  Color mainColor;
-  Color splashColor;
-  CarrouselView(this.type, this.dataCarrousel, this.mainColor, this.splashColor);
-  
+
+  QueryTypes type;
+  List data;
+  Function showEl;
+
+  CarrouselView(this.type, this.data, [this.showEl]);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => CarrouselController(context, type, dataCarrousel),
+      create: (context) => CarrouselController(context, type, data, showEl),
       child: Consumer<CarrouselController>(
         builder: (context, controller, child) {
           return Padding(
@@ -29,7 +30,7 @@ class CarrouselView extends StatelessWidget {
                 runSpacing: 5,
                 runAlignment: WrapAlignment.center,
                 alignment: WrapAlignment.start,
-                children: List.generate(controller.carrouselData.length, (int index) {
+                children: List.generate(controller.length, (int index) {
                   String heroTag = controller.heroTag;
                   return Padding(
                     padding: EdgeInsets.only(bottom: 8),
@@ -55,7 +56,7 @@ class CarrouselView extends StatelessWidget {
                               blur: 2,                      
                             ),
                           ),
-                          controller.getElementType(index) == QueryTypes.person ? Positioned(
+                          controller.isPeople ? Positioned(
                             bottom: 0,
                             right: 0,
                             left: 0,
