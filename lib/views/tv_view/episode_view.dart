@@ -1,18 +1,22 @@
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
 import 'package:Videotheque/components/skeleton_tag_component.dart';
+
 import 'package:Videotheque/controllers/tv_controller/episode_controller.dart';
-import 'package:Videotheque/controllers/tv_controller/season_controller.dart';
+
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/views/tv_view/carrousel_view.dart';
+import 'package:Videotheque/utils.dart';
+
 import 'package:Videotheque/views/tv_view/tag_view.dart';
 import 'package:Videotheque/views/tv_view/trailer_view.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
+import 'package:Videotheque/views/components/carrousel_view.dart';
+
 import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
-import 'package:Videotheque/utils.dart';
+
 class EpisodeView extends StatelessWidget {
   Map data;
   String heroTag;
@@ -131,7 +135,7 @@ class EpisodeView extends StatelessWidget {
                             data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
                             child: AnimatedCrossFade(
                               firstChild: SkeletonCarrouselComponent(),
-                              secondChild: controller.objectsStates[ElementsTypes.GuestsCarrousel] == States.Added ? CarrouselView(ElementsTypes.GuestsCarrousel, controller.carrouselData[ElementsTypes.GuestsCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                              secondChild: controller.objectsStates[ElementsTypes.GuestsCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.GuestsCarrousel]) : Padding(padding: EdgeInsets.all(0)),
                               crossFadeState: controller.objectsStates[ElementsTypes.GuestsCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                               duration: Duration(milliseconds: 200),
                             ),
@@ -146,7 +150,7 @@ class EpisodeView extends StatelessWidget {
                             data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
                             child: AnimatedCrossFade(
                               firstChild: SkeletonCarrouselComponent(),
-                              secondChild: controller.objectsStates[ElementsTypes.CastingCarrousel] == States.Added ? CarrouselView(ElementsTypes.CastingCarrousel, controller.carrouselData[ElementsTypes.CastingCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                              secondChild: controller.objectsStates[ElementsTypes.CastingCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.CastingCarrousel]) : Padding(padding: EdgeInsets.all(0)),
                               crossFadeState: controller.objectsStates[ElementsTypes.CastingCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                               duration: Duration(milliseconds: 200),
                             ),
@@ -161,7 +165,7 @@ class EpisodeView extends StatelessWidget {
                             data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
                             child: AnimatedCrossFade(
                               firstChild: SkeletonCarrouselComponent(),
-                              secondChild: controller.objectsStates[ElementsTypes.CrewCarrousel] == States.Added ? CarrouselView(ElementsTypes.CrewCarrousel, controller.carrouselData[ElementsTypes.CrewCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                              secondChild: controller.objectsStates[ElementsTypes.CrewCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.CrewCarrousel]) : Padding(padding: EdgeInsets.all(0)),
                               crossFadeState: controller.objectsStates[ElementsTypes.CrewCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                               duration: Duration(milliseconds: 200),
                             ),

@@ -3,20 +3,24 @@ import 'dart:ui';
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
 import 'package:Videotheque/components/skeleton_tag_component.dart';
+
 import 'package:Videotheque/controllers/collection_controller/collection_controller.dart';
-import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/views/collection_view/carrousel_view.dart';
+
 import 'package:Videotheque/views/collection_view/tag_view.dart';
+import 'package:Videotheque/views/components/carrousel_view.dart';
+
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/utils.dart';
+
 import 'package:background_app_bar/background_app_bar.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
-import 'package:Videotheque/utils.dart';
 
 class CollectionView extends StatelessWidget {
-   static final Color baseColor = GlobalsMessage.chipData[QueryTypes.values.indexOf(QueryTypes.collection)]["color"];
+  static final Color baseColor = GlobalsMessage.chipData[QueryTypes.values.indexOf(QueryTypes.collection)]["color"];
   static final Color splashColor = GlobalsMessage.chipData[QueryTypes.values.indexOf(QueryTypes.collection)]["splash_color"];
   @override
   Widget build(BuildContext context) {
@@ -229,7 +233,7 @@ class CollectionView extends StatelessWidget {
                             data: Theme.of(context).copyWith(splashColor: CollectionView.splashColor),
                             child: AnimatedCrossFade(
                               firstChild: SkeletonCarrouselComponent(),
-                              secondChild: controller.objectsStates[ElementsTypes.MoviesCarrousel] == States.Added ? CarrouselView(controller.carrouselData[ElementsTypes.MoviesCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                              secondChild: controller.objectsStates[ElementsTypes.MoviesCarrousel] == States.Added ? CarrouselView(QueryTypes.movie, controller.carrouselData[ElementsTypes.MoviesCarrousel]) : Padding(padding: EdgeInsets.all(0)),
                               crossFadeState: controller.objectsStates[ElementsTypes.MoviesCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                               duration: Duration(milliseconds: 200),
                             ),

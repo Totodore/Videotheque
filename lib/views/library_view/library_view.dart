@@ -37,6 +37,7 @@ class LibraryViewStates extends State<LibraryView> with SingleTickerProviderStat
                 child: Scaffold(
                   appBar: AppBar(
                     titleSpacing: 0,
+                    automaticallyImplyLeading: false,
                     title: Material(
                       child: Theme(
                         data: ThemeData(

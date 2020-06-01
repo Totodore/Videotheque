@@ -30,13 +30,9 @@ class LibraryBodyView extends StatelessWidget {
       child: Consumer<LibraryBodyController>(builder: (BuildContext context, controller, child) => 
       CustomScrollView(
         physics: BouncingScrollPhysics(),
-
         slivers: [
           controller.dispElement(ElementsTypes.ToSeeCarrousel) ? 
-            SliverPadding(
-              padding: const EdgeInsets.only(top: 20),
-              sliver: SliverToBoxAdapter(child: DividerComponent(mainColor, type == QueryTypes.all ? "À voir" : "${GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["keyword"]} à voir")),
-            ) 
+            SliverToBoxAdapter(child: DividerComponent(mainColor, GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["library_to_see"]))
             : SliverPadding(padding: EdgeInsets.zero),
           SliverToBoxAdapter(
             child: Container(
@@ -64,7 +60,7 @@ class LibraryBodyView extends StatelessWidget {
             ),
           ),
           controller.dispElement(ElementsTypes.FavCarrousel) ?
-            SliverToBoxAdapter(child: DividerComponent(mainColor, type == QueryTypes.all ? "Favoris" : "${GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["keyword"]} favoris")) 
+            SliverToBoxAdapter(child: DividerComponent(mainColor, GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["library_fav"])) 
             : SliverPadding(padding: EdgeInsets.zero),
           SliverToBoxAdapter(
             child: Container(
@@ -92,7 +88,7 @@ class LibraryBodyView extends StatelessWidget {
             ),
           ),
           controller.dispElement(ElementsTypes.SeenCarrousel) ?
-            SliverToBoxAdapter(child: DividerComponent(mainColor, type == QueryTypes.all ? "À voir" : "${GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["keyword"]} vus")) 
+            SliverToBoxAdapter(child: DividerComponent(mainColor, GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["library_seen"])) 
             : SliverPadding(padding: EdgeInsets.zero),
           SliverToBoxAdapter(
             child: Container(
@@ -120,22 +116,24 @@ class LibraryBodyView extends StatelessWidget {
             ),
           ),
           controller.dispElement(ElementsTypes.MainData) ? SliverStickyHeaderBuilder(
-            controller: controller.libraryHeaderController..addListener(() {print(controller.libraryHeaderController.stickyHeaderScrollOffset);}),
             builder: (BuildContext context, SliverStickyHeaderState state) => AppBar(
               backgroundColor: state.isPinned ? Colors.white.withOpacity(0.4) : Colors.transparent,
+              // leading: Padding(padding: EdgeInsets.zero),
+              automaticallyImplyLeading: false,
               elevation: state.isPinned ? 4 : 0,
               titleSpacing: 0,
               title: ClipRect(
                 child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8), child: AppBar(
                   backgroundColor: Colors.white.withOpacity(0.4),
+                  // leading: Padding(padding: EdgeInsets.zero),
                   elevation: 0,
+                  automaticallyImplyLeading: false,
+
                   title: Text(GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["library_appBar"], style: TextStyle(color: Colors.grey[800])),
                   actions: <Widget>[
                     IconButton(icon: Icon(Icons.search, color: Colors.grey[800], size: 30)),
                     Padding(padding: EdgeInsets.only(right: 5)),
-                    IconButton(icon: Icon(CommunityMaterialIcons.view_list, color: Colors.grey[800], size: 30)),
-                    Padding(padding: EdgeInsets.only(right: 5)),
-                    IconButton(icon: Icon(CommunityMaterialIcons.view_grid, color: Colors.grey[800], size: 30)),
+                    IconButton(icon: Icon(Icons.filter_list, color: Colors.grey[800], size: 30)),
                     Padding(padding: EdgeInsets.only(right: 16))
                   ],
                 )),
@@ -166,13 +164,36 @@ class LibraryBodyView extends StatelessWidget {
                             placeholder: AssetImage("assets/loading.png"),
                             thumbnail: Utils.fetchImage(controller.getImageElement(index), controller.getImageType(index), true),
                             image: Utils.fetchImage(controller.getImageElement(index), controller.getImageType(index)),
-                            width: 480,
+                            width: 400,
                             height: 600,
                             fit: BoxFit.fitHeight,
                             fadeDuration: Duration(milliseconds: 150),
                             blur: 2,                      
                           ),
                         ),
+                        controller.getElementType(index) == QueryTypes.person ? Positioned(
+                          bottom: 0,
+                          right: 0,
+                          left: 0,
+                          height: 40,
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Text(controller.getNameElement(index) ?? "", style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17
+                            ), maxLines: 1),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: FractionalOffset.bottomCenter,
+                                end: FractionalOffset.topCenter,
+                                colors: [
+                                  Colors.black.withAlpha(160),
+                                  Colors.black.withAlpha(0)
+                                ]
+                              )
+                            ),
+                          ),
+                        ) : Padding(padding: EdgeInsets.zero)
                       ],
                     ),
                   );

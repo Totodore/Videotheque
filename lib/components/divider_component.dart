@@ -10,7 +10,7 @@ class DividerComponent extends StatelessWidget {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: Divider(
             color: this.mainColor,
             height: 2,
