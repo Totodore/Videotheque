@@ -6,43 +6,31 @@ class SkeletonCarrouselComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 13),
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
+        child: Wrap(
+          spacing: 13,
+          runSpacing: 5,
+          runAlignment: WrapAlignment.center,
+          alignment: WrapAlignment.start,
           children: List.generate(elementLength, (int index) {
             return Card(
               elevation: 1,
               margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: Column(
-                children: <Widget>[
-                  SkeletonAnimation(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5), 
-                        color: Colors.grey[300],
-                      ),
-                      width: 100,
-                      height: 150,
-                    ),
+              child: SkeletonAnimation(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5), 
+                    color: Colors.grey[300],
                   ),
-                  SkeletonAnimation(
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                      width: 50, 
-                      height: 13,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
-                      ),
-                    )
-                  ),
-                ],
+                  width: 125,
+                  height: 187.5,
+                ),
               ),
             );
-          })
+          }),
         ),
       ),
     );
