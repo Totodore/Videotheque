@@ -3,6 +3,7 @@ import 'package:Videotheque/controllers/search_controller/result_controller.dart
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -129,57 +130,66 @@ class ResultSearchView extends StatelessWidget {
                         //   break;
                         default: break;
                       }
-                      return Card(
-                        elevation: 2,
-                        borderOnForeground: true,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
-                        margin: EdgeInsets.all(6),
-                        child: InkWell(
-                          onTap: () => controller.elementTapped(GlobalsMessage.chipData[indexType]["route"], element, heroTag),
-                          onDoubleTap: null,
-                          onLongPress: null,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                leading: Icon(icon, color: iconColor),
-                                title: title != null ? Text(title, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),) : null,
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(right: 7, left: 7, bottom: 7, top:0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.max,
+                      return AnimationConfiguration.staggeredList(
+                        position: indexEl,
+                        duration: const Duration(milliseconds: 350),
+                        child: SlideAnimation(
+                          verticalOffset: 25,
+                          child: FadeInAnimation(
+                            child: Card(
+                              elevation: 2,
+                              borderOnForeground: true,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                              margin: EdgeInsets.all(6),
+                              child: InkWell(
+                                onTap: () => controller.elementTapped(GlobalsMessage.chipData[indexType]["route"], element, heroTag),
+                                onDoubleTap: null,
+                                onLongPress: null,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
-                                    posterPath != null ? Hero(
-                                      tag: heroTag, 
-                                      transitionOnUserGestures: true, 
-                                      child: ProgressiveImage(
-                                        placeholder: AssetImage("assets/loading.png"),
-                                        thumbnail: Utils.fetchImage(posterPath, type == QueryTypes.person ? ImageTypes.Profile : ImageTypes.Poster, true),
-                                        image: Utils.fetchImage(posterPath, type == QueryTypes.person ? ImageTypes.Profile : ImageTypes.Poster),
-                                        width: 100,
-                                        height: 150,
-                                        fit: BoxFit.cover,
-                                        fadeDuration: Duration(milliseconds: 150),
-                                        blur: 2,
-                                      )
-                                    ) : Container(),
-                                    Padding(
-                                      child: Container(),
-                                      padding: EdgeInsets.only(left: 7),
-                                    ),                       
-                                    infos,
+                                    ListTile(
+                                      leading: Icon(icon, color: iconColor),
+                                      title: title != null ? Text(title, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),) : null,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(right: 7, left: 7, bottom: 7, top:0),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: <Widget>[
+                                          posterPath != null ? Hero(
+                                            tag: heroTag, 
+                                            transitionOnUserGestures: true, 
+                                            child: ProgressiveImage(
+                                              placeholder: AssetImage("assets/loading.png"),
+                                              thumbnail: Utils.fetchImage(posterPath, type == QueryTypes.person ? ImageTypes.Profile : ImageTypes.Poster, true),
+                                              image: Utils.fetchImage(posterPath, type == QueryTypes.person ? ImageTypes.Profile : ImageTypes.Poster),
+                                              width: 100,
+                                              height: 150,
+                                              fit: BoxFit.cover,
+                                              fadeDuration: Duration(milliseconds: 150),
+                                              blur: 2,
+                                            )
+                                          ) : Container(),
+                                          Padding(
+                                            child: Container(),
+                                            padding: EdgeInsets.only(left: 7),
+                                          ),                       
+                                          infos,
+                                        ],
+                                      ),
+                                    ),
+                                    Divider(
+                                      color: GlobalsMessage.chipData[indexType]["color"],
+                                      height: 2,
+                                      thickness: 2,
+                                    ),
                                   ],
                                 ),
                               ),
-                              Divider(
-                                color: GlobalsMessage.chipData[indexType]["color"],
-                                height: 2,
-                                thickness: 2,
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       );

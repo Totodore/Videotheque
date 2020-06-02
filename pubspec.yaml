@@ -37,6 +37,7 @@ dependencies:
     firebase_remote_config: ^0.3.0+3
     enum_to_string: ^1.0.9
     flutter_sticky_header: ^0.4.2
+    flutter_staggered_animations: ^0.1.2
     
 dev_dependencies:
     flutter_test:
