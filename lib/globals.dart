@@ -18,7 +18,9 @@ class GlobalsColor {
   static final darkGrey = Color(0xFF353535);
 
 }
-class GlobalsParam {
+class GlobalsCache {
+  static Map<QueryTypes, Map> libraryCache;
+  static bool loadedCache = false;
 }
 
 class GlobalsData {
@@ -38,7 +40,6 @@ class GlobalsData {
   static double initSortBarPos = 59;  //Default value
   static double endSortBarPos = 24.0;
   static double deltaSortBarPos = initSortBarPos - endSortBarPos;
-
 }
 
 
