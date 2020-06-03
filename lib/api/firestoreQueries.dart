@@ -282,30 +282,6 @@ class FirestoreQueries {
       print("no data");
     }
   }
-  static Map getElementsFromOptionsCache(QueryTypes type, Options option, [int limit = -1]) {
-    Map data = {};
-    if (type == QueryTypes.all) {
-      for (QueryTypes typeIterator in List.from(QueryTypes.values)..removeAt(0))
-        data.addAll(GlobalsCache.libraryCache[typeIterator]);
-    } else
-      data = GlobalsCache.libraryCache[type];
-
-    data.removeWhere((key, value) {
-      switch (option) {
-        case Options.Seen:
-          return !value["seen"];
-        case Options.Fav:
-          return !value["fav"];
-        case Options.ToSee:
-          return !value["to_see"];
-        default: return false;
-      }
-    });
-    if (limit > 0) {
-      data = Map.fromIterables(data.keys.take(limit), data.values.take(limit));
-    }
-    return data;
-  }
   static Future<Map> getAllElements(QueryTypes type, [int limit, int offset = 0]) async {
     try {
       Map data = {};
@@ -320,35 +296,7 @@ class FirestoreQueries {
     } on Exception catch(e) {
       print(e);
     }
-  }
-  static Map getAllElementsCache(QueryTypes type, [int limit, int offset = 0]) {
-    Map data = {};
-    if (type == QueryTypes.all) {
-      for (QueryTypes typeIterator in List.from(QueryTypes.values)..removeAt(0))
-        data.addAll(GlobalsCache.libraryCache[typeIterator]);
-    } else
-      data = GlobalsCache.libraryCache[type];
-
-    return limit != null ? 
-      Map.fromIterables(data.keys.skip(offset).take(limit), data.values.skip(offset).take(limit))
-      : Map.fromIterables(data.keys.skip(offset), data.values.skip(offset));
-  }
-  static Future<bool> hasElementsCacheChanged(QueryTypes type, [int limit, int offset = 0]) async {
-    Map data = await getAllElements(type, limit, offset);
-    Map cache = getAllElementsCache(type, limit, offset);
-
-    if (data == null) 
-      return false;
-    else
-      return mapEquals(data, cache);
-  }
-  static Future<bool> hasElementsFromOptionsCacheChanged(QueryTypes type, Options option, [int limit = -1]) async {
-    Map data = await getElementsFromOptions(type, option, limit);
-    Map cache = getElementsFromOptionsCache(type, option, limit);
-    if (data == null) 
-      return false;
-    else
-      return mapEquals(data, cache);
+    return null;
   }
 
   //Récupère les données de l'utilisateur courant
