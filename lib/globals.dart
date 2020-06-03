@@ -1,4 +1,5 @@
 import 'package:Videotheque/views/collection_view/collection_view.dart';
+import 'package:Videotheque/views/library_view/library_body_view.dart';
 import 'package:Videotheque/views/movie_view/movie_view.dart';
 import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
@@ -21,6 +22,7 @@ class GlobalsColor {
 class GlobalsCache {
   static Map<QueryTypes, Map> libraryCache;
   static bool loadedCache = false;
+  static final List<Widget> libraryViews = List.generate(QueryTypes.values.length, (index) => LibraryBodyView(QueryTypes.values[index]));
 }
 
 class GlobalsData {

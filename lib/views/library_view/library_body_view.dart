@@ -7,21 +7,33 @@ import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/utils.dart';
 import 'package:Videotheque/views/library_view/card_view.dart';
 import 'package:Videotheque/views/library_view/carrousel_view.dart';
-import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
-class LibraryBodyView extends StatelessWidget {
+class LibraryBodyView extends StatefulWidget {
+  QueryTypes type;
+  
+  LibraryBodyView(this.type);
+
+  @override
+  State<StatefulWidget> createState() {
+    return LibraryBodyViewState(type);
+  }
+}
+
+class LibraryBodyViewState extends State<LibraryBodyView> with AutomaticKeepAliveClientMixin {
   QueryTypes type;
   Color mainColor;
   Color splashColor;
 
-  LibraryBodyView(this.type) {
+  LibraryBodyViewState(this.type) {
     mainColor = Colors.grey[800];
     splashColor = GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["splash_color"];
   }
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {

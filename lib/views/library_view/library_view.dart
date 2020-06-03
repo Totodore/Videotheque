@@ -165,11 +165,7 @@ class LibraryViewStates extends State<LibraryView> with SingleTickerProviderStat
                     body: TabBarView(
                       physics: BouncingScrollPhysics(),
                       controller: resultsPageController,
-                      children: List<Widget>.generate(controller.tabLength, (int index) {
-                        Widget returner;
-                        QueryTypes type = QueryTypes.values[index];
-                        return LibraryBodyView(type);
-                      })
+                      children: GlobalsCache.libraryViews
                     )
                   )
                 ),

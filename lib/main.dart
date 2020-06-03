@@ -16,7 +16,6 @@ import 'globals.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  loadLibrary();
   runApp(MaterialApp(
     title: 'Vidéothèque',
     color: Color(0xFF008577),
@@ -56,13 +55,4 @@ void main() async {
       )
     ),
   ));
-}
-
-void loadLibrary() async {
-  for(QueryTypes type in List.from(QueryTypes.values..removeAt(0))) loadElement(type);
-  Future.wait(List.generate(QueryTypes.values.length-1, (index) => loadElement(QueryTypes.values[index+1])));
-  GlobalsCache.loadedCache = true;
-}
-Future loadElement(QueryTypes type) async {
-  GlobalsCache.libraryCache[type] = await FirestoreQueries.getAllElements(type);
 }
