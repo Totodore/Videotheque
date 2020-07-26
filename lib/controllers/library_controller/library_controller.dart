@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:Videotheque/globals.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -18,8 +16,7 @@ class LibraryController extends ChangeNotifier {
   bool isInnerBoxScrolled = false;
 
   bool dispStartupAnimation = false;
-  LibraryController(this.context) {
-  }
+  LibraryController(this.context);
 
   updateIsInnerBoxScrolled(box) {
     if (box != isInnerBoxScrolled) {

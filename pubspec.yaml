@@ -38,6 +38,9 @@ dependencies:
     enum_to_string: ^1.0.9
     flutter_sticky_header: ^0.4.2
     flutter_staggered_animations: ^0.1.2
+    rxdart: ^0.24.1
+    ndialog: ^2.1.0+6
+    flutter_animated_dialog: ^1.1.0
     
 dev_dependencies:
     flutter_test:

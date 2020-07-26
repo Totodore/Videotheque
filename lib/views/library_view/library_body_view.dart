@@ -7,6 +7,7 @@ import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/utils.dart';
 import 'package:Videotheque/views/library_view/card_view.dart';
 import 'package:Videotheque/views/library_view/carrousel_view.dart';
+import 'package:Videotheque/views/library_view/customSearchPainter.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
@@ -23,24 +24,34 @@ class LibraryBodyView extends StatefulWidget {
   }
 }
 
-class LibraryBodyViewState extends State<LibraryBodyView> with AutomaticKeepAliveClientMixin {
+class LibraryBodyViewState extends State<LibraryBodyView> with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   QueryTypes type;
   Color mainColor;
   Color splashColor;
+
+  AnimationController rippleAnimationController;
 
   LibraryBodyViewState(this.type) {
     mainColor = Colors.grey[800];
     splashColor = GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["splash_color"];
   }
+
+  @override
+  void initState() {
+    super.initState();
+    rippleAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+  }
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => LibraryBodyController(context, type),
+      create: (context) => LibraryBodyController(context, type, rippleAnimationController),
       child: Consumer<LibraryBodyController>(builder: (BuildContext context, controller, child) => 
       CustomScrollView(
+        controller: controller.sliverScrollController,
         physics: BouncingScrollPhysics(),
         slivers: [
           controller.dispElement(ElementsTypes.ToSeeCarrousel) ? 
@@ -128,28 +139,63 @@ class LibraryBodyViewState extends State<LibraryBodyView> with AutomaticKeepAliv
             ),
           ),
           controller.dispElement(ElementsTypes.MainData) ? SliverStickyHeaderBuilder(
-            builder: (BuildContext context, SliverStickyHeaderState state) => AppBar(
-              backgroundColor: state.isPinned ? Colors.white.withOpacity(0.4) : Colors.transparent,
-              // leading: Padding(padding: EdgeInsets.zero),
-              automaticallyImplyLeading: false,
-              elevation: state.isPinned ? 4 : 0,
-              titleSpacing: 0,
-              title: ClipRect(
-                child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8), child: AppBar(
-                  backgroundColor: Colors.white.withOpacity(0.4),
+            controller: controller.libraryHeaderController,
+            builder: (BuildContext context, SliverStickyHeaderState state) => Stack(
+              overflow: Overflow.visible,
+              children: [
+                !controller.dispSearchBar ? AppBar(
+                  backgroundColor: state.isPinned ? Colors.white.withOpacity(0.4) : Colors.transparent,
                   // leading: Padding(padding: EdgeInsets.zero),
-                  elevation: 0,
                   automaticallyImplyLeading: false,
+                  elevation: state.isPinned ? 4 : 0,
+                  titleSpacing: 0,
+                  title: ClipRect(
+                    child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8), child: AppBar(
+                      backgroundColor: Colors.white.withOpacity(0.4),
+                      // leading: Padding(padding: EdgeInsets.zero),
+                      elevation: 0,
+                      automaticallyImplyLeading: false,
 
-                  title: Text(GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["library_appBar"], style: TextStyle(color: Colors.grey[800])),
-                  actions: <Widget>[
-                    IconButton(icon: Icon(Icons.search, color: Colors.grey[800], size: 30)),
-                    Padding(padding: EdgeInsets.only(right: 5)),
-                    IconButton(icon: Icon(Icons.filter_list, color: Colors.grey[800], size: 30)),
-                    Padding(padding: EdgeInsets.only(right: 16))
+                      title: Text(GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["library_appBar"], style: TextStyle(color: Colors.grey[800])),
+                      actions: <Widget>[
+                        GestureDetector(child: IconButton(icon: Icon(Icons.search, color: Colors.grey[800], size: 30)), onTapUp: controller.onSearchButtonClick),
+                        Padding(padding: EdgeInsets.only(right: 5)),
+                        IconButton(icon: Icon(Icons.filter_list, color: Colors.grey[800], size: 30), onPressed: controller.onSortButtonClick),
+                        Padding(padding: EdgeInsets.only(right: 16))
+                      ],
+                    )),
+                  ),
+                ) : Container(),
+                AnimatedBuilder(
+                  animation: controller.rippleAnimation, 
+                  builder: (context, child) {
+                    return CustomPaint(
+
+                      painter: CustomSearchPainter(
+                        containerHeight: kToolbarHeight,
+                        center: controller.startRippleAnimation ?? Offset(0, 0),
+                        context: context,
+                        radius: controller.rippleAnimation.value*MediaQuery.of(context).size.width
+                      )
+                    );
+                  }
+                ),
+                controller.dispSearchBar ? AppBar(
+                  backgroundColor: Colors.white,
+                  leading: Icon(Icons.search, color: GlobalsColor.darkGreen,),
+                  title: TextField(
+                    decoration: InputDecoration(
+                      hintText: "Recherchez un élément"
+                    ),
+                  ),
+                  actions: [
+                    IconButton(
+                      icon: Icon(Icons.close, color: GlobalsColor.darkGreen),
+                      onPressed: controller.onCloseSearchClick,
+                    )
                   ],
-                )),
-              ),
+                ) : Container()
+              ],
             ),
             sliver: SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
