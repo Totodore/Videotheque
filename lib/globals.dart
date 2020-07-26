@@ -62,6 +62,16 @@ class GlobalsMessage {
   static const String tv = "Séries TV";
   static const String companies = "Companies"; 
 
+  static Map<SortOptions, String> sortOptions = Map.fromIterables(SortOptions.values, [
+    "Popularité",
+    "Ordre Alphabétique A-Z",
+    "Ordre Alphabétique Z-A",
+    "Date d'Ajout",
+    "À voir",
+    "Vus",
+    "Favoris",
+  ]);
+
   static List<Map<dynamic, dynamic>> chipData = [
     {
       "name": general,
@@ -209,6 +219,16 @@ enum ImageTypes {
 enum Options {
   Seen,
   ToSee,
+  Fav
+}
+
+enum SortOptions {
+  Popularity,
+  Alpha1,
+  Alpha2,
+  Date,
+  ToSee,
+  Seen,
   Fav
 }
 
