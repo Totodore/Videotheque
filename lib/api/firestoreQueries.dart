@@ -4,7 +4,7 @@ import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:flutter/foundation.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 
 class FirestoreQueries {
@@ -253,52 +253,27 @@ class FirestoreQueries {
     }
     return true;
   }
-  static Future<Map> getElementsFromOptions(QueryTypes type, Options option, [int limit = -1]) async {
-    try {
-      Map data = {};
-      if (type == QueryTypes.all) {
-        for (QueryTypes typeIterator in List.from(QueryTypes.values)..removeAt(0))
-          data.addAll((await (await _getUserCollection).document(_dbRouteFromElement(typeIterator)).get()).data);
-      } else
-        data = (await (await _getUserCollection).document(_dbRouteFromElement(type)).get()).data;
-      data.removeWhere((key, value) {
-        switch (option) {
-          case Options.Seen:
-            return !value["seen"];
-          case Options.Fav:
-            return !value["fav"];
-          case Options.ToSee:
-            return !value["to_see"];
-          default: return false;
-        }
-      });
-      if (limit > 0) {
-        data = Map.fromIterables(data.keys.take(limit), data.values.take(limit));
+  //Ecoute les données de la bibliothèque qui arrivent
+  static void setElementsListener(QueryTypes type, Function onData, [int limit = -1, int offset = 0]) async {
+    Stream stream;
+    try {  
+      if (type != QueryTypes.all)
+        stream = (await _getUserCollection).document(_dbRouteFromElement(type)).snapshots().skip(offset);
+      else {
+        List<QueryTypes> types = List.from(QueryTypes.values)..removeAt(0);
+        stream = CombineLatestStream.list(await Future.wait(types.map((QueryTypes type) async {
+          return (await _getUserCollection).document(_dbRouteFromElement(type)).snapshots();
+        }))).skip(offset);
       }
-      return data;
-    } on Exception catch(e) {
-      print(e);
-    } on NoSuchMethodError catch(e) {
-      print("no data");
-    }
-  }
-  static Future<Map> getAllElements(QueryTypes type, [int limit, int offset = 0]) async {
-    try {
-      Map data = {};
-      if (type == QueryTypes.all) {
-        for (QueryTypes typeIterator in List.from(QueryTypes.values)..removeAt(0))
-          data.addAll((await (await _getUserCollection).document(_dbRouteFromElement(typeIterator)).get()).data);
-      } else
-        data = (await (await _getUserCollection).document(_dbRouteFromElement(type)).get()).data;
-      return limit != null ? 
-        Map.fromIterables(data.keys.skip(offset).take(limit), data.values.skip(offset).take(limit))
-        : Map.fromIterables(data.keys.skip(offset), data.values.skip(offset));
-    } on Exception catch(e) {
-      print(e);
-    }
-    return null;
-  }
 
+      if (limit == -1)
+        stream.listen(onData);
+      else
+        stream.take(limit).listen(onData);
+    } on Exception catch(e) {
+      print(e);
+    }   
+  }
   //Récupère les données de l'utilisateur courant
   static Future<CollectionReference> get _getUserCollection async => 
     Firestore.instance.collection(await FireauthQueries.getUserId);
@@ -326,6 +301,7 @@ class FirestoreQueries {
   static Future<int> statNumberEl(QueryTypes element) async {
     return (await (await _getUserCollection).document(_dbRouteFromElement(element)).get()).data.length;
   }
+
   static Future<int> get statNumberTags async {
     return (await (await _getUserCollection).document("tags").get()).data.length;
   }
