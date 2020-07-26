@@ -65,6 +65,7 @@ class EpisodeView extends StatelessWidget {
                             controller.data["overview"],
                             style: TextStyle(
                               fontSize: 17,
+                              height: 1.4
                             ),
                             dropCapPadding: EdgeInsets.only(right: 15),
                             textAlign: TextAlign.justify,
