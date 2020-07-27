@@ -1,6 +1,5 @@
 
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/views/tv_view/tv_view.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';

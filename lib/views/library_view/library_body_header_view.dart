@@ -13,23 +13,26 @@ class LibraryBodyHeaderView extends StatelessWidget {
   final QueryTypes type;
   final LibraryBodyController parentController;
   final List<ElementsTypes> optionsElems;
-  final Map dataHeader;
 
-  LibraryBodyHeaderView(this.mainColor, this.splashColor, this.type, this.parentController, this.optionsElems, this.dataHeader);
+  LibraryBodyHeaderView(this.mainColor, this.splashColor, this.type, this.parentController, this.optionsElems);
 
   @override
   Widget build(BuildContext context) {
+
     return ChangeNotifierProvider(
-      create: (BuildContext context) => LibraryBodyHeaderController(optionsElems, dataHeader),
+      create: (BuildContext context) => LibraryBodyHeaderController(optionsElems, parentController),
       child: Consumer<LibraryBodyHeaderController>(
         builder: (context, controller, child) {
-          return SliverToBoxAdapter(
-            child: Column(
-              children: optionsElems.map<Widget>((ElementsTypes elem) => Column(
+          return Column(
+            children: List.generate(optionsElems.length, (index) {
+              ElementsTypes elem = optionsElems[index];
+              if ((elem == ElementsTypes.SeenCarrousel || elem == ElementsTypes.ToSeeCarrousel) && type == QueryTypes.person) return Container(); 
+              if (controller.isEmpty(elem)) return Container();
+              return Column(
                 children: [
                   DividerComponent(
                     mainColor,
-                    GlobalsMessage.chipData[QueryTypes.values.indexOf(type)][GlobalsMessage.libraryHeaderBodyViewType][elem]
+                    GlobalsMessage.chipData[QueryTypes.values.indexOf(type)][GlobalsMessage.libraryHeaderBodyViewType[elem]]
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width - 20,
@@ -38,24 +41,25 @@ class LibraryBodyHeaderView extends StatelessWidget {
                     child: Theme(
                       data: Theme.of(context).copyWith(splashColor: splashColor),
                       child: Builder(builder: (BuildContext context) {
-                          if (controller.isSingleElement(elem))
-                            return CardView(
-                                controller.getFirstElementType(elem),
-                                controller.getFirstElement(elem)
-                              );
-                          else
-                            return CarrouselView(
-                              elem,
-                              controller.carrouselData[elem],
-                              mainColor,
-                              splashColor
-                            );
+                        if (controller.isSingleElement(elem))
+                          return CardView(
+                            controller.getFirstElementType(elem),
+                            controller.getFirstElement(elem)
+                          );
+                        else
+                          return CarrouselView(
+                            elem,
+                            controller.carrouselData[elem],
+                            mainColor,
+                            splashColor
+                          );
                       }),
                     ),
                   ),
                 ],
-              )),
-          ));
+              );
+            }),
+          );
         }
       ),
     );

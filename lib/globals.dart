@@ -1,8 +1,3 @@
-import 'package:Videotheque/views/collection_view/collection_view.dart';
-import 'package:Videotheque/views/library_view/library_body_view.dart';
-import 'package:Videotheque/views/movie_view/movie_view.dart';
-import 'package:Videotheque/views/person_view/person_view.dart';
-import 'package:Videotheque/views/tv_view/tv_view.dart';
 import 'package:flutter/material.dart';
 
 class GlobalsColor {
@@ -18,11 +13,6 @@ class GlobalsColor {
   static final lightBlue = Color(0xFFb5e2e2);
   static final darkGrey = Color(0xFF353535);
 
-}
-class GlobalsCache {
-  static Map<QueryTypes, Map> libraryCache;
-  static bool loadedCache = false;
-  static final List<Widget> libraryViews = List.generate(QueryTypes.values.length, (index) => LibraryBodyView(QueryTypes.values[index]));
 }
 
 class GlobalsData {
