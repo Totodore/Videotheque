@@ -5,7 +5,7 @@ import 'package:Videotheque/api/fireconfigQueries.dart';
 import 'package:Videotheque/api/firestoreQueries.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/utils.dart';
+import 'package:Videotheque/utils/utils.dart';
 import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';

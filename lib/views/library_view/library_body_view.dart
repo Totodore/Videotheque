@@ -42,7 +42,7 @@ class LibraryBodyViewState extends State<LibraryBodyView> with SingleTickerProvi
       create: (context) => LibraryBodyController(context, type),
       child: Consumer<LibraryBodyController>(
           builder: (BuildContext context, controller, child) => AnimatedCrossFade(
-            duration: const Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 0),
             crossFadeState: controller.displayLib ? CrossFadeState.showFirst : CrossFadeState.showSecond,
             secondChild: Container(
               height: double.infinity,

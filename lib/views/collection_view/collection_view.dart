@@ -10,7 +10,7 @@ import 'package:Videotheque/views/collection_view/tag_view.dart';
 import 'package:Videotheque/views/components/carrousel_view.dart';
 
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/utils.dart';
+import 'package:Videotheque/utils/utils.dart';
 
 import 'package:background_app_bar/background_app_bar.dart';
 import 'package:community_material_icon/community_material_icon.dart';

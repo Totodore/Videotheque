@@ -1,6 +1,6 @@
 import 'package:Videotheque/controllers/library_controller/card_controller.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/utils.dart';
+import 'package:Videotheque/utils/utils.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
