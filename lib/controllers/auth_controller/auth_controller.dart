@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
-import 'package:Videotheque/utils.dart';
+import 'package:Videotheque/utils/utils.dart';
 class AuthController extends ChangeNotifier {
   BuildContext context;
   BuildContext scaffoldContext;

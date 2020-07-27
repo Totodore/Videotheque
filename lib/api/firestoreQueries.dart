@@ -1,7 +1,7 @@
 import 'package:Videotheque/api/FireauthQueries.dart';
 import 'package:Videotheque/api/tmdbQueries.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/utils.dart';
+import 'package:Videotheque/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:rxdart/rxdart.dart';
