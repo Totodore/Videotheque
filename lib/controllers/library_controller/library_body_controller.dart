@@ -18,31 +18,36 @@ class LibraryBodyController extends CustomChangeNotifier {
   final BuildContext context;
   final QueryTypes type;
   final int CARROUSEL_LENGTH = 6;
-  final List<ElementsTypes> optionElems = [ElementsTypes.ToSeeCarrousel, ElementsTypes.SeenCarrousel, ElementsTypes.FavCarrousel];
+  final List<ElementsTypes> optionElems = [
+    ElementsTypes.ToSeeCarrousel,
+    ElementsTypes.SeenCarrousel,
+    ElementsTypes.FavCarrousel
+  ];
 
-  Map<ElementsTypes, States> objectsStates = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (int index) => States.Nothing));
-  Map<ElementsTypes, List> carrouselData = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (int index) => []));
+  Map<ElementsTypes, States> objectsStates = Map.fromIterables(
+      ElementsTypes.values,
+      List.generate(
+          ElementsTypes.values.length, (int index) => States.Nothing));
+  Map<ElementsTypes, List> carrouselData = Map.fromIterables(
+      ElementsTypes.values,
+      List.generate(ElementsTypes.values.length, (int index) => []));
 
   List _libraryData = [];
 
   SortOptions _sortOption = SortOptions.Popularity;
 
-  Offset startRippleAnimation;
-  Animation rippleAnimation;
-  final AnimationController rippleAnimationController;
-  bool _displaySearchBar = false;
+  final StickyHeaderController _libraryHeaderController =
+      StickyHeaderController();
+  final ScrollController _sliverScrollController =
+      ScrollController(keepScrollOffset: true);
 
-
-  final StickyHeaderController _libraryHeaderController = StickyHeaderController(); 
-  final ScrollController _sliverScrollController = ScrollController(keepScrollOffset: true);
-
-  LibraryBodyController(this.context, this.type, this.rippleAnimationController) {
-
+  LibraryBodyController(
+      this.context, this.type, this.rippleAnimationController) {
     for (ElementsTypes elem in optionElems)
       objectsStates[elem] = States.Loading;
 
-    
-    rippleAnimation = Tween(begin: 0.0, end: 1.0).animate(rippleAnimationController);
+    rippleAnimation =
+        Tween(begin: 0.0, end: 1.0).animate(rippleAnimationController);
     rippleAnimationController.addStatusListener(onRippleAnimation);
 
     getAllData();
@@ -56,6 +61,7 @@ class LibraryBodyController extends CustomChangeNotifier {
     else
       FirestoreQueries.setElementsListener(type, onLibraryElement);
   }
+
   setOptionsData() async {
     for (ElementsTypes elem in optionElems) {
       carrouselData[elem] = _libraryData.where((data) {
@@ -72,11 +78,10 @@ class LibraryBodyController extends CustomChangeNotifier {
       }).toList();
       if (carrouselData[elem] != null && carrouselData[elem].length > 0)
         objectsStates[elem] = States.Added;
-      else 
+      else
         objectsStates[elem] = States.Empty;
     }
-    if (this.mounted)
-      notifyListeners();
+    if (this.mounted) notifyListeners();
   }
 
   ///input type : [List<DocumentSnapshot>]
@@ -90,12 +95,11 @@ class LibraryBodyController extends CustomChangeNotifier {
       objectsStates[ElementsTypes.MainData] = States.Added;
     else
       objectsStates[ElementsTypes.MainData] = States.Empty;
-    if (this.mounted)
-      notifyListeners();
+    if (this.mounted) notifyListeners();
 
     setOptionsData();
-    
   }
+
   ///arg type : [DocumentSnapshot]
   void onLibraryElement(snapshot) => onAllLibraryElement([snapshot]);
 
@@ -116,7 +120,7 @@ class LibraryBodyController extends CustomChangeNotifier {
           return a["seen"] ? 1 : b["seen"] ? -1 : 0;
         case SortOptions.ToSee:
           return a["to_see"] ? 1 : b["to_see"] ? -1 : 0;
-        default: 
+        default:
           return 0;
       }
     });
@@ -132,87 +136,96 @@ class LibraryBodyController extends CustomChangeNotifier {
       duration: const Duration(milliseconds: 400),
     );
   }
-
-  void onSearchButtonClick(TapUpDetails details) {
-    //TODO: FIX SCROLLING
-    _sliverScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.ease);
-    startRippleAnimation = details.globalPosition;
-    rippleAnimationController.forward();
-
-  } 
-  void onCloseSearchClick() {
-    _displaySearchBar = false;
-    notifyListeners();
-    rippleAnimationController.reverse();
-  }
-
-  void onRippleAnimation(AnimationStatus status) {
-    if (status == AnimationStatus.completed) {
-      _displaySearchBar = true;
-      notifyListeners();
-    }
-  }
-
   onElementTapped(int index, String heroTag) async {
-    QueryTypes type = EnumToString.fromString(QueryTypes.values, _libraryData[index]["type"]);
-    GlobalsArgs.actualRoute = "/element/"+GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["route"];
+    QueryTypes type =
+        EnumToString.fromString(QueryTypes.values, _libraryData[index]["type"]);
+    GlobalsArgs.actualRoute = "/element/" +
+        GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["route"];
     GlobalsArgs.transfertArg = [_libraryData[index], heroTag];
     GlobalsArgs.isFromLibrary = true;
     switch (GlobalsArgs.actualRoute) {
       case "/element/movie":
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MovieView()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) => MovieView()));
         break;
       case "/element/person":
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => PersonView()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) => PersonView()));
         break;
       case "/element/tv":
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TvView()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) => TvView()));
         break;
       case "/element/collection":
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => CollectionView()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => CollectionView()));
         break;
       default:
     }
   }
 
   bool isSingleElement(ElementsTypes element) {
-    if (carrouselData[element].length > 1) return false;
-    else return true;
+    if (carrouselData[element].length > 1)
+      return false;
+    else
+      return true;
   }
 
   Map getFirstElement(ElementsTypes element) {
     return carrouselData[element][0];
   }
+
   QueryTypes getFirstElementType(ElementsTypes element) {
-    return EnumToString.fromString(QueryTypes.values, carrouselData[element][0]["type"]);
+    return EnumToString.fromString(
+        QueryTypes.values, carrouselData[element][0]["type"]);
   }
 
   bool dispElement(ElementsTypes element) {
-    if (objectsStates[element] == States.Loading || objectsStates[element] == States.Added)
+    if (objectsStates[element] == States.Loading ||
+        objectsStates[element] == States.Added)
       return true;
-    else return false;
+    else
+      return false;
+  }
+
+  bool get displayLib {
+    bool canDispLib = true;
+    for (ElementsTypes option in optionElems) {
+      if (objectsStates[option] != States.Added) canDispLib = false;
+    }
+    if (objectsStates[ElementsTypes.MainData] != States.Added)
+      canDispLib = false;
+    return canDispLib;
   }
 
   int get libraryLength => _libraryData.length;
 
   String get heroTag => Uuid().v1();
-  
+
   String getNameElement(int index) {
-      return _libraryData[index]["title"];
-  } 
-  String getImageElement(int index) {
-      return _libraryData[index]["image_url"];
-  }
-  QueryTypes getElementType(int index) {
-    return EnumToString.fromString(QueryTypes.values, _libraryData[index]["type"]);
-  }
-  
-  ImageTypes getImageType(int index) {
-    QueryTypes type = EnumToString.fromString(QueryTypes.values, _libraryData[index]["type"]);
-    return GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]["image_type"];
+    return _libraryData[index]["title"];
   }
 
-  StickyHeaderController get libraryHeaderController => _libraryHeaderController;
+  String getImageElement(int index) {
+    return _libraryData[index]["image_url"];
+  }
+
+  QueryTypes getElementType(int index) {
+    return EnumToString.fromString(
+        QueryTypes.values, _libraryData[index]["type"]);
+  }
+
+  ImageTypes getImageType(int index) {
+    QueryTypes type =
+        EnumToString.fromString(QueryTypes.values, _libraryData[index]["type"]);
+    return GlobalsMessage.chipData[QueryTypes.values.indexOf(type)]
+        ["image_type"];
+  }
+
+  StickyHeaderController get libraryHeaderController =>
+      _libraryHeaderController;
 
   ScrollController get sliverScrollController => _sliverScrollController;
 
