@@ -35,7 +35,7 @@ class CarrouselView extends StatelessWidget {
                     child: RaisedButton(
                       elevation: 2,
                       clipBehavior: Clip.hardEdge,
-                      onPressed: () => controller.onElementTapped(index, heroTag),
+                      onPressed: () {},
                       highlightElevation: 4,
                       padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
@@ -77,7 +77,18 @@ class CarrouselView extends StatelessWidget {
                                 )
                               ),
                             ),
-                          ) : Padding(padding: EdgeInsets.zero)
+                          ) : Padding(padding: EdgeInsets.zero),
+                          Positioned.fill(
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () => controller.onElementTapped(index, heroTag),
+                                splashColor: Colors.black.withOpacity(0.2),
+                                highlightColor: Colors.black.withOpacity(0.1),
+                                child: Container(height: double.maxFinite, width: double.maxFinite,),
+                              )
+                            )
+                          )
                         ],
                       ),
                     ),

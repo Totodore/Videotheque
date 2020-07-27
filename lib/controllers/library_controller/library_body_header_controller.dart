@@ -27,7 +27,6 @@ class LibraryBodyHeaderController extends ChangeNotifier {
   }
 
   QueryTypes getFirstElementType(ElementsTypes element) {
-    print(carrouselData[element]);
     return EnumToString.fromString(QueryTypes.values, carrouselData[element][0]["type"]);
   }
 

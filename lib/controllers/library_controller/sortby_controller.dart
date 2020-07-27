@@ -1,5 +1,4 @@
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/views/library_view/sortby_view.dart';
 import 'package:flutter/cupertino.dart';
 
 class SortByController extends ChangeNotifier {
