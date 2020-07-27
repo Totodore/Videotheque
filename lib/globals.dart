@@ -72,6 +72,12 @@ class GlobalsMessage {
     "Favoris",
   ]);
 
+  static Map<ElementsTypes, String> libraryHeaderBodyViewType = {
+    ElementsTypes.ToSeeCarrousel: "library_to_see",
+    ElementsTypes.FavCarrousel: "library_fav",
+    ElementsTypes.SeenCarrousel: "library_seen",
+  };
+
   static List<Map<dynamic, dynamic>> chipData = [
     {
       "name": general,
