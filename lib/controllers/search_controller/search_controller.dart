@@ -73,7 +73,7 @@ class SearchController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onchangeQuery(String query) async {
+  void onchangeQuery(String query) {
     if (query == null || query.length == 0)
       clearView();
     if (delayOkSearch != null) {

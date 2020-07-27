@@ -24,7 +24,11 @@ class LibraryBodyHeaderView extends StatelessWidget {
       child: Consumer<LibraryBodyHeaderController>(
         builder: (context, controller, child) {
           return Column(
-            children: List.generate(optionsElems.length, (index) {
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20)
+              ),
+            ]..addAll(List.generate(optionsElems.length, (index) {
               ElementsTypes elem = optionsElems[index];
               if ((elem == ElementsTypes.SeenCarrousel || elem == ElementsTypes.ToSeeCarrousel) && type == QueryTypes.person) return Container(); 
               if (controller.isEmpty(elem)) return Container();
@@ -58,7 +62,7 @@ class LibraryBodyHeaderView extends StatelessWidget {
                   ),
                 ],
               );
-            }),
+            })),
           );
         }
       ),

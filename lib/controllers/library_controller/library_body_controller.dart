@@ -9,6 +9,8 @@ class LibraryBodyController extends CustomChangeNotifier {
   final BuildContext context;
   final QueryTypes type;
   final int CARROUSEL_LENGTH = 6;
+  final ScrollController sliverScrollController = ScrollController(keepScrollOffset: true);
+
 
   final List<ElementsTypes> optionElems = [
     ElementsTypes.ToSeeCarrousel,
@@ -29,7 +31,6 @@ class LibraryBodyController extends CustomChangeNotifier {
 
   List _libraryData = [];
 
-  final ScrollController _sliverScrollController = ScrollController(keepScrollOffset: true);
 
   LibraryBodyController(this.context, this.type) {
 
@@ -97,8 +98,6 @@ class LibraryBodyController extends CustomChangeNotifier {
       canDispLib = true;
     return canDispLib;
   }
-
-  ScrollController get sliverScrollController => _sliverScrollController;
 
   List get libraryData => _libraryData;
 
