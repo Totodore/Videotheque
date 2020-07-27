@@ -46,6 +46,7 @@ class LibraryStickyView extends StatelessWidget {
                             actions: <Widget>[
                               GestureDetector(
                                 child: IconButton(
+                                  onPressed: () {},
                                   icon: Icon(Icons.search,
                                     color: Colors.grey[800],
                                     size: 30
@@ -96,7 +97,7 @@ class LibraryStickyView extends StatelessWidget {
                         ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: "Recherchez un élément",
+                          hintText: "Recherchez par titre, nom, tag...",
                           hintStyle: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600
