@@ -24,6 +24,7 @@ class LibraryStickyView extends StatelessWidget {
       create: (BuildContext context) => LibraryStickyController(context, _type, _parentController, _rippleAnimationController),
           child: Consumer<LibraryStickyController>(
             builder: (context, controller, child) => SliverStickyHeaderBuilder(
+              key: controller.stickyHeaderKey,
               controller: controller.libraryHeaderController,
               builder: (BuildContext context, SliverStickyHeaderState state) => Stack(
                 overflow: Overflow.visible,
@@ -45,12 +46,9 @@ class LibraryStickyView extends StatelessWidget {
                             ),
                             actions: <Widget>[
                               GestureDetector(
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.search,
-                                    color: Colors.grey[800],
-                                    size: 30
-                                  )
+                                child: Icon(Icons.search,
+                                  color: Colors.grey[800],
+                                  size: 30
                                 ),
                                 onTapUp: controller.onSearchButtonClick
                               ),
