@@ -88,13 +88,7 @@ class LibraryStickyController extends ChangeNotifier {
         case SortOptions.Alpha2:
           return b["title"].compareTo(a["title"]);
         case SortOptions.Date:
-          return a["creation_date"].compareTo(b["creation_date"]);
-        case SortOptions.Fav:
-          return a["fav"] ? 1 : b["fav"] ? -1 : 0;
-        case SortOptions.Seen:
-          return a["seen"] ? 1 : b["seen"] ? -1 : 0;
-        case SortOptions.ToSee:
-          return a["to_see"] ? 1 : b["to_see"] ? -1 : 0;
+          return b["creation_date"].compareTo(a["creation_date"]);
         default:
           return 0;
       }

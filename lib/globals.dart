@@ -56,10 +56,7 @@ class GlobalsMessage {
     "Popularité",
     "Ordre Alphabétique A-Z",
     "Ordre Alphabétique Z-A",
-    "Date d'Ajout",
-    "À voir",
-    "Vus",
-    "Favoris",
+    "Récemment ajoutés",
   ]);
 
   static Map<ElementsTypes, String> libraryHeaderBodyViewType = {
@@ -223,9 +220,6 @@ enum SortOptions {
   Alpha1,
   Alpha2,
   Date,
-  ToSee,
-  Seen,
-  Fav
 }
 
 enum QueryTypes {
