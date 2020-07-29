@@ -20,6 +20,9 @@ class LibraryStickyController extends ChangeNotifier {
   Animation rippleAnimation;
   List _libraryData;
   List _displayLibraryData;
+  Map<String, dynamic> _tags;
+
+  final GlobalKey stickyHeaderKey = GlobalKey();
   final AnimationController rippleAnimationController;
   final LibraryBodyController parentController;
   final QueryTypes type;
@@ -52,20 +55,10 @@ class LibraryStickyController extends ChangeNotifier {
 
   
   void onSearchButtonClick(TapUpDetails details) {
-    //TODO: FIX SCROLLING BUG
-    print(_libraryHeaderController.stickyHeaderScrollOffset);
     startRippleAnimation = details.globalPosition;
-    double scrollIndex;
-    if (_libraryHeaderController.stickyHeaderScrollOffset > parentController.sliverScrollController.position.maxScrollExtent)
-      scrollIndex = parentController.sliverScrollController.position.maxScrollExtent;
-    else if (_libraryHeaderController.stickyHeaderScrollOffset > 0)
-      scrollIndex = _libraryHeaderController.stickyHeaderScrollOffset;
-    else
-      scrollIndex = STICKY_HEADER_POS;
-    parentController.sliverScrollController.animateTo(
-      scrollIndex,
-      duration: const Duration(milliseconds: 250),
-      curve: Curves.ease);
+    _tags = parentController.tags;
+
+    Scrollable.ensureVisible(stickyHeaderKey.currentContext, duration: Duration(milliseconds: 250));
     rippleAnimationController.forward();
   }
 
@@ -124,7 +117,16 @@ class LibraryStickyController extends ChangeNotifier {
   }
 
   void searchQueryLibrary(String query) {
-    _displayLibraryData = _libraryData.where((el) => el["title"].toString().toUpperCase().contains(query.toUpperCase())).toList();
+    _displayLibraryData = _libraryData.where((el) {
+        if (el["title"].toString().toUpperCase().contains(query.toUpperCase()))
+          return true;
+        for (var tagKey in List.from(el["base_tags"])..addAll(el["added_tags"])) {
+          print(_tags);
+          // print(_tags[tagKey.toString()]);
+          if (_tags[tagKey.toString()].toString().toUpperCase().contains(query.toUpperCase())) return true;
+        }
+        return false;
+    }).toList();
     notifyListeners();
   }
 

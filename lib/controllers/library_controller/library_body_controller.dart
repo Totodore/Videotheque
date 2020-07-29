@@ -1,3 +1,4 @@
+import 'package:Videotheque/api/tmdbQueries.dart';
 import 'package:Videotheque/utils/customChangeNotifier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,6 +30,7 @@ class LibraryBodyController extends CustomChangeNotifier {
     List.generate(ElementsTypes.values.length, (int index) => [])
   );
 
+  Map<String, dynamic> tags = {};
   List _libraryData = [];
 
 
@@ -38,6 +40,7 @@ class LibraryBodyController extends CustomChangeNotifier {
       objectsStates[elem] = States.Loading;
 
     getAllData();
+    getTags();
   }
 
   getAllData() {
@@ -47,6 +50,24 @@ class LibraryBodyController extends CustomChangeNotifier {
       FirestoreQueries.setElementsListener(type, onAllLibraryElement);
     else
       FirestoreQueries.setElementsListener(type, onLibraryElement);
+  }
+
+  getTags() async {
+    tags = await FirestoreQueries.getTags();
+    List inTags = [];
+    if (type == QueryTypes.movie || type == QueryTypes.all) {
+      inTags = (await TMDBQueries.getTagListMovie())["genres"];
+      for (Map inTag in inTags) {
+        tags[inTag["id"].toString()] = inTag["name"];
+      }
+    }
+    if (type == QueryTypes.tv || type == QueryTypes.all){
+      inTags = (await TMDBQueries.getTagListTv())["genres"];
+      for (Map inTag in inTags) {
+        tags[inTag["id"].toString()] = inTag["name"];
+      }
+    }
+    print(tags);
   }
 
   ///input type : [List<DocumentSnapshot>]
