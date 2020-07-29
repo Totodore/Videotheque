@@ -222,6 +222,13 @@ enum SortOptions {
   Date,
 }
 
+enum HomeCarrousels {
+  Seen,
+  ToSee,
+  Similar,
+  LastAdded,
+}
+
 enum QueryTypes {
   all,
   movie,

@@ -115,8 +115,6 @@ class LibraryStickyController extends ChangeNotifier {
         if (el["title"].toString().toUpperCase().contains(query.toUpperCase()))
           return true;
         for (var tagKey in List.from(el["base_tags"])..addAll(el["added_tags"])) {
-          print(_tags);
-          // print(_tags[tagKey.toString()]);
           if (_tags[tagKey.toString()].toString().toUpperCase().contains(query.toUpperCase())) return true;
         }
         return false;

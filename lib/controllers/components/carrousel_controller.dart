@@ -3,7 +3,6 @@ import 'package:Videotheque/views/collection_view/collection_view.dart';
 import 'package:Videotheque/views/movie_view/movie_view.dart';
 import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
