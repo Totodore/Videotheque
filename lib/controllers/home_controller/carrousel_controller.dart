@@ -11,7 +11,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 
 class CarrouselController extends ChangeNotifier {
   
-  ElementsTypes type;
+  HomeCarrousels type;
   List carrouselData;
   String route;
   BuildContext context;

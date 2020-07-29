@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:Videotheque/api/fireauthQueries.dart';
-import 'package:Videotheque/api/fireconfigQueries.dart';
 import 'package:Videotheque/api/firestoreQueries.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
 import 'package:Videotheque/globals.dart';
@@ -34,12 +31,7 @@ class AccountController extends ChangeNotifier {
 
   AccountController(this.context) {
     fetchAccountData();
-    fetchDbTransfer();
-    Timer(Duration(milliseconds: 350), fetchAskCoffee); //On lance cette fonction avec un délai sinon on a un crash
     fetchStats();
-  }
-
-  void openSettings() {
   }
 
   void fetchAccountData([reload = false]) async {
@@ -52,18 +44,6 @@ class AccountController extends ChangeNotifier {
     accountCreation = await FireauthQueries.getUserDate;
     if (name != null && mail != null && accountCreation != null)
       accountDataState = States.Added;
-    notifyListeners();
-  }
-
-  void fetchDbTransfer() async {
-    dispTransferDb = await FireconfigQueries.canTransferDb;
-    notifyListeners();
-  }
-
-  void fetchAskCoffee() async {
-    donationLink = await FireconfigQueries.donationLink;
-    if (donationLink != null && donationLink.length > 0)
-      askCoffeeState = States.Added;
     notifyListeners();
   }
 
@@ -86,11 +66,6 @@ class AccountController extends ChangeNotifier {
   void onDispStats(bool disp) {
     dispStats = disp;
     notifyListeners();
-  }
-
-  void donateBtn() {
-    print(donationLink);
-    launch(donationLink);
   }
 
   void logout() async {
