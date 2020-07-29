@@ -49,7 +49,7 @@ class LibraryStickyController extends ChangeNotifier {
       barrierDismissible: true,
       builder: (context) => SortByView(this, _sortOption),
       animationType: DialogTransitionType.slideFromBottom,
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 200),
     );
   }
 

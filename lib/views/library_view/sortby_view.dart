@@ -15,9 +15,7 @@ class SortByView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (BuildContext context) => SortByController(baseOption),
-      child: Consumer<SortByController>(builder: (context, controller, child) => BlurDialogBackground(
-        blur: 3,
-        dialog: SimpleDialog(
+      child: Consumer<SortByController>(builder: (context, controller, child) => SimpleDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           title: Text("Trier par"),
           children: [
@@ -56,7 +54,7 @@ class SortByView extends StatelessWidget {
             )
           ],
         ),
-      )),
+      ),
     );
   }
 }
