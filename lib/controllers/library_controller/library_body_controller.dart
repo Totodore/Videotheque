@@ -122,5 +122,7 @@ class LibraryBodyController extends CustomChangeNotifier {
 
   List get libraryData => _libraryData;
 
+  bool get isLibrarydataEmpty => _libraryData.length == 0;
+
 
 }
