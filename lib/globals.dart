@@ -24,7 +24,7 @@ class GlobalsData {
   
   static const String backdropSize = "https://image.tmdb.org/t/p/w780/";
   static const String thumbBackdropSize = "https://image.tmdb.org/t/p/w300/"; 
-  static const String posterSize = "https://image.tmdb.org/t/p/w780/";
+  static const String posterSize = "https://image.tmdb.org/t/p/w500/";
   static const String thumbPosterSize = "https://image.tmdb.org/t/p/w92/";
   static const String thumbProfileSize = "https://image.tmdb.org/t/p/w45/";
   static const String profileSize = "https://image.tmdb.org/t/p/h632/";

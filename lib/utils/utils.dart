@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class Utils {
       default: break;
     }
     url += image;
-    return CachedNetworkImageProvider(url, errorListener: () => print("Error getting image"), scale: 1);
+    return NetworkImage(url, scale: 1);
   }
 
   

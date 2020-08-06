@@ -1,3 +1,4 @@
+import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/controllers/home_controller/home_controller.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/views/home_view/carrousel_view.dart';
@@ -25,7 +26,18 @@ class HomeView extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   child: Column(children: [
                     AppBarComponent(),
-                    TransfertDBComponent(controller.confirmTransfertDB, controller.hideTransfertDB),
+                    AnimatedCrossFade(
+                      firstChild: Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: DividerComponent(GlobalsColor.darkGreen),
+                      ),
+                      secondChild: Container(), 
+                      crossFadeState: !controller.isTransferDismissedHidden ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
+                      duration: const Duration(milliseconds: 200)
+                    ),
+                    !controller.isTransferDismissedHidden ? 
+                      TransfertDBComponent(controller.confirmTransfertDB, controller.hideTransfertDB, controller.onDismissed)
+                      : Container(),
                     AnimatedCrossFade(
                       firstChild: LoadingComponent(), 
                       secondChild: controller.hasNoContent ? NoContentComponent() : Column(children: 

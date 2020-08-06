@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 class TransfertDBComponent extends StatelessWidget {
   final Function onConfirm;
   final Function onAbort;
+  final Function onDismissed;
 
-  TransfertDBComponent(this.onConfirm, this.onAbort);
+  TransfertDBComponent(this.onConfirm, this.onAbort, this.onDismissed);
 
   
   @override
   Widget build(BuildContext context) => Dismissible(
+      onResize: onDismissed,
       key: GlobalKey(),
       child: Card(
       color: Colors.white,
