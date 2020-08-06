@@ -69,6 +69,10 @@ class TMDBQueries {
     return defaultQuery("$api_endpoint/movie/$id/videos?api_key=$key&language=$lang");
   }
 
+  static Future<Map<String, dynamic>> getMovieRecommendation(String id) {
+    return defaultQuery("$api_endpoint/movie/$id/recommendations?api_key=$key&language=$lang");
+  }
+
   static Future<Map<String, dynamic>> getTv(String id) async {
     return defaultQuery("$api_endpoint/tv/$id?api_key=$key&language=$lang");
   }
@@ -77,6 +81,9 @@ class TMDBQueries {
   }
   static Future<Map<String, dynamic>> getTvSimilar(String id) async {
     return defaultQuery("$api_endpoint/tv/$id/similar?api_key=$key&language=$lang");
+  }
+  static Future<Map<String, dynamic>> getTvRecommendation(String id) {
+    return defaultQuery("$api_endpoint/tv/$id/recommendations?api_key=$key&language=$lang");
   }
   static Future<Map<String, dynamic>> getTvSeason(String id, String seasonNumber) async {
     return defaultQuery("$api_endpoint/tv/$id/season/$seasonNumber?api_key=$key&language=$lang");
@@ -99,12 +106,8 @@ class TMDBQueries {
   static Future<Map<String, dynamic>> getCollection(String id) {
     return defaultQuery("$api_endpoint/collection/$id?api_key=$key&language=$lang");
   }
-  Future<Map<String, dynamic>> getDiscover() async {
-
-  }
 
   static Map<String, dynamic> sortNoContent(Map<String, dynamic> toSort, QueryTypes queryTypes) {
-    List<dynamic> toRemove = [];
     if (toSort["results"] == null)  //En cas d'erreur
       return toSort;
     toSort["results"].removeWhere((el) => el["poster_path"] == null && el["profile_path"] == null);
@@ -120,7 +123,7 @@ class TMDBQueries {
     bool error = false;
     try {
       response = await queryFuture;
-    } on TypeError catch(e) {
+    } on TypeError {
       error = true;
       print("Erreur qui vient de je ne sais où");
     }
@@ -135,7 +138,7 @@ class TMDBQueries {
       input.sort((el1, el2) {
         try {
           return el1["popularity"] < el2["popularity"] ? 1 : -1;
-        } on NoSuchMethodError catch(e) {
+        } on NoSuchMethodError {
           return -1;
         }
       });

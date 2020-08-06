@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DividerComponent extends StatelessWidget {
-  String title;
-  Color mainColor;
+  final String title;
+  final Color mainColor;
   DividerComponent(this.mainColor, [this.title]);
 
   @override

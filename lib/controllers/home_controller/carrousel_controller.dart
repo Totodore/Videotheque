@@ -13,10 +13,11 @@ class CarrouselController extends ChangeNotifier {
   
   HomeCarrousels type;
   List carrouselData;
-  String route;
   BuildContext context;
 
-  CarrouselController(this.context, this.type, this.carrouselData);
+  CarrouselController(this.context, this.type);
+
+  void hydrate(List data) => carrouselData = data;
 
   void onElementTapped(int index, String heroTag) {
     QueryTypes type = EnumToString.fromString(QueryTypes.values, carrouselData[index]["type"]);

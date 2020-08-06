@@ -78,7 +78,7 @@ class FireauthQueries {
           break;
         default: returner[2] = true;
       } 
-    } on Exception catch(e) {
+    } on Exception {
       returner[2] = true;
     } 
     return returner;

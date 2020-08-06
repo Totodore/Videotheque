@@ -65,6 +65,12 @@ class GlobalsMessage {
     ElementsTypes.SeenCarrousel: "library_seen",
   };
 
+  static Map<HomeCarrousels, String> carrouselsTitles = Map.fromIterables(HomeCarrousels.values, [
+    "Dernièrement visionnés",
+    "À voir", 
+    "Dernièrement ajoutés"
+  ]);
+
   static List<Map<dynamic, dynamic>> chipData = [
     {
       "name": general,
@@ -225,12 +231,11 @@ enum SortOptions {
 enum HomeCarrousels {
   Seen,
   ToSee,
-  Similar,
   LastAdded,
 }
 
 enum QueryTypes {
-  all,
+  all,  
   movie,
   tv,
   person,
