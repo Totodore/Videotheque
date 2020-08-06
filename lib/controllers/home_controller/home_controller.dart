@@ -9,6 +9,8 @@ class HomeController extends ChangeNotifier {
   final BuildContext _context;
   List<HomeCarrousels> _toDisplayCarroussels = List.from(HomeCarrousels.values)..shuffle();
   List _libraryData = [];
+  bool _askTransferDbDismissed = false;
+
   States _dataState = States.Loading;
 
   HomeController(this._context) {
@@ -52,6 +54,10 @@ class HomeController extends ChangeNotifier {
 
   }
 
+  void onDismissed() {
+    _askTransferDbDismissed = true;
+    notifyListeners();
+  }
 
   void onDonateClick() async {
     String donateLink = await FireconfigQueries.donationLink;
@@ -86,6 +92,8 @@ class HomeController extends ChangeNotifier {
 
   bool get isLoading => _dataState == States.Loading;
   bool get hasNoContent => _dataState == States.Empty;
+
+  bool get isTransferDismissedHidden => _askTransferDbDismissed;
 
   int get carrouselLength => HomeCarrousels.values.length;
 }

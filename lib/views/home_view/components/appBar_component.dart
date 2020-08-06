@@ -34,10 +34,6 @@ class AppBarComponent extends StatelessWidget {
             )
           ]
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: DividerComponent(GlobalsColor.darkGreen),
-        ),
       ],
     ),
   );

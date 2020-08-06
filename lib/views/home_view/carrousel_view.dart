@@ -27,7 +27,7 @@ class CarrouselView extends StatelessWidget {
             children: [
               DividerComponent(GlobalsColor.darkGreen, title),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
@@ -39,7 +39,7 @@ class CarrouselView extends StatelessWidget {
                     children: List.generate(controller.carrouselData.length, (int index) {
                       String heroTag = controller.heroTag;
                       return Padding(
-                        padding: EdgeInsets.only(bottom: 8),
+                        padding: EdgeInsets.only(bottom: 30),
                         child: RaisedButton(
                           elevation: 2,
                           clipBehavior: Clip.hardEdge,

@@ -10,7 +10,7 @@ class AskForCoffeeComponent extends StatelessWidget {
   Widget build(BuildContext context) => Dismissible(
       key: GlobalKey(),
       child: Card(
-        color: GlobalsColor.darkGreen,
+        color: GlobalsColor.green,
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: InkWell(
@@ -28,6 +28,19 @@ class AskForCoffeeComponent extends StatelessWidget {
                 ),
                 textAlign: TextAlign.justify,
               ),
+              ButtonBar(
+                alignment: MainAxisAlignment.end,
+                children: [
+                  RaisedButton(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    color: Colors.white,
+                    child: Text("Faire un don"),
+                    elevation: 2,
+                    highlightElevation: 3,
+                    onPressed: _onClick,
+                  )
+                ],
+              )
             ]),
           ),
         ),
