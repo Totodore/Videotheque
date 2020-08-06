@@ -1,4 +1,5 @@
 
+import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
@@ -7,94 +8,104 @@ import 'package:Videotheque/utils/utils.dart';
 import 'package:Videotheque/controllers/home_controller/carrousel_controller.dart';
 
 class CarrouselView extends StatelessWidget {
-  HomeCarrousels type;
-  List dataCarrousel;
-  CarrouselView(this.type, this.dataCarrousel);
+  final HomeCarrousels type;
+  final List dataCarrousel;
+  final String title;
+
+  CarrouselView(this.type, this.dataCarrousel, this.title) {
+    print("view: $dataCarrousel");
+  }
   
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => CarrouselController(context, type, dataCarrousel),
+      create: (context) => CarrouselController(context, type),
       child: Consumer<CarrouselController>(
         builder: (context, controller, child) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 13),
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              child: Wrap(
-                spacing: 13,
-                runSpacing: 5,
-                runAlignment: WrapAlignment.center,
-                alignment: WrapAlignment.start,
-                children: List.generate(controller.carrouselData.length, (int index) {
-                  String heroTag = controller.heroTag;
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 8),
-                    child: RaisedButton(
-                      elevation: 2,
-                      clipBehavior: Clip.hardEdge,
-                      onPressed: () {},
-                      highlightElevation: 4,
-                      padding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                      child: Stack(
-                        children: <Widget>[
-                          Hero(
-                            tag: heroTag,
-                            child: ProgressiveImage(
-                              placeholder: AssetImage("assets/loading.png"),
-                              thumbnail: Utils.fetchImage(controller.getImageElement(index), controller.getImageType(index), true),
-                              image: Utils.fetchImage(controller.getImageElement(index), controller.getImageType(index)),
-                              width: 125,
-                              height: 187.5,
-                              fit: BoxFit.fitHeight,
-                              fadeDuration: Duration(milliseconds: 150),
-                              blur: 2,                      
-                            ),
-                          ),
-                          controller.getElementType(index) == QueryTypes.person ? Positioned(
-                            bottom: 0,
-                            right: 0,
-                            left: 0,
-                            height: 30,
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              child: Text(controller.getNameElement(index) ?? "", style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13
-                              ), maxLines: 1, overflow: TextOverflow.ellipsis,),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: FractionalOffset.bottomCenter,
-                                  end: FractionalOffset.topCenter,
-                                  colors: [
-                                    Colors.black.withAlpha(150),
-                                    Colors.black.withAlpha(0)
-                                  ]
-                                )
+          controller.hydrate(dataCarrousel);
+          return Column(
+            children: [
+              DividerComponent(GlobalsColor.darkGreen, title),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  child: Wrap(
+                    spacing: 13,
+                    runSpacing: 5,
+                    runAlignment: WrapAlignment.center,
+                    alignment: WrapAlignment.start,
+                    children: List.generate(controller.carrouselData.length, (int index) {
+                      String heroTag = controller.heroTag;
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 8),
+                        child: RaisedButton(
+                          elevation: 2,
+                          clipBehavior: Clip.hardEdge,
+                          onPressed: () {},
+                          highlightElevation: 4,
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                          child: Stack(
+                            children: <Widget>[
+                              Hero(
+                                tag: heroTag,
+                                child: ProgressiveImage(
+                                  placeholder: AssetImage("assets/loading.png"),
+                                  thumbnail: Utils.fetchImage(controller.getImageElement(index), controller.getImageType(index), true),
+                                  image: Utils.fetchImage(controller.getImageElement(index), controller.getImageType(index)),
+                                  width: 125,
+                                  height: 187.5,
+                                  fit: BoxFit.fitHeight,
+                                  fadeDuration: Duration(milliseconds: 150),
+                                  blur: 2,                      
+                                ),
                               ),
-                            ),
-                          ) : Padding(padding: EdgeInsets.zero),
-                          Positioned.fill(
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () => controller.onElementTapped(index, heroTag),
-                                splashColor: Colors.black.withOpacity(0.2),
-                                highlightColor: Colors.black.withOpacity(0.1),
-                                child: Container(height: double.maxFinite, width: double.maxFinite,),
+                              controller.getElementType(index) == QueryTypes.person ? Positioned(
+                                bottom: 0,
+                                right: 0,
+                                left: 0,
+                                height: 30,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  child: Text(controller.getNameElement(index) ?? "", style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13
+                                  ), maxLines: 1, overflow: TextOverflow.ellipsis,),
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: FractionalOffset.bottomCenter,
+                                      end: FractionalOffset.topCenter,
+                                      colors: [
+                                        Colors.black.withAlpha(150),
+                                        Colors.black.withAlpha(0)
+                                      ]
+                                    )
+                                  ),
+                                ),
+                              ) : Padding(padding: EdgeInsets.zero),
+                              Positioned.fill(
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () => controller.onElementTapped(index, heroTag),
+                                    splashColor: Colors.black.withOpacity(0.2),
+                                    highlightColor: Colors.black.withOpacity(0.1),
+                                    child: Container(height: double.maxFinite, width: double.maxFinite,),
+                                  )
+                                )
                               )
-                            )
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                })
+                            ],
+                          ),
+                        ),
+                      );
+                    })
+                  ),
+                ),
               ),
-            ),
+            ],
           );
         }
       )

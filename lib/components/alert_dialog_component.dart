@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AlertDialogComponent extends StatelessWidget {
-  String title;
-  Function onConfirmed;
-  Function onAbort;
-  Color mainColor;
-  String content;
+  final String title;
+  final Function onConfirmed;
+  final Function onAbort;
+  final Color mainColor;
+  final String content;
   String buttonAbort = "Annuler";
   String buttonConfirm = "Confirmer";
-  Widget inputWidget;
+  final Widget inputWidget;
 
   AlertDialogComponent({this.title, this.onConfirmed, this.inputWidget, this.onAbort, this.mainColor, this.content, this.buttonAbort, this.buttonConfirm});
 

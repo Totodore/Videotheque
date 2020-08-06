@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 
 class SkeletonCardComponent extends StatelessWidget {
-  Color mainColor;
+  final Color mainColor;
 
   SkeletonCardComponent(this.mainColor);
 
