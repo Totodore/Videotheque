@@ -1,8 +1,12 @@
 import 'package:Videotheque/api/fireauthQueries.dart';
 import 'package:Videotheque/api/firestoreQueries.dart';
+import 'package:Videotheque/components/TransferDBDialogComponent.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/utils/utils.dart';
+import 'package:Videotheque/views/account_view/components/ChangeMailComponent.dart';
+import 'package:Videotheque/views/account_view/components/ChangeNameComponent.dart';
+import 'package:Videotheque/views/account_view/components/ChangePasswordComponent.dart';
 import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -28,6 +32,9 @@ class AccountController extends ChangeNotifier {
   int statNumberToSee = 0;
   int statNumberSeen = 0;
   int statNumberTags = 0;
+
+  TextEditingController _textEditingController;
+  TextEditingController _textEditingController2;
 
   AccountController(this.context) {
     fetchAccountData();
@@ -122,187 +129,76 @@ class AccountController extends ChangeNotifier {
     });
   }
   void transferDb() async {
-    TextEditingController textController = TextEditingController(text: await FireauthQueries.getUserMail);
-    await showDialog(context: context, builder: (BuildContext innerContext) {
-      return AlertDialogComponent(
-        mainColor: PersonView.baseColor,
-        title: "Récupération des données",
-        content: "Récupération des données depuis l'ancienne app, votre vidéothèque actuelle sera écrasée",
-        buttonConfirm: "Récupérer mes données",
-        inputWidget: Padding(
-          padding: EdgeInsets.only(top: 20),
-          child: TextField(
-            controller: textController,
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: GlobalsColor.darkGreen),
-              labelText: "Mail de votre ancien compte",
-              contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 0),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(3)),
-                borderSide: BorderSide(
-                  color: GlobalsColor.darkGreen,
-                  width: 2,
-                  style: BorderStyle.solid
-                )
-              ),
-            ),
-          ),
-        ),
-        buttonAbort: "Annuler",
-        onConfirmed: () async {  //On confirm
-          String mail = textController.text;
-          Navigator.pop(innerContext);
-          var res = await Utils.checkOldAccount(mail);
-          if (res is String) {
-            GlobalsFunc.snackBar(context, "Votre compte à bien été trouvé, récupération des données en cours, Veuillez patienter...");
-            if(await FirestoreQueries.transferDb(await Utils.getOldAccountDb(res))) {
-              GlobalsFunc.snackBar(context, "Vos données ont bien été récupérées");
-              fetchStats();
-            }
-            else 
-              GlobalsFunc.snackBar(context, "Une erreur est apparue lors de la récupération de vos données");
-          } else GlobalsFunc.snackBar(context, "Imposible de trouver une base de données correspondant à ${textController.text}");
-        },
-        onAbort: () { //On abort
-          Navigator.pop(innerContext);
-        },
-      );
-    });
+    _textEditingController = TextEditingController(text: await FireauthQueries.getUserMail);
+    showDialog(context: context, builder: (BuildContext innerContext) =>
+     TransferDBDialogComponent(_abortPopup, _confirmTransferDB, _textEditingController, innerContext));
   }
+
+  void _confirmTransferDB(context) async {
+    String mail = _textEditingController.text;
+    Navigator.pop(context);
+    var res = await Utils.checkOldAccount(mail);
+    if (res is String) {
+      GlobalsFunc.snackBar(context, "Votre compte à bien été trouvé, récupération des données en cours, Veuillez patienter...");
+      if(await FirestoreQueries.transferDb(await Utils.getOldAccountDb(res))) {
+        GlobalsFunc.snackBar(context, "Vos données ont bien été récupérées");
+        fetchStats();
+      }
+      else 
+        GlobalsFunc.snackBar(context, "Une erreur est apparue lors de la récupération de vos données");
+    } else GlobalsFunc.snackBar(context, "Imposible de trouver une base de données correspondant à ${_textEditingController.text}");
+  }
+
+  void _abortPopup(context) => Navigator.pop(context);
 
 
   void changePassword() async {
-    TextEditingController textController = TextEditingController();
-    await showDialog(context: context, builder: (BuildContext innerContext) {
-      return AlertDialogComponent(
-        mainColor: GlobalsColor.darkGreen,
-        title: "Changement de mot de passe",
-        content: "Veuillez rentrer votre nouveau mot de passe",
-        buttonConfirm: "Changer mon mot de passe",
-        inputWidget: Padding(
-          padding: EdgeInsets.only(top: 20),
-          child: TextField(
-            keyboardType: TextInputType.visiblePassword,
-            obscureText: true,
-            controller: textController,
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: GlobalsColor.darkGreen),
-              labelText: "Nouveau mot de passe",
-              contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 0),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(3)),
-                borderSide: BorderSide(
-                  color: GlobalsColor.darkGreen,
-                  width: 2,
-                  style: BorderStyle.solid
-                )
-              ),
-            ),
-          ),
-        ),
-        buttonAbort: "Annuler",
-        onConfirmed: () async {  //On confirm
-          String pass = textController.text;
-          Navigator.pop(innerContext);
-          String res = await FireauthQueries.setUserPass(pass);
-          if (res == null)
-            GlobalsFunc.snackBar(context, "Votre mot de passe à bien été modifié");
-          else
-            GlobalsFunc.snackBar(context, res);
-        },
-        onAbort: () { //On abort
-          Navigator.pop(innerContext);
-        },
-      );
-    });
+    _textEditingController = TextEditingController();
+    _textEditingController2 = TextEditingController();
+    showDialog(context: context, builder: (BuildContext innerContext) =>
+      ChangePasswordComponent(_confirmPasswordChange, _abortPopup, _textEditingController, _textEditingController2, innerContext));
+  }
+
+  void _confirmPasswordChange(BuildContext context) async {
+    String pass = _textEditingController.text;
+    String newPass = _textEditingController2.text; 
+    Navigator.pop(context);
+    String res = await FireauthQueries.setUserPass(pass);
+    if (res == null)
+      GlobalsFunc.snackBar(context, "Votre mot de passe à bien été modifié");
+    else
+      GlobalsFunc.snackBar(context, res);
   }
 
   
   void changeMail() async {
-    TextEditingController textController = TextEditingController();
-    await showDialog(context: context, builder: (BuildContext innerContext) {
-      return AlertDialogComponent(
-        mainColor: GlobalsColor.darkGreen,
-        title: "Changement d'email",
-        content: "Veuillez rentrer votre nouveau mail",
-        buttonConfirm: "Changer mon email",
-        inputWidget: Padding(
-          padding: EdgeInsets.only(top: 20),
-          child: TextField(
-            keyboardType: TextInputType.emailAddress,
-            controller: textController,
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: GlobalsColor.darkGreen),
-              labelText: "Nouvel email",
-              contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 0),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(3)),
-                borderSide: BorderSide(
-                  color: GlobalsColor.darkGreen,
-                  width: 2,
-                  style: BorderStyle.solid
-                )
-              ),
-            ),
-          ),
-        ),
-        buttonAbort: "Annuler",
-        onConfirmed: () async {  //On confirm
-          String mail = textController.text;
-          Navigator.pop(innerContext);
-          String res = await FireauthQueries.setUserMail(mail);
-          if (res == null) {
-            fetchAccountData(true);
-            GlobalsFunc.snackBar(context, "Votre email à bien été modifié");
-          } else GlobalsFunc.snackBar(context, res);
-        },
-        onAbort: () { //On abort
-          Navigator.pop(innerContext);
-        },
-      );
-    });
+    _textEditingController = TextEditingController();
+    _textEditingController2 = TextEditingController();
+    await showDialog(context: context, builder: (BuildContext innerContext) =>
+      ChangeMailComponent(_onConfirmChangeMail, _abortPopup, _textEditingController, _textEditingController2, context));
+  }
+
+  void _onConfirmChangeMail(BuildContext context) async {
+    String mail = _textEditingController.text;
+    Navigator.pop(context);
+    String res = await FireauthQueries.setUserMail(mail);
+    if (res == null) {
+      fetchAccountData(true);
+      GlobalsFunc.snackBar(context, "Votre email à bien été modifié");
+    } else GlobalsFunc.snackBar(context, res);
   }
 
   void changeName() async {
-    TextEditingController textController = TextEditingController();
-    await showDialog(context: context, builder: (BuildContext innerContext) {
-      return AlertDialogComponent(
-        mainColor: GlobalsColor.darkGreen,
-        title: "Changement de nom",
-        content: "Veuillez rentrer votre nom",
-        buttonConfirm: "Changer mon nom",
-        inputWidget: Padding(
-          padding: EdgeInsets.only(top: 20),
-          child: TextField(
-            keyboardType: TextInputType.emailAddress,
-            controller: textController,
-            decoration: InputDecoration(
-              labelStyle: TextStyle(color: GlobalsColor.darkGreen),
-              labelText: "Nouveau nom",
-              contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 0),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(3)),
-                borderSide: BorderSide(
-                  color: GlobalsColor.darkGreen,
-                  width: 2,
-                  style: BorderStyle.solid
-                )
-              ),
-            ),
-          ),
-        ),
-        buttonAbort: "Annuler",
-        onConfirmed: () async {  //On confirm
-          String name = textController.text;
-          Navigator.pop(innerContext);
-          await FireauthQueries.setUserName(name);
-          fetchAccountData(true);
-          GlobalsFunc.snackBar(context, "Votre nom à bien été modifié");
-        },
-        onAbort: () { //On abort
-          Navigator.pop(innerContext);
-        },
-      );
-    });
+    _textEditingController = TextEditingController();
+    await showDialog(context: context, builder: (BuildContext innerContext) =>
+      ChangeNameComponent(_onConfirmChangeName, _abortPopup, _textEditingController, innerContext));
+  }
+
+  void _onConfirmChangeName(BuildContext context) async {
+    String name = _textEditingController.text;
+    Navigator.pop(context);
+    await FireauthQueries.setUserName(name);
+    fetchAccountData(true);
+    GlobalsFunc.snackBar(context, "Votre nom à bien été modifié");
   }
 }
