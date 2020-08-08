@@ -1,4 +1,5 @@
 import 'package:Videotheque/api/fireauthQueries.dart';
+import 'package:Videotheque/api/fireconfigQueries.dart';
 import 'package:Videotheque/api/firestoreQueries.dart';
 import 'package:Videotheque/components/TransferDBDialogComponent.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
@@ -7,12 +8,13 @@ import 'package:Videotheque/utils/utils.dart';
 import 'package:Videotheque/views/account_view/components/ChangeMailComponent.dart';
 import 'package:Videotheque/views/account_view/components/ChangeNameComponent.dart';
 import 'package:Videotheque/views/account_view/components/ChangePasswordComponent.dart';
+import 'package:Videotheque/views/account_view/components/RemoveAccountComponent.dart';
 import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountController extends ChangeNotifier {
-  BuildContext context;
+  BuildContext _context;
   String name = "";
   String mail = "";
   String accountCreation = "";
@@ -36,16 +38,15 @@ class AccountController extends ChangeNotifier {
   TextEditingController _textEditingController;
   TextEditingController _textEditingController2;
 
-  AccountController(this.context) {
+  AccountController(this._context) {
     fetchAccountData();
     fetchStats();
+    fetchTransferDB();
   }
 
-  void fetchAccountData([reload = false]) async {
+  void fetchAccountData() async {
     accountDataState = States.Loading;
     notifyListeners();
-    if (reload)
-      await FireauthQueries.reloadData();
     name = await FireauthQueries.getUserName;
     mail = await FireauthQueries.getUserMail;
     accountCreation = await FireauthQueries.getUserDate;
@@ -70,6 +71,11 @@ class AccountController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void fetchTransferDB() async {
+    dispTransferDb = await FireconfigQueries.canTransferDb;
+    notifyListeners();
+  }
+
   void onDispStats(bool disp) {
     dispStats = disp;
     notifyListeners();
@@ -77,7 +83,7 @@ class AccountController extends ChangeNotifier {
 
   void logout() async {
     await FireauthQueries.logout();
-    Navigator.of(context).pushReplacementNamed("/auth");
+    Navigator.of(_context).pushReplacementNamed("/auth");
   }
 
   void foundBug() {
@@ -85,30 +91,13 @@ class AccountController extends ChangeNotifier {
   }
 
   void removeAccount() async {
-    BuildContext scaffoldContext = context;
-    await showDialog(context: context, builder: (BuildContext context) {
-      return AlertDialogComponent(
-        title: "Supprimer mon compte",
-        content: "Etes-vous sur de supprimer votre compte ? Vous perdrez la totalité de vos données.",
-        buttonConfirm: "Supprimer mon compte",
-        buttonAbort: "Annuler",
-        onConfirmed: () async {  //On confirm
-          Navigator.pop(context);
-          String res = await FireauthQueries.deleteAccount();
-          if (res == null)
-            Navigator.pushReplacementNamed(context, "/auth");
-          else
-            GlobalsFunc.snackBar(scaffoldContext, res);
-        },
-        onAbort: () { //On abort
-          Navigator.pop(context);
-        },
-        mainColor: PersonView.baseColor,
-      );
-    });
+    _textEditingController = TextEditingController();
+    await showDialog(context: _context, builder: (BuildContext context) => 
+      RemoveAccountComponent(_onConfirmRemoveAccount, _abortPopup, _textEditingController, _context));
   }
+
   void removeData() async {
-    await showDialog(context: context, builder: (BuildContext innerContext) {
+    await showDialog(context: _context, builder: (BuildContext innerContext) {
       return AlertDialogComponent(
         title: "Supprimer mes données",
         content: "Etes-vous sur de supprimer vos données ?",
@@ -117,9 +106,9 @@ class AccountController extends ChangeNotifier {
         onConfirmed: () async {  //On confirm
           Navigator.pop(innerContext);
           if (await FirestoreQueries.initDb()) {
-            GlobalsFunc.snackBar(context, "Vos données ont bien été supprimées");
+            GlobalsFunc.snackBar(_context, "Vos données ont bien été supprimées");
             fetchStats();
-          } else GlobalsFunc.snackBar(context, "Erreur lors de la suppression de vos données");
+          } else GlobalsFunc.snackBar(_context, "Erreur lors de la suppression de vos données");
         },
         onAbort: () { //On abort
           Navigator.pop(innerContext);
@@ -130,75 +119,79 @@ class AccountController extends ChangeNotifier {
   }
   void transferDb() async {
     _textEditingController = TextEditingController(text: await FireauthQueries.getUserMail);
-    showDialog(context: context, builder: (BuildContext innerContext) =>
+    showDialog(context: _context, builder: (BuildContext innerContext) =>
      TransferDBDialogComponent(_abortPopup, _confirmTransferDB, _textEditingController, innerContext));
   }
-
-  void _confirmTransferDB(context) async {
-    String mail = _textEditingController.text;
-    Navigator.pop(context);
-    var res = await Utils.checkOldAccount(mail);
-    if (res is String) {
-      GlobalsFunc.snackBar(context, "Votre compte à bien été trouvé, récupération des données en cours, Veuillez patienter...");
-      if(await FirestoreQueries.transferDb(await Utils.getOldAccountDb(res))) {
-        GlobalsFunc.snackBar(context, "Vos données ont bien été récupérées");
-        fetchStats();
-      }
-      else 
-        GlobalsFunc.snackBar(context, "Une erreur est apparue lors de la récupération de vos données");
-    } else GlobalsFunc.snackBar(context, "Imposible de trouver une base de données correspondant à ${_textEditingController.text}");
-  }
-
-  void _abortPopup(context) => Navigator.pop(context);
-
 
   void changePassword() async {
     _textEditingController = TextEditingController();
     _textEditingController2 = TextEditingController();
-    showDialog(context: context, builder: (BuildContext innerContext) =>
+    showDialog(context: _context, builder: (BuildContext innerContext) =>
       ChangePasswordComponent(_confirmPasswordChange, _abortPopup, _textEditingController, _textEditingController2, innerContext));
-  }
-
-  void _confirmPasswordChange(BuildContext context) async {
-    String pass = _textEditingController.text;
-    String newPass = _textEditingController2.text; 
-    Navigator.pop(context);
-    String res = await FireauthQueries.setUserPass(pass);
-    if (res == null)
-      GlobalsFunc.snackBar(context, "Votre mot de passe à bien été modifié");
-    else
-      GlobalsFunc.snackBar(context, res);
   }
 
   
   void changeMail() async {
     _textEditingController = TextEditingController();
     _textEditingController2 = TextEditingController();
-    await showDialog(context: context, builder: (BuildContext innerContext) =>
-      ChangeMailComponent(_onConfirmChangeMail, _abortPopup, _textEditingController, _textEditingController2, context));
-  }
-
-  void _onConfirmChangeMail(BuildContext context) async {
-    String mail = _textEditingController.text;
-    Navigator.pop(context);
-    String res = await FireauthQueries.setUserMail(mail);
-    if (res == null) {
-      fetchAccountData(true);
-      GlobalsFunc.snackBar(context, "Votre email à bien été modifié");
-    } else GlobalsFunc.snackBar(context, res);
+    await showDialog(context: _context, builder: (BuildContext innerContext) =>
+      ChangeMailComponent(_onConfirmChangeMail, _abortPopup, _textEditingController, _textEditingController2, _context));
   }
 
   void changeName() async {
     _textEditingController = TextEditingController();
-    await showDialog(context: context, builder: (BuildContext innerContext) =>
+    await showDialog(context: _context, builder: (BuildContext innerContext) =>
       ChangeNameComponent(_onConfirmChangeName, _abortPopup, _textEditingController, innerContext));
   }
 
-  void _onConfirmChangeName(BuildContext context) async {
-    String name = _textEditingController.text;
+  void _abortPopup(context) => Navigator.pop(context);
+
+  void _onConfirmRemoveAccount(BuildContext context) async {
     Navigator.pop(context);
-    await FireauthQueries.setUserName(name);
-    fetchAccountData(true);
-    GlobalsFunc.snackBar(context, "Votre nom à bien été modifié");
+    String res = await FireauthQueries.deleteAccount(_textEditingController.text);
+    if (res == null)
+      Navigator.pushReplacementNamed(context, "/auth");
+    else
+      GlobalsFunc.snackBar(_context, res);
   }
+
+  void _confirmTransferDB(context) async {
+    String mail = _textEditingController.text;
+    Navigator.pop(context);
+    Utils.transferDB(mail, _context);
+  }
+
+  void _confirmPasswordChange(BuildContext context) async {
+    String pass = _textEditingController.text;
+    String newPass = _textEditingController2.text;
+    Navigator.pop(context);
+    String res = await FireauthQueries.setUserPass(newPass, pass);
+    if (res == null)
+      GlobalsFunc.snackBar(_context, "Votre mot de passe à bien été modifié");
+    else
+      GlobalsFunc.snackBar(_context, res);
+  }
+
+  void _onConfirmChangeMail(BuildContext context) async {
+    String pass = _textEditingController.text;
+    String mail = _textEditingController2.text;
+    Navigator.pop(context);
+    String res = await FireauthQueries.setUserMail(mail, pass);
+    if (res == null) {
+      GlobalsFunc.snackBar(context, "Votre email à bien été modifié");
+      mail = mail;
+      notifyListeners();
+    } else GlobalsFunc.snackBar(context, res);
+  }
+
+  void _onConfirmChangeName(BuildContext context) async {
+    String username = _textEditingController.text;
+    Navigator.pop(context);
+    await FireauthQueries.setUserName(username);
+    GlobalsFunc.snackBar(context, "Votre nom à bien été modifié");
+    name = username;
+    notifyListeners();
+  }
+
+  set context(BuildContext context) => _context = context; 
 }

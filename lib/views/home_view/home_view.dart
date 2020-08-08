@@ -26,7 +26,7 @@ class HomeView extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   child: Column(children: [
                     AppBarComponent(),
-                    AnimatedCrossFade(
+                    controller.askTransferDB ? AnimatedCrossFade(
                       firstChild: Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                         child: DividerComponent(GlobalsColor.darkGreen),
@@ -34,10 +34,10 @@ class HomeView extends StatelessWidget {
                       secondChild: Container(), 
                       crossFadeState: !controller.isTransferDismissedHidden ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
                       duration: const Duration(milliseconds: 200)
-                    ),
+                    ) : Container(),
                     !controller.isTransferDismissedHidden ? 
-                      TransfertDBComponent(controller.confirmTransfertDB, controller.hideTransfertDB, controller.onDismissed)
-                      : Container(),
+                      controller.askTransferDB ? TransfertDBComponent(controller.confirmTransfertDB, controller.hideTransfertDB, controller.onDismissed)
+                      : Container() : Container(),
                     AnimatedCrossFade(
                       firstChild: LoadingComponent(), 
                       secondChild: controller.hasNoContent ? NoContentComponent() : Column(children: 

@@ -1,35 +1,31 @@
 import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:flutter/material.dart';
 
-class TransferDBDialogComponent extends StatelessWidget {
+class RemoveAccountComponent extends StatelessWidget {
 
-  final Function _onClose;
   final Function _onConfirm;
+  final Function _onClose;
   final TextEditingController _textController;
   final BuildContext _context;
 
-  TransferDBDialogComponent(this._onClose, this._onConfirm, this._textController, this._context);
-  
+  RemoveAccountComponent(this._onConfirm, this._onClose, this._textController, this._context);
+
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      title: Text("Récupérer mes données"),
+      title: Text("Supprimer mon compte"),
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Text("Si vous possédiez un compte sur l'ancienne application, vous pouvez récupérer vos données en entrant votre mail : ",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-            textAlign: TextAlign.justify,
-          ),
-        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
           child: TextField(
             controller: _textController,
+            obscureText: true,
+            keyboardType: TextInputType.visiblePassword,
             decoration: InputDecoration(
               labelStyle: TextStyle(color: GlobalsColor.darkGreen),
-              labelText: "Mail de votre ancien compte",
+              labelText: "Mot de passe",
               contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(3)),
@@ -51,7 +47,7 @@ class TransferDBDialogComponent extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 15),
+          padding: const EdgeInsets.only(right: 15.0),
           child: ButtonBar(
               alignment: MainAxisAlignment.end,
               children: [
@@ -67,9 +63,9 @@ class TransferDBDialogComponent extends StatelessWidget {
                 RaisedButton(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text("Transférer"),
+                    child: Text("Confirmer"),
                   ),
-                  color: GlobalsColor.darkGreen,
+                  color: PersonView.baseColor,
                   highlightElevation: 3,
                   onPressed: () => _onConfirm(_context)
                 ),
@@ -78,6 +74,6 @@ class TransferDBDialogComponent extends StatelessWidget {
         )
       ],
       
-    );
+    );    
   }
 }

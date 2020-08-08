@@ -25,7 +25,7 @@ class ChangeMailComponent extends StatelessWidget {
             keyboardType: TextInputType.visiblePassword,
             decoration: InputDecoration(
               labelStyle: TextStyle(color: GlobalsColor.darkGreen),
-              labelText: "Ancien mot de passe",
+              labelText: "Mot de passe",
               contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(3)),

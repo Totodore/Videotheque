@@ -88,13 +88,14 @@ class FireauthQueries {
     await FirebaseAuth.instance.signOut();
   }
 
-  static Future<String> deleteAccount() async {
+  static Future<String> deleteAccount(String pass) async {
     String res;
     try {
       await (await FirebaseAuth.instance.currentUser()).delete();
     } on PlatformException catch(e) {
       if (e.code == "ERROR_REQUIRES_RECENT_LOGIN") {
-        res = "Erreur : Cela fait trop trop longtemps que vous ne vous êtes pas connecté, veuillez vous déconnecter puis vous reconnecter pour pouvoir supprimer votre compte.";
+        connect(await getUserMail, pass);
+        return deleteAccount(pass);
       }
       else res = "Une erreur est apparue lors de la suppression de votre compte";
     } on Exception {
@@ -113,8 +114,9 @@ class FireauthQueries {
     infos.displayName = name;
     (await FirebaseAuth.instance.currentUser()).updateProfile(infos);
   }
-  static Future<String> setUserPass(String pass) async {
+  static Future<String> setUserPass(String pass, String oldPass) async {
     String res;
+    String mail = await getUserMail;
     try {
       await (await FirebaseAuth.instance.currentUser()).updatePassword(pass);
     } on PlatformException catch(e) {
@@ -123,8 +125,8 @@ class FireauthQueries {
           res = "Erreur : Mot de passe trop faible";
           break;
         case "ERROR_REQUIRES_RECENT_LOGIN":
-          res = "Erreur : Cela fait trop trop longtemps que vous ne vous êtes pas connecté, veuillez vous déconnecter puis vous reconnecter pour pouvoir changer votre mot de passe";
-          break;
+          await connect(mail, oldPass);
+          return setUserPass(mail, pass); 
         default: res = "Erreur lors de la modification du mot de passe";
       } 
     } on Exception {
@@ -132,15 +134,16 @@ class FireauthQueries {
     }
     return res;
   }
-  static Future<String> setUserMail(String mail) async {
+  static Future<String> setUserMail(String mail, String oldPass) async {
     String res;
+    String oldMail = await getUserMail;
     try {
       await (await FirebaseAuth.instance.currentUser()).updateEmail(mail);
     } on PlatformException catch(e) {
       switch (e.code) {
         case "ERROR_REQUIRES_RECENT_LOGIN":
-          res = "Erreur : Cela fait trop trop longtemps que vous ne vous êtes pas connecté, veuillez vous déconnecter puis vous reconnecter pour pouvoir changer votre email";
-          break;
+          await connect(oldMail, oldPass);
+          return setUserMail(mail, oldPass);
         case "ERROR_EMAIL_ALREADY_IN_USE":
           res = "Erreur : Cet email est déjà utilisé";
           break;
