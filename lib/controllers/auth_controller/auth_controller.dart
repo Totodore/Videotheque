@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:Videotheque/components/alert_dialog_component.dart';
 import 'package:Videotheque/api/firestoreQueries.dart';
@@ -9,7 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart';
 import 'package:Videotheque/utils/utils.dart';
 class AuthController extends ChangeNotifier {
   BuildContext context;

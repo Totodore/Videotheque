@@ -20,7 +20,7 @@ class TransfertDBComponent extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 7),
         child: Column(children: [
-          Text("L'application vient de changer de version, mais pas de soucis, il vous suffit de cliquer sur le bouton ci-dessous pour récupérer vos données précédentes, vous pouvez aussi à tout moment depuis les paramètres",
+          Text("L'application vient de changer de version, mais pas de soucis, il vous suffit de cliquer sur le bouton ci-dessous pour récupérer vos données précédentes, vous pouvez aussi à tout moment effectuer cette action depuis les paramètres",
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 15.5,
@@ -32,12 +32,12 @@ class TransfertDBComponent extends StatelessWidget {
             alignment: MainAxisAlignment.end,
             children: <Widget>[
               FlatButton(
-                onPressed: () {}, 
+                onPressed: onAbort, 
                 child: Text("Non merci", style: TextStyle(color: GlobalsColor.darkGreen)),
                 splashColor: GlobalsColor.darkGreen.withAlpha(50),
               ),
               RaisedButton(
-                onPressed: () {}, 
+                onPressed: onConfirm, 
                 child: Text("Récupérer mes données"),
                 color: GlobalsColor.darkGreen,
                 highlightElevation: 3,

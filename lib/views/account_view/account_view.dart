@@ -266,7 +266,7 @@ class AccountView extends StatelessWidget {
                             child: ListTile(
                               onTap: controller.transferDb,
                               leading: Icon(CommunityMaterialIcons.database_import, color: PersonView.baseColor),
-                              title: Text("Récupérer ma base de données depuis l'ancienne application", style: TextStyle(fontWeight: FontWeight.w600, color: PersonView.baseColor)),
+                              title: Text("Récupérer mes données", style: TextStyle(fontWeight: FontWeight.w600, color: PersonView.baseColor)),
                               trailing: Icon(Icons.keyboard_arrow_right),
                             )
                           ),

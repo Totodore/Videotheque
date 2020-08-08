@@ -12,9 +12,7 @@ class CarrouselView extends StatelessWidget {
   final List dataCarrousel;
   final String title;
 
-  CarrouselView(this.type, this.dataCarrousel, this.title) {
-    print("view: $dataCarrousel");
-  }
+  CarrouselView(this.type, this.dataCarrousel, this.title);
   
   @override
   Widget build(BuildContext context) {

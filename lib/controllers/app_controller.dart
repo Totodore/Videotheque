@@ -10,8 +10,7 @@ class AppController extends ChangeNotifier {
   double width;
   BuildContext context;
 
-  AppController(BuildContext context) {
-  }
+  AppController(BuildContext context);
 
   void bottomNavupdateIndex(int index) {
     oldBottomNavPositionIndex = bottomNavPositionIndex;

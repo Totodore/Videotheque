@@ -1,12 +1,10 @@
-import 'package:Videotheque/components/divider_component.dart';
-import 'package:Videotheque/globals.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppBarComponent extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => PreferredSize(
-    preferredSize: Size.fromHeight(150.2),
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: 10.0),
     child: Column(
       children: [
         Row(
