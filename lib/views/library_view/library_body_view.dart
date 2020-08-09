@@ -42,30 +42,25 @@ class LibraryBodyViewState extends State<LibraryBodyView> with SingleTickerProvi
     return ChangeNotifierProvider(
       create: (context) => LibraryBodyController(context, type),
       child: Consumer<LibraryBodyController>(
-          builder: (BuildContext context, controller, child) => AnimatedCrossFade(
-            duration: const Duration(milliseconds: 0),
-            crossFadeState: controller.displayLib ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-            secondChild: Container(
-              height: double.maxFinite,
-              color: Colors.white,
-              width: double.infinity,
-              child: Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(GlobalsColor.darkGreen),
-                  backgroundColor: Colors.white,
-                ),
-              ),
+        builder: (BuildContext context, controller, child) => !controller.displayLib ? Container(
+          height: double.maxFinite,
+          color: Colors.white,
+          width: double.infinity,
+          child: Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(GlobalsColor.darkGreen),
+              backgroundColor: Colors.white,
             ),
-            firstChild: controller.displayLib ? CustomScrollView(
-              controller: controller.sliverScrollController,
-              physics: BouncingScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(child: LibraryBodyHeaderView(mainColor, splashColor, type, controller, controller.optionElems)),
-                controller.isLibrarydataEmpty ? SliverFillRemaining(child: NoDataComponent()) : LibraryStickyView(type, controller, rippleAnimationController)
-              ]
-            ) : Container(),
-          )
+          ),
+        ) : CustomScrollView(
+          controller: controller.sliverScrollController,
+          physics: BouncingScrollPhysics(),
+          slivers: [
+            SliverToBoxAdapter(child: LibraryBodyHeaderView(mainColor, splashColor, type, controller, controller.optionElems)),
+            controller.isLibrarydataEmpty ? SliverFillRemaining(child: NoDataComponent()) : LibraryStickyView(type, controller, rippleAnimationController)
+          ]
         ),
+      )
     );
   }
 }
