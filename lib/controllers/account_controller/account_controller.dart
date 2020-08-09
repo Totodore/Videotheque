@@ -11,6 +11,7 @@ import 'package:Videotheque/views/account_view/components/ChangePasswordComponen
 import 'package:Videotheque/views/account_view/components/RemoveAccountComponent.dart';
 import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountController extends ChangeNotifier {
@@ -92,13 +93,23 @@ class AccountController extends ChangeNotifier {
 
   void removeAccount() async {
     _textEditingController = TextEditingController();
-    await showDialog(context: _context, builder: (BuildContext context) => 
-      RemoveAccountComponent(_onConfirmRemoveAccount, _abortPopup, _textEditingController, _context));
+    showAnimatedDialog(
+      animationType: DialogTransitionType.slideFromBottom,
+      duration: const Duration(milliseconds: 200),
+      context: _context, 
+      barrierDismissible: true,
+      builder: (BuildContext context) => 
+        RemoveAccountComponent(_onConfirmRemoveAccount, _abortPopup, _textEditingController, _context)
+      );
   }
 
-  void removeData() async {
-    await showDialog(context: _context, builder: (BuildContext innerContext) {
-      return AlertDialogComponent(
+  void removeData() {
+    showAnimatedDialog(
+      animationType: DialogTransitionType.slideFromBottom,
+      duration: const Duration(milliseconds: 200),
+      context: _context, 
+      barrierDismissible: true,
+      builder: (BuildContext innerContext) => AlertDialogComponent(
         title: "Supprimer mes données",
         content: "Etes-vous sur de supprimer vos données ?",
         buttonConfirm: "Supprimer mes données",
@@ -114,34 +125,57 @@ class AccountController extends ChangeNotifier {
           Navigator.pop(innerContext);
         },
         mainColor: PersonView.baseColor,
-      );
-    });
+      ));
   }
   void transferDb() async {
     _textEditingController = TextEditingController(text: await FireauthQueries.getUserMail);
-    showDialog(context: _context, builder: (BuildContext innerContext) =>
-     TransferDBDialogComponent(_abortPopup, _confirmTransferDB, _textEditingController, innerContext));
+    showAnimatedDialog(
+      animationType: DialogTransitionType.slideFromBottom,
+      duration: const Duration(milliseconds: 200),
+      context: _context, 
+      barrierDismissible: true,
+      builder: (BuildContext innerContext) =>
+        TransferDBDialogComponent(_abortPopup, _confirmTransferDB, _textEditingController, innerContext)
+    );
   }
 
-  void changePassword() async {
+  void changePassword() {
     _textEditingController = TextEditingController();
     _textEditingController2 = TextEditingController();
-    showDialog(context: _context, builder: (BuildContext innerContext) =>
-      ChangePasswordComponent(_confirmPasswordChange, _abortPopup, _textEditingController, _textEditingController2, innerContext));
+    showAnimatedDialog(
+      animationType: DialogTransitionType.slideFromBottom,
+      duration: const Duration(milliseconds: 200),
+      context: _context, 
+      barrierDismissible: true,
+      builder: (BuildContext innerContext) =>
+        ChangePasswordComponent(_confirmPasswordChange, _abortPopup, _textEditingController, _textEditingController2, innerContext)
+    );
   }
 
   
-  void changeMail() async {
+  void changeMail() {
     _textEditingController = TextEditingController();
     _textEditingController2 = TextEditingController();
-    await showDialog(context: _context, builder: (BuildContext innerContext) =>
-      ChangeMailComponent(_onConfirmChangeMail, _abortPopup, _textEditingController, _textEditingController2, _context));
+    showAnimatedDialog(
+      animationType: DialogTransitionType.slideFromBottom,
+      duration: const Duration(milliseconds: 200),
+      context: _context, 
+      barrierDismissible: true,
+      builder: (BuildContext innerContext) =>
+        ChangeMailComponent(_onConfirmChangeMail, _abortPopup, _textEditingController, _textEditingController2, _context)
+      );
   }
 
-  void changeName() async {
+  void changeName() {
     _textEditingController = TextEditingController();
-    await showDialog(context: _context, builder: (BuildContext innerContext) =>
-      ChangeNameComponent(_onConfirmChangeName, _abortPopup, _textEditingController, innerContext));
+    showAnimatedDialog(
+      animationType: DialogTransitionType.slideFromBottom,
+      duration: const Duration(milliseconds: 200),
+      context: _context, 
+      barrierDismissible: true,
+      builder: (BuildContext innerContext) =>
+        ChangeNameComponent(_onConfirmChangeName, _abortPopup, _textEditingController, innerContext)
+      );
   }
 
   void _abortPopup(context) => Navigator.pop(context);
@@ -174,12 +208,12 @@ class AccountController extends ChangeNotifier {
 
   void _onConfirmChangeMail(BuildContext context) async {
     String pass = _textEditingController.text;
-    String mail = _textEditingController2.text;
+    String email = _textEditingController2.text;
     Navigator.pop(context);
-    String res = await FireauthQueries.setUserMail(mail, pass);
+    String res = await FireauthQueries.setUserMail(email, pass);
     if (res == null) {
       GlobalsFunc.snackBar(context, "Votre email à bien été modifié");
-      mail = mail;
+      mail = email;
       notifyListeners();
     } else GlobalsFunc.snackBar(context, res);
   }
@@ -188,7 +222,7 @@ class AccountController extends ChangeNotifier {
     String username = _textEditingController.text;
     Navigator.pop(context);
     await FireauthQueries.setUserName(username);
-    GlobalsFunc.snackBar(context, "Votre nom à bien été modifié");
+    GlobalsFunc.snackBar(_context, "Votre nom à bien été modifié");
     name = username;
     notifyListeners();
   }

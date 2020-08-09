@@ -1,14 +1,13 @@
-import 'package:Videotheque/controllers/library_controller/library_body_controller.dart';
 import 'package:Videotheque/controllers/library_controller/library_sticky_controller.dart';
 import 'package:Videotheque/controllers/library_controller/sortby_controller.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:flutter/material.dart';
-import 'package:ndialog/ndialog.dart';
 import 'package:provider/provider.dart';
 
 class SortByView extends StatelessWidget {
-  LibraryStickyController parentController;
-  SortOptions baseOption;
+  final LibraryStickyController parentController;
+  final SortOptions baseOption;
+  
   SortByView(this.parentController, this.baseOption);
 
   @override

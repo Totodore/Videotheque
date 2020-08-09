@@ -21,7 +21,6 @@ class LibraryController extends ChangeNotifier {
   updateIsInnerBoxScrolled(box) {
     if (box != isInnerBoxScrolled) {
       isInnerBoxScrolled = box;
-      // notifyListeners();
     }
   }
 
@@ -29,9 +28,6 @@ class LibraryController extends ChangeNotifier {
     selectedSort = QueryTypes.values[index];
     tabIndex = index;
     notifyListeners();
-    // if (loadedViews[QueryTypes.values[index]] == States.Nothing && actualQuery.length > 0) {
-    //   searchQuery(actualQuery);
-    // }
   }
 
   bool isChipSelected(int index) => GlobalsMessage.chipData[index]["type"] == selectedSort; 
