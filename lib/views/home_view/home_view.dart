@@ -27,7 +27,6 @@ class HomeView extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   child: Column(children: [
                     AppBarComponent(),
-                    !controller.mailConfirmed ? AskMailComponent(controller.sendMailConfirm, controller.userMail) : Container(),
                     controller.askTransferDB ? AnimatedCrossFade(
                       firstChild: Padding(
                         padding: const EdgeInsets.only(top: 10.0),
@@ -37,20 +36,26 @@ class HomeView extends StatelessWidget {
                       crossFadeState: !controller.isTransferDismissedHidden ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
                       duration: const Duration(milliseconds: 200)
                     ) : Container(),
-                    !controller.isTransferDismissedHidden ? 
-                      controller.askTransferDB ? TransfertDBComponent(controller.confirmTransfertDB, controller.hideTransfertDB, controller.onDismissed)
-                      : Container() : Container(),
                     AnimatedCrossFade(
                       firstChild: LoadingComponent(), 
                       secondChild: controller.hasNoContent ? NoContentComponent() : Column(children: 
-                        List.generate(controller.carrouselLength, (int index) {
+                        [
+                          !controller.mailConfirmed ? AskMailComponent(controller.sendMailConfirm, controller.userMail) : Container(),
+                          !controller.isTransferDismissedHidden ? controller.askTransferDB ?
+                           TransfertDBComponent(
+                              controller.confirmTransfertDB, 
+                              controller.hideTransfertDB, 
+                              controller.onDismissed
+                            ) : Container() : Container(),
+                        ]..addAll(List.generate(controller.carrouselLength, (int index) {
                           HomeCarrousels type = controller.getRandomCarrousel(index);
                           if (type == null) return Container();
-                          return CarrouselView(type, controller.getCarrouselData(type), controller.getCarrouselTitle(type));})),
+                          return CarrouselView(type, controller.getCarrouselData(type), controller.getCarrouselTitle(type));
+                        }))..add(AskForCoffeeComponent(controller.onDonateClick))
+                      ),
                       crossFadeState: controller.isLoading ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
                       duration: const Duration(milliseconds: 200)
                     ),
-                    AskForCoffeeComponent(controller.onDonateClick)
                   ]),
                 ),
               ),
