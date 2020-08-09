@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:Videotheque/controllers/tv_controller/tv_controller.dart';
 
 import 'package:Videotheque/components/divider_component.dart';
@@ -178,35 +179,14 @@ class TvView extends StatelessWidget {
                               final Animation<Offset> animationOffset = Tween<Offset>(begin: Offset(0.0, 0.3), end: Offset(0.0, 0.0)).animate(animation);
                               return FadeTransition(child: SlideTransition(child: child, position: animationOffset), opacity: animation);
                             },
-                            child: controller.isAdded ? Builder(
-                              builder: (BuildContext context) {
-                                return ButtonBar(
-                                  buttonAlignedDropdown: true,
-                                  alignment: MainAxisAlignment.spaceEvenly,
-                                  mainAxisSize: MainAxisSize.max,
-                                  layoutBehavior: ButtonBarLayoutBehavior.padded,
-                                  children: <Widget>[
-                                    OutlineButton.icon(
-                                      label: Text("Série à voir", style: TextStyle(color: Colors.black)),
-                                      icon: Icon(controller.isToSee ? CommunityMaterialIcons.eye_check_outline : CommunityMaterialIcons.eye_plus_outline, color: TvView.baseColor),
-                                      color: TvView.baseColor,
-                                      onPressed: () => controller.onTvToSeeTapped(scaffoldContext),
-                                      borderSide: BorderSide(color: TvView.baseColor, width: 1.2),
-                                      splashColor: TvView.splashColor,
-                                      highlightedBorderColor: TvView.baseColor,
-                                    ),
-                                    OutlineButton.icon(
-                                      label: Text("Série vue", style: TextStyle(color: Colors.black)),
-                                      icon: Icon(controller.isSeen ? CommunityMaterialIcons.eye_check : CommunityMaterialIcons.eye_plus, color: TvView.baseColor),
-                                      onPressed: () => controller.onMovieSeenTapped(scaffoldContext),
-                                      borderSide: BorderSide(color: TvView.baseColor, width: 1.2),
-                                      splashColor: TvView.splashColor,
-                                      highlightedBorderColor: TvView.baseColor,
-                                    ),
-                                  ],
-                                );
-                              }
-                            ) : Padding(padding: EdgeInsets.zero),
+                            child: controller.isAdded ? ToSeeSeenComponent(
+                              () => controller.onTvToSeeTapped(scaffoldContext), 
+                              () => controller.onTvSeenTapped(scaffoldContext), 
+                              controller.isToSee, 
+                              controller.isSeen, 
+                              TvView.baseColor,
+                              "Séries à voir",
+                              "Séries vues") : Padding(padding: EdgeInsets.zero),
                           ),
                           controller.isAdded ? DividerComponent(TvView.baseColor) : Padding(padding: EdgeInsets.zero),
                           Container(

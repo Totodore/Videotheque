@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
 import 'package:Videotheque/components/skeleton_tag_component.dart';
@@ -11,6 +12,7 @@ import 'package:Videotheque/views/components/carrousel_view.dart';
 
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/utils/utils.dart';
+import 'package:Videotheque/views/person_view/person_view.dart';
 
 import 'package:background_app_bar/background_app_bar.dart';
 import 'package:community_material_icon/community_material_icon.dart';
@@ -176,35 +178,14 @@ class CollectionView extends StatelessWidget {
                             final Animation<Offset> animationOffset = Tween<Offset>(begin: Offset(0.0, 0.3), end: Offset(0.0, 0.0)).animate(animation);
                             return FadeTransition(child: SlideTransition(child: child, position: animationOffset), opacity: animation);
                           },
-                          child: controller.isAdded ? Builder(
-                            builder: (BuildContext context) {
-                              return ButtonBar(
-                                buttonAlignedDropdown: true,
-                                alignment: MainAxisAlignment.spaceEvenly,
-                                mainAxisSize: MainAxisSize.max,
-                                layoutBehavior: ButtonBarLayoutBehavior.padded,
-                                children: <Widget>[
-                                  OutlineButton.icon(
-                                    label: Text("Collection à voir", style: TextStyle(color: Colors.black)),
-                                    icon: Icon(controller.isToSee ? CommunityMaterialIcons.eye_check_outline : CommunityMaterialIcons.eye_plus_outline, color: CollectionView.baseColor),
-                                    color: CollectionView.baseColor,
-                                    onPressed: () => controller.onCollectionToSeeTapped(scaffoldContext),
-                                    borderSide: BorderSide(color: CollectionView.baseColor, width: 1.2),
-                                    splashColor: CollectionView.splashColor,
-                                    highlightedBorderColor: CollectionView.baseColor,
-                                  ),
-                                  OutlineButton.icon(
-                                    label: Text("Collection vue", style: TextStyle(color: Colors.black)),
-                                    icon: Icon(controller.isSeen ? CommunityMaterialIcons.eye_check : CommunityMaterialIcons.eye_plus, color: CollectionView.baseColor),
-                                    onPressed: () => controller.onCollectionSeenTapped(scaffoldContext),
-                                    borderSide: BorderSide(color: CollectionView.baseColor, width: 1.2),
-                                    splashColor: CollectionView.splashColor,
-                                    highlightedBorderColor: CollectionView.baseColor,
-                                  ),
-                                ],
-                              );
-                            }
-                          ) : Padding(padding: EdgeInsets.zero),
+                          child: controller.isAdded ? ToSeeSeenComponent(
+                            () => controller.onCollectionToSeeTapped(scaffoldContext), 
+                            () => controller.onCollectionSeenTapped(scaffoldContext),
+                            controller.isToSee, 
+                            controller.isSeen, 
+                            CollectionView.baseColor,
+                            "Collection à voir",
+                            "Collection vues") : Container(),
                         ),
                         controller.isAdded ? DividerComponent(CollectionView.baseColor) : Padding(padding: EdgeInsets.zero),
                         controller.isAdded ? Container(
