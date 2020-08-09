@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Videotheque/controllers/library_controller/library_body_controller.dart';
 import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/utils/SlidePageRoute.dart';
 import 'package:Videotheque/views/collection_view/collection_view.dart';
 import 'package:Videotheque/views/library_view/sortby_view.dart';
 import 'package:Videotheque/views/movie_view/movie_view.dart';
@@ -139,16 +140,16 @@ class LibraryStickyController extends ChangeNotifier {
     GlobalsArgs.isFromLibrary = true;
     switch (GlobalsArgs.actualRoute) {
       case "/element/movie":
-        Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => MovieView()));
+        Navigator.push(context,SlideLeftRoute(page: MovieView()));
         break;
       case "/element/person":
-        Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => PersonView()));
+        Navigator.push(context,SlideLeftRoute(page: PersonView()));
         break;
       case "/element/tv":
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TvView()));
+        Navigator.push(context, SlideLeftRoute(page: TvView()));
         break;
       case "/element/collection":
-        Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => CollectionView()));
+        Navigator.push(context,SlideLeftRoute(page: CollectionView()));
         break;
       default:
     }

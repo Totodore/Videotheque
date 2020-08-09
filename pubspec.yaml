@@ -41,6 +41,7 @@ dependencies:
     rxdart: ^0.24.1
     ndialog: ^2.1.0+6
     flutter_animated_dialog: ^1.1.0
+    store_redirect: ^1.0.2
     
 dev_dependencies:
     flutter_test:

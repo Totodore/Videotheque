@@ -1,4 +1,5 @@
 import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/utils/SlidePageRoute.dart';
 import 'package:Videotheque/views/collection_view/collection_view.dart';
 import 'package:Videotheque/views/movie_view/movie_view.dart';
 import 'package:Videotheque/views/person_view/person_view.dart';
@@ -41,29 +42,31 @@ class CarrouselController extends ChangeNotifier {
   }
 
   void onElementTapped(int index, String heroTag) {
-    if (_showEl != null) {
-      _showEl(index, heroTag);
-      return;
-    }
+    Future.delayed(const Duration(milliseconds: 150), () {
+      if (_showEl != null) {
+        _showEl(index, heroTag);
+        return;
+      }
 
-    GlobalsArgs.actualRoute = "/element/${GlobalsMessage.chipData[QueryTypes.values.indexOf(_type)]["route"]}";
-    GlobalsArgs.transfertArg = [_carrouselData[index], heroTag];
-    GlobalsArgs.isFromLibrary = false;
-    switch (_type) {
-      case QueryTypes.movie:
-        Navigator.push(_context, MaterialPageRoute(builder: (_context) => MovieView()));
-        break;
-      case QueryTypes.tv:
-        Navigator.push(_context, MaterialPageRoute(builder: (_context) => TvView()));
-        break;
-      case QueryTypes.person:
-        Navigator.push(_context, MaterialPageRoute(builder: (_context) => PersonView()));
-        break;
-      case QueryTypes.collection:
-        Navigator.push(_context, MaterialPageRoute(builder: (_context) => CollectionView()));
-        break;
-      default:
-    }
+      GlobalsArgs.actualRoute = "/element/${GlobalsMessage.chipData[QueryTypes.values.indexOf(_type)]["route"]}";
+      GlobalsArgs.transfertArg = [_carrouselData[index], heroTag];
+      GlobalsArgs.isFromLibrary = false;
+      switch (_type) {
+        case QueryTypes.movie:
+          Navigator.push(_context, SlideLeftRoute(page: MovieView()));
+          break;
+        case QueryTypes.tv:
+          Navigator.push(_context, SlideLeftRoute(page: TvView()));
+          break;
+        case QueryTypes.person:
+          Navigator.push(_context, SlideLeftRoute(page: PersonView()));
+          break;
+        case QueryTypes.collection:
+          Navigator.push(_context, SlideLeftRoute(page: CollectionView()));
+          break;
+        default:
+      }
+    });
   }
 
   String getNameElement(int index) {
