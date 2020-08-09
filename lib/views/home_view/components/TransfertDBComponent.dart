@@ -7,7 +7,6 @@ class TransfertDBComponent extends StatelessWidget {
   final Function onDismissed;
 
   TransfertDBComponent(this.onConfirm, this.onAbort, this.onDismissed);
-
   
   @override
   Widget build(BuildContext context) => Dismissible(
@@ -18,7 +17,7 @@ class TransfertDBComponent extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
-        padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 7),
+        padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 5),
         child: Column(children: [
           Text("L'application vient de changer de version, mais pas de soucis, il vous suffit de cliquer sur le bouton ci-dessous pour récupérer vos données précédentes, vous pouvez aussi à tout moment effectuer cette action depuis les paramètres",
             style: TextStyle(

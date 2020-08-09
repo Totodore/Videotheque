@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:Videotheque/components/alert_dialog_component.dart';
+import 'package:Videotheque/api/fireauthQueries.dart';
 import 'package:Videotheque/api/firestoreQueries.dart';
-import 'package:Videotheque/api/FireauthQueries.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:Videotheque/utils/utils.dart';
+
 class AuthController extends ChangeNotifier {
   BuildContext context;
   BuildContext scaffoldContext;
@@ -64,48 +63,33 @@ class AuthController extends ChangeNotifier {
   }
 
   void onConfirmButtonPress() async {
+    List connectRes = [null, null, null];
     pendingTransfer = true;
     passwdError = null;
     emailError = null;
     notifyListeners();
-    Map db;
     if (registerSelected) { //Register
-      if (!formKey.currentState.validate())
+      if (!formKey.currentState.validate())  {
+        pendingTransfer = false;
+        notifyListeners();
         return;
-      bool res = await _register(emailController.text, passwdController.text, nameController.text);
-       //On check si il existe un ancien compte
-      var id = await Utils.checkOldAccount(emailController.text);
-      //si oui on à l'id du compte et on charge l'ancienne bdd
-      if (id is String && res) {
-        if (await _askForGettingOldAccount(id)) {
-          GlobalsFunc.snackBar(scaffoldContext, "Chargement de la base de donnée...");
-          db = await Utils.getOldAccountDb(id);
-        }
       }
-      if (res && db != null)
-        if (!await FirestoreQueries.transferDb(db))
-          GlobalsFunc.snackBar(scaffoldContext, "Erreur lors du transfert de vos données, veuillez contacter l'administrateur");
-        else {
-          GlobalsFunc.snackBar(scaffoldContext, "Votre compte à bien été transféré !");
-          registerSelected = false;
-        }
-      else if (res && await FirestoreQueries.initDb()) {
-        GlobalsFunc.snackBar(scaffoldContext, "Votre compte à bien été créé !");
-        registerSelected = false;
-      }
-    } else {  //Connexion
-      List res = await FireauthQueries.connect(emailController.text, passwdController.text);
-      emailError = res[0];  
-      passwdError = res[1]; 
-      if (res[2]) GlobalsFunc.snackBar(scaffoldContext, "Erreur lors de la connexion.");
-      //Si ya pas d'erreur
-      if (res[0] == null && res[1] == null || !res[2]) {
-        FireauthQueries.setNoAccount(false);
-        Navigator.pushReplacementNamed(context, "/");
-      }
+      if(!await _register(emailController.text, passwdController.text, nameController.text))
+        return;
     }
+    //Connexion
+    connectRes = await FireauthQueries.connect(emailController.text, passwdController.text);
+    print(connectRes);
     pendingTransfer = false;
     notifyListeners();
+    emailError = connectRes[0];  
+    passwdError = connectRes[1]; 
+    if (connectRes[2]) GlobalsFunc.snackBar(scaffoldContext, "Erreur lors de la connexion.");
+    //Si ya pas d'erreur
+    if (connectRes[0] == null && connectRes[1] == null && !connectRes[2]) {
+      FireauthQueries.setNoAccount(false);
+      Navigator.pushReplacementNamed(context, "/");
+    }
   }
 
   Future<bool> _register(String email, String pass, String name) async {
@@ -121,6 +105,10 @@ class AuthController extends ChangeNotifier {
       await authResult.user.updateProfile(userUpdateInfo);
 
       print("User signed in : ${authResult.user.email}");
+      if (!await FirestoreQueries.initDb()) {
+        await authResult.user.delete();
+        return false;
+      }
     } on PlatformException catch(e) {
       switch (e.code) {
         case "ERROR_EMAIL_ALREADY_IN_USE":
@@ -134,6 +122,7 @@ class AuthController extends ChangeNotifier {
           break;
         default: GlobalsFunc.snackBar(scaffoldContext, "Erreur lors de votre inscription.");
       } 
+      pendingTransfer = false;
       notifyListeners();
       return false;
     } on Exception catch(e) {
@@ -148,28 +137,6 @@ class AuthController extends ChangeNotifier {
       return "Les mots de passe ne concordent pas";
     if (passwdConfirmController.text.length < 6)
       return "Mot de passe pas suffisament sécurisé";
-  }
-
-  Future<bool> _askForGettingOldAccount(String id) async {
-    bool result = false;
-    await showDialog(context: context, builder: (BuildContext context) {
-      return AlertDialogComponent(
-        title: "Ancien compte",
-        content: "Nous avons trouvé un ancien compte correspondant à ce mail et ce mot de passe, voulez vous récupérer sa base de données ? Cela necessite une connexion internet stable, vous pourrez à tout moment faire le transfert dans l'onglet Compte",
-        buttonConfirm: "Transférer le compte",
-        buttonAbort: "Non merci",
-        onConfirmed: () {  //On confirm
-          result = true;
-          Navigator.pop(context);
-        }, 
-        onAbort: () { //On abort
-          result = false;
-          Navigator.pop(context);
-        },
-        mainColor: GlobalsColor.darkGreen
-      );
-    });
-    return result;
   }
 
   List<bool> get selectedToggles => [registerSelected, !registerSelected];

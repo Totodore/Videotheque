@@ -2,6 +2,7 @@ import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/controllers/home_controller/home_controller.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/views/home_view/carrousel_view.dart';
+import 'package:Videotheque/views/home_view/components/AskMailComponent.dart';
 import 'package:Videotheque/views/home_view/components/LoadingComponent.dart';
 import 'package:Videotheque/views/home_view/components/TransfertDBComponent.dart';
 import 'package:Videotheque/views/home_view/components/appBar_component.dart';
@@ -26,6 +27,7 @@ class HomeView extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   child: Column(children: [
                     AppBarComponent(),
+                    !controller.mailConfirmed ? AskMailComponent(controller.sendMailConfirm, controller.userMail) : Container(),
                     controller.askTransferDB ? AnimatedCrossFade(
                       firstChild: Padding(
                         padding: const EdgeInsets.only(top: 10.0),

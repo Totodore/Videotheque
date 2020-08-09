@@ -18,7 +18,7 @@ class AskForCoffeeComponent extends StatelessWidget {
           splashColor: Colors.black.withOpacity(0.15),
           highlightColor: Colors.black.withOpacity(0.05),
           child: Padding(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
             child: Column(children: [
               Text("Si vous aimez Vidéothèque n'hésitez pas à me supporter en m'offrant un café. Cela permettra à cette application de rester gratuite et sans publicités.",
                 style: TextStyle(

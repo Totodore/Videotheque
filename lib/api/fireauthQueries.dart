@@ -1,5 +1,8 @@
 import 'package:Videotheque/api/firestoreQueries.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,6 +67,7 @@ class FireauthQueries {
       userUpdateInfo.displayName = name;
 
       await authResult.user.updateProfile(userUpdateInfo);
+      authResult.user.sendEmailVerification();
       print("User signed in : ${authResult.user.email}");
     } on PlatformException catch(e) {
       switch (e.code) {
@@ -108,7 +112,18 @@ class FireauthQueries {
   static Future<String> get getUserName async => (await FirebaseAuth.instance.currentUser()).displayName;
   static Future<String> get getUserMail async => (await FirebaseAuth.instance.currentUser()).email;
   static Future<String> get getUserDate async => DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch((await FirestoreQueries.getUserTimestamp)*1000));
-  
+  static Future<bool> get getUserMailVerified async => (await FirebaseAuth.instance.currentUser()).isEmailVerified;
+
+  static Future<void> sendMailConfirm(BuildContext context, String mail) async {
+    try {
+      await (await FirebaseAuth.instance.currentUser()).sendEmailVerification();
+    } on PlatformException catch (e) {
+      GlobalsFunc.snackBar(context, "Trop de mails envoyés, veuillez patienter un peu avant d'envoyer un nouveau mail de confirmation");
+      return;
+    }
+    GlobalsFunc.snackBar(context, "Un email de vérification à bien été envoyé à $mail");
+  }
+
   static Future<void> setUserName(String name) async {
     UserUpdateInfo infos = UserUpdateInfo();
     infos.displayName = name;
@@ -138,7 +153,8 @@ class FireauthQueries {
     String res;
     String oldMail = await getUserMail;
     try {
-      await (await FirebaseAuth.instance.currentUser()).updateEmail(mail);
+      FirebaseUser user = await FirebaseAuth.instance.currentUser();
+      await user.updateEmail(mail);
     } on PlatformException catch(e) {
       switch (e.code) {
         case "ERROR_REQUIRES_RECENT_LOGIN":

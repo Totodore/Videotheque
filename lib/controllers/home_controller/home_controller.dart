@@ -16,6 +16,8 @@ class HomeController extends ChangeNotifier {
   List _libraryData = [];
   bool _askTransferDbDismissed = false;
   bool _askTransferDB = false;
+  bool _isMailConfirmed = true;
+  String _mail = "";
   TextEditingController _textEditingController;
 
   States _dataState = States.Loading;
@@ -38,8 +40,12 @@ class HomeController extends ChangeNotifier {
 
     try {
       _askTransferDB = !(await SharedPreferences.getInstance()).containsKey("hideTransferDB") ?? true;
+      _isMailConfirmed = await FireauthQueries.getUserMailVerified;
+      print(_isMailConfirmed);
+      if (!_isMailConfirmed) _mail = await FireauthQueries.getUserMail;
     } on Exception {
       _askTransferDB = true;
+      _isMailConfirmed = true;
     }
     if (_libraryData != null && _libraryData.length > 0)
       _dataState = States.Added;
@@ -49,14 +55,18 @@ class HomeController extends ChangeNotifier {
   }
 
   List _getRecentElements() {
-    return _libraryData..sort((a, b) => a["creation_date"] > b["creation_date"] ? 1 : -1);
+    return _libraryData..sort((a, b) => (a["creation_date"] ?? 0) > (b["creation_date"] ?? 0) ? 1 : -1);
   }
   List _getLastSeen() {
-    return _libraryData.where((element) => element["seen"]).toList();
+    return _libraryData.where((element) => element["seen"]).toList()
+      ..sort((a, b) => (a["seen_timestamp"] ?? 0) < (b["seen_timestamp"] ?? 0) ? 1 : -1);
   }
   List _getToSee() {
-    return _libraryData.where((element) => element["to_see"]).toList();
+    return _libraryData.where((element) => element["to_see"]).toList()
+      ..sort((a, b) => (a["to_see_timestamp"] ??= 0) < (b["to_see_timestamp"] ?? 0) ? 1 : -1);;
   }
+
+  Function sendMailConfirm = FireauthQueries.sendMailConfirm;
 
   void confirmTransfertDB() async {
     _textEditingController = TextEditingController(text: await FireauthQueries.getUserMail);
@@ -117,11 +127,14 @@ class HomeController extends ChangeNotifier {
   } 
   String getCarrouselTitle(HomeCarrousels type) => GlobalsMessage.carrouselsTitles[type];
 
+  String get userMail => _mail;
+
   bool get isLoading => _dataState == States.Loading;
   bool get hasNoContent => _dataState == States.Empty;
 
   bool get isTransferDismissedHidden => _askTransferDbDismissed;
   bool get askTransferDB => _askTransferDB;
 
+  bool get mailConfirmed => _isMailConfirmed;
   int get carrouselLength => HomeCarrousels.values.length;
 }

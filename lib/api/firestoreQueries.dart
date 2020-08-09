@@ -30,8 +30,11 @@ class FirestoreQueries {
           "overview": data["overview"],
           "backdrop_url": data["backdrop_path"],
           "fav": false,
+          "fav_timestamp": 0,
           "to_see": false,
+          "to_see_timestamp": 0,
           "seen": false,
+          "seen_timestamp": 0,
           "type": "movie"
         });
       }
@@ -48,8 +51,11 @@ class FirestoreQueries {
           "base_tags": [],
           "overview": data["biography"],
           "fav": false,
+          "fav_timestamp": 0,
           "to_see": false,
+          "to_see_timestamp": 0,
           "seen": false,
+          "seen_timestamp": 0,
           "type": "person"
         });
       }
@@ -66,7 +72,6 @@ class FirestoreQueries {
       await Firestore.instance.collection(userId).document("tags").setData({});
       await Firestore.instance.collection(userId).document("metadata").setData({
         "data_transferred": true,
-        "account_created": (DateTime.now().millisecondsSinceEpoch/1000).ceil()
       });
     } on Exception catch(e) {
       print(e);
@@ -110,8 +115,11 @@ class FirestoreQueries {
           "creation_date": (DateTime.now().millisecondsSinceEpoch/1000).ceil(),
           "backdrop_url": data["backdrop_path"],
           "fav": false,
+          "fav_timestamp": 0,
           "to_see": false,
+          "to_see_timestamp": 0,
           "seen": false,
+          "seen_timestamp": 0,
           "type": EnumToString.parse(elementType)
         }
       });
@@ -223,7 +231,8 @@ class FirestoreQueries {
   static Future<bool> setElementFav(QueryTypes elementType, String id, bool state) async {
     try {
       await (await _getUserCollection).document(_dbRouteFromElement(elementType)).updateData({
-        "$id.fav": state
+        "$id.fav": state,
+        "$id.fav_timestamp": Timestamp.now().seconds
       });
     } on Exception catch(e) {
       print(e);
@@ -234,7 +243,8 @@ class FirestoreQueries {
   static Future<bool> setElementToSee(QueryTypes elementType, String id, bool state) async {
     try {
       await (await _getUserCollection).document(_dbRouteFromElement(elementType)).updateData({
-        "$id.to_see": state
+        "$id.to_see": state,
+        "$id.to_see_timestamp": Timestamp.now().seconds
       });
     } on Exception catch(e) {
       print(e);
@@ -245,7 +255,8 @@ class FirestoreQueries {
   static Future<bool> setElementSeen(QueryTypes elementType, String id, bool state) async {
     try {
       await (await _getUserCollection).document(_dbRouteFromElement(elementType)).updateData({
-        "$id.seen": state
+        "$id.seen": state,
+        "$id.seen_timestamp": Timestamp.now().seconds
       });
     } on Exception catch(e) {
       print(e);
