@@ -1,6 +1,5 @@
 import 'package:Videotheque/api/firestoreQueries.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -117,7 +116,7 @@ class FireauthQueries {
   static Future<void> sendMailConfirm(BuildContext context, String mail) async {
     try {
       await (await FirebaseAuth.instance.currentUser()).sendEmailVerification();
-    } on PlatformException catch (e) {
+    } on PlatformException {
       GlobalsFunc.snackBar(context, "Trop de mails envoyés, veuillez patienter un peu avant d'envoyer un nouveau mail de confirmation");
       return;
     }
