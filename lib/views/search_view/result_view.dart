@@ -64,7 +64,7 @@ class ResultSearchView extends StatelessWidget {
                         case QueryTypes.movie: 
                           icon = Icons.movie;
                           posterPath = element["poster_path"];
-                          title = element["title"] != null ? element["original_title"] : null;
+                          title = element["title"] ?? element["original_title"];
                           infos = element["overview"] != null ? Flexible(
                             child: Text(element["overview"],
                               textWidthBasis: TextWidthBasis.parent,
@@ -78,7 +78,7 @@ class ResultSearchView extends StatelessWidget {
                         case QueryTypes.tv:
                           icon = Icons.tv;
                           posterPath = element["poster_path"];
-                          title = element["name"] != null ? element["original_name"] : null;
+                          title = element["name"] ?? element["original_name"];
                           infos = element["overview"] != null ? Flexible(
                             child: Text(element["overview"],
                               textWidthBasis: TextWidthBasis.parent,
@@ -110,7 +110,7 @@ class ResultSearchView extends StatelessWidget {
                                       backgroundColor: Colors.transparent,
                                     ),
                                     labelStyle: TextStyle(color: Colors.black),
-                                    label: Text(knownForElement["title"] != null ? knownForElement["title"] : knownForElement["name"], style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+                                    label: Text(knownForElement["title"] ?? knownForElement["name"], style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
                                     onPressed: () => controller.knownElementTapped(knownForElement["media_type"], knownForElement),
                                   ),
                                 );
@@ -120,8 +120,8 @@ class ResultSearchView extends StatelessWidget {
                           break;
                         case QueryTypes.collection:
                           icon = Icons.subscriptions;
-                          posterPath = element["poster_path"] != null ? element["poster_path"] : "";
-                          title = element["name"] != null ? element["name"] : "";
+                          posterPath = element["poster_path"] ?? "";
+                          title = element["name"] ?? "";
                           break;
                         // case QueryTypes.companies:
                         //   icon = Icons.business;
