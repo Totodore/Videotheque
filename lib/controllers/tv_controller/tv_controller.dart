@@ -194,7 +194,7 @@ class TvController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onMovieSeenTapped(BuildContext scaffoldContext) async {
+  void onTvSeenTapped(BuildContext scaffoldContext) async {
     Scaffold.of(scaffoldContext).hideCurrentSnackBar();
     if (!isSeen) {
       if (await FirestoreQueries.setElementSeen(QueryTypes.tv, id, true)) {

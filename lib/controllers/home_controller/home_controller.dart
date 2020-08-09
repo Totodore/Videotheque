@@ -3,6 +3,7 @@ import 'package:Videotheque/api/fireconfigQueries.dart';
 import 'package:Videotheque/api/firestoreQueries.dart';
 import 'package:Videotheque/components/TransferDBDialogComponent.dart';
 import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/utils/customChangeNotifier.dart';
 import 'package:Videotheque/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class HomeController extends ChangeNotifier {
+class HomeController extends CustomChangeNotifier {
   final BuildContext _context;
   List<HomeCarrousels> _toDisplayCarroussels = List.from(HomeCarrousels.values)..shuffle();
   List _libraryData = [];
@@ -51,7 +52,8 @@ class HomeController extends ChangeNotifier {
       _dataState = States.Added;
     else
       _dataState = States.Empty;
-    notifyListeners();
+    if (this.mounted)
+      notifyListeners();
   }
 
   List _getRecentElements() {

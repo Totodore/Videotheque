@@ -1,6 +1,7 @@
 
 import 'dart:ui';
 
+import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:background_app_bar/background_app_bar.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
@@ -152,35 +153,14 @@ class MovieView extends StatelessWidget {
                               final Animation<Offset> animationOffset = Tween<Offset>(begin: Offset(0.0, 0.3), end: Offset(0.0, 0.0)).animate(animation);
                               return FadeTransition(child: SlideTransition(child: child, position: animationOffset), opacity: animation);
                             },
-                            child: controller.isAdded ? Builder(
-                              builder: (BuildContext context) {
-                                return ButtonBar(
-                                  buttonAlignedDropdown: true,
-                                  alignment: MainAxisAlignment.spaceEvenly,
-                                  mainAxisSize: MainAxisSize.max,
-                                  layoutBehavior: ButtonBarLayoutBehavior.padded,
-                                  children: <Widget>[
-                                    OutlineButton.icon(
-                                      label: Text("Film à voir", style: TextStyle(color: Colors.black)),
-                                      icon: Icon(controller.isToSee ? CommunityMaterialIcons.eye_check_outline : CommunityMaterialIcons.eye_plus_outline, color: GlobalsColor.darkGreen),
-                                      color: GlobalsColor.darkGreen,
-                                      onPressed: () => controller.onMovieToSeeTapped(context),
-                                      borderSide: BorderSide(color: GlobalsColor.darkGreen, width: 1.2),
-                                      splashColor: GlobalsColor.darkGreenDisabled,
-                                      highlightedBorderColor: GlobalsColor.darkGreen,
-                                    ),
-                                    OutlineButton.icon(
-                                      label: Text("Films vu", style: TextStyle(color: Colors.black)),
-                                      icon: Icon(controller.isSeen ? CommunityMaterialIcons.eye_check : CommunityMaterialIcons.eye_plus, color: GlobalsColor.darkGreen),
-                                      onPressed: () => controller.onMovieSeenTapped(context),
-                                      borderSide: BorderSide(color: GlobalsColor.darkGreen, width: 1.2),
-                                      splashColor: GlobalsColor.darkGreenDisabled,
-                                      highlightedBorderColor: GlobalsColor.darkGreen,
-                                    ),
-                                  ],
-                                );
-                              }
-                            ) : Padding(padding: EdgeInsets.zero),
+                            child: controller.isAdded ? ToSeeSeenComponent(
+                              () => controller.onMovieToSeeTapped(scaffoldContext), 
+                              () => controller.onMovieToSeeTapped(scaffoldContext), 
+                              controller.isToSee, 
+                              controller.isSeen, 
+                              GlobalsColor.darkGreen,
+                              "Films à voir",
+                              "Films vus") : Padding(padding: EdgeInsets.zero),
                           ),
                           controller.isAdded ? DividerComponent(GlobalsColor.darkGreen) : Padding(padding: EdgeInsets.zero),
                           Container(
