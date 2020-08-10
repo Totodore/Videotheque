@@ -185,8 +185,8 @@ class TvView extends StatelessWidget {
                               controller.isToSee, 
                               controller.isSeen, 
                               TvView.baseColor,
-                              "Séries à voir",
-                              "Séries vues") : Padding(padding: EdgeInsets.zero),
+                              "Série à voir",
+                              "Série vue") : Padding(padding: EdgeInsets.zero),
                           ),
                           controller.isAdded ? DividerComponent(TvView.baseColor) : Padding(padding: EdgeInsets.zero),
                           Container(

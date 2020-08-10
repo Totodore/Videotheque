@@ -185,7 +185,7 @@ class CollectionView extends StatelessWidget {
                             controller.isSeen, 
                             CollectionView.baseColor,
                             "Collection à voir",
-                            "Collection vues") : Container(),
+                            "Collection vue") : Container(),
                         ),
                         controller.isAdded ? DividerComponent(CollectionView.baseColor) : Padding(padding: EdgeInsets.zero),
                         controller.isAdded ? Container(

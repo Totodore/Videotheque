@@ -13,7 +13,7 @@ class LibraryBodyController extends CustomChangeNotifier {
   final ScrollController sliverScrollController = ScrollController(keepScrollOffset: true);
 
 
-  final List<ElementsTypes> optionElems = [
+  final List<ElementsTypes> _optionElems = [
     ElementsTypes.ToSeeCarrousel,
     ElementsTypes.SeenCarrousel,
     ElementsTypes.FavCarrousel
@@ -36,7 +36,7 @@ class LibraryBodyController extends CustomChangeNotifier {
 
   LibraryBodyController(this.context, this.type) {
 
-    for (ElementsTypes elem in optionElems)
+    for (ElementsTypes elem in _optionElems)
       objectsStates[elem] = States.Loading;
 
     getAllData();
@@ -89,7 +89,7 @@ class LibraryBodyController extends CustomChangeNotifier {
 
   
   _setHeaderData() {
-    for (ElementsTypes elem in optionElems) {
+    for (ElementsTypes elem in _optionElems) {
       carrouselData[elem] = _libraryData.where((data) {
         switch (elem) {
           case ElementsTypes.ToSeeCarrousel:
@@ -112,7 +112,7 @@ class LibraryBodyController extends CustomChangeNotifier {
 
   bool get displayLib {
     bool canDispLib = false;
-    for (ElementsTypes option in optionElems) {
+    for (ElementsTypes option in _optionElems) {
       if (objectsStates[option] != States.Loading) canDispLib = true;
     }
     if (objectsStates[ElementsTypes.MainData] != States.Loading)
@@ -125,4 +125,5 @@ class LibraryBodyController extends CustomChangeNotifier {
   bool get isLibrarydataEmpty => _libraryData.length == 0;
 
 
+  List<ElementsTypes> get optionElems => type == QueryTypes.all ? [ElementsTypes.FavCarrousel] : _optionElems;
 }
