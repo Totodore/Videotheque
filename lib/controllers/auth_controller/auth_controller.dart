@@ -45,16 +45,23 @@ class AuthController extends ChangeNotifier {
   }
 
   void onConnectGooglePressed() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth = await googleSignInAccount.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      idToken: googleAuth.idToken, 
-      accessToken: googleAuth.accessToken
-    );
-    final FirebaseUser user = (await firebaseAuth.signInWithCredential(credential)).user;
-    print("User signed in : ${user.displayName}");
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+      final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth = await googleSignInAccount.authentication;
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        idToken: googleAuth.idToken, 
+        accessToken: googleAuth.accessToken
+      );
+      final FirebaseUser user = (await firebaseAuth.signInWithCredential(credential)).user;
+      print("User signed in : ${user.displayName}");
+    } on Exception {
+      GlobalsFunc.snackBar(context, "Une erreur est apparu lors de la connexion via Google");
+      return;
+    }
+    FireauthQueries.setNoAccount(false);
+    Navigator.pushReplacementNamed(context, "/");
   }
 
   void onNoAccountPressed() {
