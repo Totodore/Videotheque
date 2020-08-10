@@ -1,5 +1,7 @@
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/views/auth_view.dart/components/AlertOldAccountComponent.dart';
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -83,28 +85,27 @@ class AuthView extends StatelessWidget {
                             key: controller.formKey,
                             child: Column(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 15.0),
-                                  child: ToggleButtons(
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/11, vertical: 5),
-                                        child: Text("Inscription"),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/11, vertical: 5),
-                                        child: Text("Connexion"),
-                                      ),
-                                    ], 
-                                    textStyle: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-                                    isSelected: controller.selectedToggles,
-                                    onPressed: controller.onToggleButtonsPressed,
-                                    splashColor: GlobalsColor.darkGreenDisabled,
-                                    fillColor: GlobalsColor.fadedGreen,
-                                    selectedColor: Colors.black,
-                                    borderRadius: BorderRadius.circular(50),
-                                    borderColor: GlobalsColor.darkGreenDisabled,
-                                  ),
+                                Padding(padding: const EdgeInsets.only(top: 15), child: Container()),
+                                AlertOldAccountComponent(),
+                                ToggleButtons(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/11, vertical: 5),
+                                      child: Text("Inscription"),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/11, vertical: 5),
+                                      child: Text("Connexion"),
+                                    ),
+                                  ], 
+                                  textStyle: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                                  isSelected: controller.selectedToggles,
+                                  onPressed: controller.onToggleButtonsPressed,
+                                  splashColor: GlobalsColor.darkGreenDisabled,
+                                  fillColor: GlobalsColor.fadedGreen,
+                                  selectedColor: Colors.black,
+                                  borderRadius: BorderRadius.circular(50),
+                                  borderColor: GlobalsColor.darkGreenDisabled,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
@@ -242,18 +243,19 @@ class AuthView extends StatelessWidget {
                   bottomNavigationBar: ButtonBar(
                     alignment: MainAxisAlignment.center,
                     children: [
-                      // RaisedButton.icon(
-                      //   icon: Icon(CommunityMaterialIcons.google, color: GlobalsColor.darkGreen),
-                      //   label: Text("Me connecter avec Google", 
-                      //     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)
-                      //   ),
-                      //   onPressed: controller.onConnectGooglePressed,
-                      //   color: Colors.white,
-                      //   textColor: Colors.black,
-                      //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      //   elevation: 1,
-                      //   highlightElevation: 2,
-                      // ),
+                      RaisedButton.icon(
+                        icon: Icon(CommunityMaterialIcons.google, color: GlobalsColor.darkGreen),
+                        label: Text("Me connecter avec Google", 
+                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)
+                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        onPressed: controller.onConnectGooglePressed,
+                        color: Colors.white,
+                        textColor: Colors.black,
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        elevation: 1,
+                        highlightElevation: 2,
+                      ),
                       // FlatButton(
                       //   child: Text("Je ne souhaite pas utiliser de compte", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
                       //   onPressed: !controller.pendingTransfer ? controller.onNoAccountPressed : null,
