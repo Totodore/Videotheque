@@ -14,7 +14,7 @@ class TransfertDBComponent extends StatelessWidget {
       key: GlobalKey(),
       child: Card(
       color: Colors.white,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 25, top: 5),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
         padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 5),

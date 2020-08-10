@@ -28,10 +28,7 @@ class HomeView extends StatelessWidget {
                   child: Column(children: [
                     AppBarComponent(),
                     controller.askTransferDB ? AnimatedCrossFade(
-                      firstChild: Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: DividerComponent(GlobalsColor.darkGreen),
-                      ),
+                      firstChild: DividerComponent(GlobalsColor.darkGreen),
                       secondChild: Container(), 
                       crossFadeState: !controller.isTransferDismissedHidden ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
                       duration: const Duration(milliseconds: 200)
@@ -40,6 +37,7 @@ class HomeView extends StatelessWidget {
                       firstChild: LoadingComponent(), 
                       secondChild: controller.hasNoContent ? NoContentComponent() : Column(children: 
                         [
+                          Padding(padding: EdgeInsets.only(top: 10), child: Container(),),
                           !controller.mailConfirmed ? AskMailComponent(controller.sendMailConfirm, controller.userMail) : Container(),
                           !controller.isTransferDismissedHidden ? controller.askTransferDB ?
                            TransfertDBComponent(
