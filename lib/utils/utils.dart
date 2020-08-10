@@ -29,8 +29,13 @@ class Utils {
         break;
       default: break;
     }
-    url += image;
-    return CachedNetworkImageProvider(url, scale: 1);
+    try {
+      if (image == null) throw Exception();
+      url += image;
+      return CachedNetworkImageProvider(url, scale: 1);
+    } on Exception {
+      return AssetImage("assets/NoImage.jpg");
+    }
   }
 
   
