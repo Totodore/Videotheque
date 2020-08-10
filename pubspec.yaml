@@ -55,6 +55,7 @@ flutter:
     assets:
         - assets/loading.png
         - assets/launcher_iconV2.png
+        - assets/NoImage.jpg
     fonts:
         -
             family: Aladin
