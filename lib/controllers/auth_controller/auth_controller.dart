@@ -57,7 +57,7 @@ class AuthController extends ChangeNotifier {
       final FirebaseUser user = (await firebaseAuth.signInWithCredential(credential)).user;
       print("User signed in : ${user.displayName}");
     } on Exception {
-      GlobalsFunc.snackBar(context, "Une erreur est apparu lors de la connexion via Google");
+      GlobalsFunc.snackBar(scaffoldContext, "Une erreur est apparu lors de la connexion via Google");
       return;
     }
     FireauthQueries.setNoAccount(false);

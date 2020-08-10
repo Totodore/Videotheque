@@ -26,18 +26,16 @@ class CarrouselView extends StatelessWidget {
               DividerComponent(GlobalsColor.darkGreen, title),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  child: Wrap(
-                    spacing: 13,
-                    runSpacing: 5,
-                    runAlignment: WrapAlignment.center,
-                    alignment: WrapAlignment.start,
-                    children: List.generate(controller.carrouselData.length, (int index) {
+                child: SizedBox(
+                  height: 35+5+187.5,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: controller.carrouselData.length,
+                    itemBuilder: (BuildContext context, int index) {
                       String heroTag = controller.heroTag;
                       return Padding(
-                        padding: EdgeInsets.only(bottom: 30),
+                        padding: EdgeInsets.only(bottom: 35, top: 5, right: 6.5, left: 6.5),
                         child: RaisedButton(
                           elevation: 2,
                           clipBehavior: Clip.hardEdge,
@@ -99,10 +97,9 @@ class CarrouselView extends StatelessWidget {
                           ),
                         ),
                       );
-                    })
-                  ),
+                    }),
+                )
                 ),
-              ),
             ],
           );
         }

@@ -155,7 +155,7 @@ class MovieView extends StatelessWidget {
                             },
                             child: controller.isAdded ? ToSeeSeenComponent(
                               () => controller.onMovieToSeeTapped(scaffoldContext), 
-                              () => controller.onMovieToSeeTapped(scaffoldContext), 
+                              () => controller.onMovieSeenTapped(scaffoldContext), 
                               controller.isToSee, 
                               controller.isSeen, 
                               GlobalsColor.darkGreen,
