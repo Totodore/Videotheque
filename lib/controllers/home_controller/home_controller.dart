@@ -24,7 +24,8 @@ class HomeController extends CustomChangeNotifier {
   States _dataState = States.Loading;
 
   HomeController(this._context) {
-    _getLibrary();
+    if (this.mounted)
+      _getLibrary();
   }
 
 

@@ -38,7 +38,6 @@ class LibraryBodyController extends CustomChangeNotifier {
 
     for (ElementsTypes elem in _optionElems)
       objectsStates[elem] = States.Loading;
-
     getAllData();
     getTags();
   }
