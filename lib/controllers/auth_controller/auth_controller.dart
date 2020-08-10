@@ -55,18 +55,25 @@ class AuthController extends ChangeNotifier {
         accessToken: googleAuth.accessToken
       );
       final FirebaseUser user = (await firebaseAuth.signInWithCredential(credential)).user;
+      if (!await FirestoreQueries.hasDB(user.uid)) {
+        print("User created account, init DB");
+        if (!await FirestoreQueries.initDb()) {
+          await user.delete();
+          throw Exception();
+        }
+      }
       print("User signed in : ${user.displayName}");
     } on Exception {
       GlobalsFunc.snackBar(scaffoldContext, "Une erreur est apparu lors de la connexion via Google");
       return;
     }
     FireauthQueries.setNoAccount(false);
-    Navigator.pushReplacementNamed(context, "/");
+    Navigator.pushReplacementNamed(scaffoldContext, "/");
   }
 
   void onNoAccountPressed() {
     FireauthQueries.setNoAccount(true);
-    Navigator.pushReplacementNamed(context, "/");
+    Navigator.pushReplacementNamed(scaffoldContext, "/");
   }
 
   void onConfirmButtonPress() async {
@@ -95,7 +102,7 @@ class AuthController extends ChangeNotifier {
     //Si ya pas d'erreur
     if (connectRes[0] == null && connectRes[1] == null && !connectRes[2]) {
       FireauthQueries.setNoAccount(false);
-      Navigator.pushReplacementNamed(context, "/");
+      Navigator.pushReplacementNamed(scaffoldContext, "/");
     }
   }
 

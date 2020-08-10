@@ -8,6 +8,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 
 class FirestoreQueries {
+  static Future<bool> hasDB(String uid) async =>
+      (await Firestore.instance.collection(uid).getDocuments()).documents.length > 0;
   //Effectue un transfert de données depuis la bdd en parametre vers firebase
   //On remplace les clef par des UUID et on met les id tmdb dans un nv champs
   static Future<bool> transferDb(Map db) async {
@@ -70,7 +72,7 @@ class FirestoreQueries {
       await Firestore.instance.collection(userId).document("series").setData({});
       await Firestore.instance.collection(userId).document("collections").setData({});
       await Firestore.instance.collection(userId).document("tags").setData({});
-      await Firestore.instance.collection(userId).document("metadata").setData({
+      await Firestore.instance.collection(userId).document("metadata").updateData({
         "data_transferred": true,
       });
     } on Exception catch(e) {
