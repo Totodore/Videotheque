@@ -94,13 +94,13 @@ class CollectionController extends ChangeNotifier {
     Scaffold.of(scaffoldContext).hideCurrentSnackBar();
     if (!isToSee) {
       if (await FirestoreQueries.setElementToSee(QueryTypes.collection, id, true)) {
-        Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["title"]} ajouté aux collections à voir')));
+        Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["name"]} ajouté aux collections à voir')));
         isToSee = true;
       }
     }
     else {
       if (await FirestoreQueries.setElementToSee(QueryTypes.collection, id, false)) {
-        Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["title"]} retiré des collections à voir')));
+        Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["name"]} retiré des collections à voir')));
         isToSee = false;
       }
     }
@@ -111,13 +111,13 @@ class CollectionController extends ChangeNotifier {
     Scaffold.of(scaffoldContext).hideCurrentSnackBar();
     if (!isSeen) {
       if (await FirestoreQueries.setElementSeen(QueryTypes.collection, id, true)) {
-        Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["title"]} ajouté aux collections vues')));
+        Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["name"]} ajouté aux collections vues')));
         isSeen = true;
       }
     }
     else {
       if (await FirestoreQueries.setElementSeen(QueryTypes.collection, id, false)) {
-        Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["title"]} retiré des collections vues')));
+        Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["name"]} retiré des collections vues')));
         isSeen = false;
       }
     }
