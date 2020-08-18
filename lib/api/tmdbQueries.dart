@@ -32,7 +32,7 @@ class TMDBQueries {
   // }
 
   static Future<Map<String, dynamic>> onlineSearchTV(String query, [int offset = 1]) async {
-    return TMDBQueries.sortNoContent(await defaultQuery("$api_endpoint/search/multi?api_key=$key&language=$lang&page=$offset&include_adult=false&query=$query"), QueryTypes.tv);
+    return TMDBQueries.sortNoContent(await defaultQuery("$api_endpoint/search/tv?api_key=$key&language=$lang&page=$offset&include_adult=false&query=$query"), QueryTypes.tv);
   }
 
   static Future<Map<String, dynamic>> getMovie(String id) async {
