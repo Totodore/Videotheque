@@ -43,7 +43,7 @@ class HomeController extends CustomChangeNotifier {
     try {
       _askTransferDB = !(await SharedPreferences.getInstance()).containsKey("hideTransferDB") ?? true;
       _isMailConfirmed = await FireauthQueries.getUserMailVerified;
-      print(_isMailConfirmed);
+      print("Mail confirmed : $_isMailConfirmed");
       if (!_isMailConfirmed) _mail = await FireauthQueries.getUserMail;
     } on Exception {
       _askTransferDB = true;
@@ -105,7 +105,6 @@ class HomeController extends CustomChangeNotifier {
       GlobalsFunc.snackBar(_context, "Erreur ! Vérifiez votre connexion internet");
       return;
     }
-    print(donateLink);
     launch(donateLink);
   }
 

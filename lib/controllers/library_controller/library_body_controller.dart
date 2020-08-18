@@ -66,7 +66,6 @@ class LibraryBodyController extends CustomChangeNotifier {
         tags[inTag["id"].toString()] = inTag["name"];
       }
     }
-    print(tags);
   }
 
   ///input type : [List<DocumentSnapshot>]
