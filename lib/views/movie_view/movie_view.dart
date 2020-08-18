@@ -159,8 +159,8 @@ class MovieView extends StatelessWidget {
                               controller.isToSee, 
                               controller.isSeen, 
                               GlobalsColor.darkGreen,
-                              "Films à voir",
-                              "Films vus") : Padding(padding: EdgeInsets.zero),
+                              "Film à voir",
+                              "Film vu") : Padding(padding: EdgeInsets.zero),
                           ),
                           controller.isAdded ? DividerComponent(GlobalsColor.darkGreen) : Padding(padding: EdgeInsets.zero),
                           Container(
