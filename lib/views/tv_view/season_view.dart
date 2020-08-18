@@ -134,7 +134,7 @@ class SeasonView extends StatelessWidget {
                               data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
                               child: AnimatedCrossFade(
                                 firstChild: SkeletonCarrouselComponent(),
-                                secondChild: controller.objectsStates[ElementsTypes.EpisodesCarrousel] == States.Added ? CarrouselView(QueryTypes.tv, controller.carrouselData[ElementsTypes.EpisodesCarrousel], controller.showEpisodeEl) : Padding(padding: EdgeInsets.all(0)),
+                                secondChild: controller.objectsStates[ElementsTypes.EpisodesCarrousel] == States.Added ? CarrouselView(QueryTypes.tv, controller.carrouselData[ElementsTypes.EpisodesCarrousel], controller.showEpisodeEl, true) : Padding(padding: EdgeInsets.all(0)),
                                 crossFadeState: controller.objectsStates[ElementsTypes.EpisodesCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                                 duration: Duration(milliseconds: 200),
                               ),
