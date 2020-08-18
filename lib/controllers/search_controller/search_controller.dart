@@ -25,6 +25,7 @@ class SearchController extends ChangeNotifier {
   SearchController() {
     focusNode.requestFocus();
   }
+  
   void searchQuery(String query) async {
     QueryTypes searchingSelectedSort = selectedSort; //On sauvegarde le type actuel au cas ou l'utilisateur change d'index pdt le chargement
     if (query == null || query.isEmpty) {
