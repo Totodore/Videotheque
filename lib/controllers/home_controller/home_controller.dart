@@ -58,7 +58,7 @@ class HomeController extends CustomChangeNotifier {
   }
 
   List _getRecentElements() {
-    return _libraryData..sort((a, b) => (a["creation_date"] ?? 0) > (b["creation_date"] ?? 0) ? 1 : -1);
+    return _libraryData..sort((a, b) => (a["creation_date"] ?? 0) > (b["creation_date"] ?? 0) ? -1 : 1);
   }
   List _getLastSeen() {
     return _libraryData.where((element) => element["seen"]).toList()
