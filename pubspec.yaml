@@ -2,7 +2,7 @@ name: Videotheque
 description: >-
     Gérer votre bibliothèque de films ! Cherchez, Ajoutez, Triez, Le tour est
     joué !
-version: 3.0.1+20
+version: 3.0.5+21
 environment:
     sdk: '>=2.1.0 <3.0.0'
 dependencies:
@@ -30,10 +30,10 @@ dependencies:
     flutter_native_splash: ^0.1.9
     provider: ^4.0.4
     cached_network_image: ^2.2.0
-    firebase_auth: ^0.16.0
+    firebase_auth: ^0.18.0
     google_sign_in: ^4.4.4
-    cloud_firestore: ^0.13.5
-    firebase_core: ^0.4.0+9
+    cloud_firestore: ^0.14.0
+    firebase_core: ^0.5.0
     firebase_remote_config: ^0.3.0+3
     enum_to_string: ^1.0.9
     flutter_sticky_header: ^0.4.2
@@ -42,6 +42,7 @@ dependencies:
     ndialog: ^2.1.0+6
     flutter_animated_dialog: ^1.1.0
     store_redirect: ^1.0.2
+    flutter_barcode_scanner: ^1.0.1
     
 dev_dependencies:
     flutter_test:
