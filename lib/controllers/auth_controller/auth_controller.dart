@@ -50,11 +50,11 @@ class AuthController extends ChangeNotifier {
       final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
       final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth = await googleSignInAccount.authentication;
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
+      final AuthCredential credential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken, 
         accessToken: googleAuth.accessToken
       );
-      final FirebaseUser user = (await firebaseAuth.signInWithCredential(credential)).user;
+      final User user = (await firebaseAuth.signInWithCredential(credential)).user;
       if (!await FirestoreQueries.hasDB(user.uid)) {
         print("User created account, init DB");
         if (!await FirestoreQueries.initDb()) {
@@ -109,14 +109,12 @@ class AuthController extends ChangeNotifier {
   Future<bool> _register(String email, String pass, String name) async {
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     try {
-      final AuthResult authResult = await firebaseAuth.createUserWithEmailAndPassword(
+      final UserCredential authResult = await firebaseAuth.createUserWithEmailAndPassword(
         email: email, 
         password: pass,
       );
-      final UserUpdateInfo userUpdateInfo = UserUpdateInfo();
-      userUpdateInfo.displayName = name;
 
-      await authResult.user.updateProfile(userUpdateInfo);
+      await authResult.user.updateProfile(displayName: name);
 
       print("User signed in : ${authResult.user.email}");
       if (!await FirestoreQueries.initDb()) {

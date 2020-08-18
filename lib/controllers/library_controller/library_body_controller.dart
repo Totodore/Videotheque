@@ -72,7 +72,7 @@ class LibraryBodyController extends CustomChangeNotifier {
   void onAllLibraryElement(snapshots) {
     _libraryData = [];
     for (DocumentSnapshot snap in snapshots)
-      _libraryData.addAll(snap.data.values);
+      _libraryData.addAll(snap.data().values);
 
     if (_libraryData != null && _libraryData.length > 0)
       objectsStates[ElementsTypes.MainData] = States.Added;

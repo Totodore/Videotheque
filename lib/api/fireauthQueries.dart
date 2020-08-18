@@ -12,7 +12,7 @@ class FireauthQueries {
   static Future<bool> get needSignIn async {
     bool noAccount = (await SharedPreferences.getInstance()).getBool("no_account") ?? false;
     if (noAccount) return false;  //Pas besoin de signIn
-    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+    User firebaseUser = FirebaseAuth.instance.currentUser;
     return firebaseUser == null;  //Besoin de signIn si c'est null
   }
 
@@ -58,14 +58,12 @@ class FireauthQueries {
     List returner = [null, null, false];
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     try {
-      final AuthResult authResult = await firebaseAuth.createUserWithEmailAndPassword(
+      final UserCredential authResult = await firebaseAuth.createUserWithEmailAndPassword(
         email: mail, 
         password: pass,
       );
-      final UserUpdateInfo userUpdateInfo = UserUpdateInfo();
-      userUpdateInfo.displayName = name;
+      await authResult.user.updateProfile(displayName: name);
 
-      await authResult.user.updateProfile(userUpdateInfo);
       authResult.user.sendEmailVerification();
       print("User signed in : ${authResult.user.email}");
     } on PlatformException catch(e) {
@@ -94,7 +92,7 @@ class FireauthQueries {
   static Future<String> deleteAccount(String pass) async {
     String res;
     try {
-      await (await FirebaseAuth.instance.currentUser()).delete();
+      await (FirebaseAuth.instance.currentUser).delete();
     } on PlatformException catch(e) {
       if (e.code == "ERROR_REQUIRES_RECENT_LOGIN") {
         connect(await getUserMail, pass);
@@ -107,15 +105,15 @@ class FireauthQueries {
     return res;
   }
 
-  static Future<String> get getUserId async => (await FirebaseAuth.instance.currentUser()).uid;
-  static Future<String> get getUserName async => (await FirebaseAuth.instance.currentUser()).displayName;
-  static Future<String> get getUserMail async => (await FirebaseAuth.instance.currentUser()).email;
+  static Future<String> get getUserId async => FirebaseAuth.instance.currentUser.uid;
+  static Future<String> get getUserName async => FirebaseAuth.instance.currentUser.displayName;
+  static Future<String> get getUserMail async => FirebaseAuth.instance.currentUser.email;
   static Future<String> get getUserDate async => DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch((await FirestoreQueries.getUserTimestamp)*1000));
-  static Future<bool> get getUserMailVerified async => (await FirebaseAuth.instance.currentUser()).isEmailVerified;
+  static Future<bool> get getUserMailVerified async => FirebaseAuth.instance.currentUser.emailVerified;
 
   static Future<void> sendMailConfirm(BuildContext context, String mail) async {
     try {
-      await (await FirebaseAuth.instance.currentUser()).sendEmailVerification();
+      await FirebaseAuth.instance.currentUser.sendEmailVerification();
     } on PlatformException {
       GlobalsFunc.snackBar(context, "Trop de mails envoyés, veuillez patienter un peu avant d'envoyer un nouveau mail de confirmation");
       return;
@@ -124,15 +122,13 @@ class FireauthQueries {
   }
 
   static Future<void> setUserName(String name) async {
-    UserUpdateInfo infos = UserUpdateInfo();
-    infos.displayName = name;
-    (await FirebaseAuth.instance.currentUser()).updateProfile(infos);
+    await FirebaseAuth.instance.currentUser.updateProfile(displayName: name);
   }
   static Future<String> setUserPass(String pass, String oldPass) async {
     String res;
     String mail = await getUserMail;
     try {
-      await (await FirebaseAuth.instance.currentUser()).updatePassword(pass);
+      await FirebaseAuth.instance.currentUser.updatePassword(pass);
     } on PlatformException catch(e) {
       switch (e.code) {
         case "ERROR_WEAK_PASSWORD":
@@ -152,7 +148,7 @@ class FireauthQueries {
     String res;
     String oldMail = await getUserMail;
     try {
-      FirebaseUser user = await FirebaseAuth.instance.currentUser();
+      User user = FirebaseAuth.instance.currentUser;
       await user.updateEmail(mail);
     } on PlatformException catch(e) {
       switch (e.code) {
@@ -173,5 +169,5 @@ class FireauthQueries {
     }
     return res;
   }
-  static Future<void> reloadData() async => (await FirebaseAuth.instance.currentUser()).reload();
+  static Future<void> reloadData() async => FirebaseAuth.instance.currentUser.reload();
 }

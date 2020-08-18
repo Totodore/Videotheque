@@ -38,7 +38,7 @@ class HomeController extends CustomChangeNotifier {
   void _onAllLibraryElement(var snapshots) async {
      _libraryData = [];
     for (DocumentSnapshot snap in snapshots)
-      _libraryData.addAll(snap.data.values);
+      _libraryData.addAll(snap.data().values);
 
     try {
       _askTransferDB = !(await SharedPreferences.getInstance()).containsKey("hideTransferDB") ?? true;

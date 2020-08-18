@@ -42,7 +42,6 @@ dependencies:
     ndialog: ^2.1.0+6
     flutter_animated_dialog: ^1.1.0
     store_redirect: ^1.0.2
-    flutter_barcode_scanner: ^1.0.1
     
 dev_dependencies:
     flutter_test:
@@ -56,6 +55,7 @@ flutter:
     assets:
         - assets/loading.png
         - assets/launcher_iconV2.png
+        - assets/splash.png
         - assets/NoImage.jpg
     fonts:
         -
