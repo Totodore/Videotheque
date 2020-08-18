@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 
 class FirestoreQueries {
   static Future<bool> hasDB(String uid) async =>
-      (await Firestore.instance.collection(uid).getDocuments()).documents.length > 0;
+      (await FirebaseFirestore.instance.collection(uid).get()).docs.length > 0;
   //Effectue un transfert de données depuis la bdd en parametre vers firebase
   //On remplace les clef par des UUID et on met les id tmdb dans un nv champs
   static Future<bool> transferDb(Map db) async {
@@ -61,18 +61,18 @@ class FirestoreQueries {
           "type": "person"
         });
       }
-      await Firestore.instance.collection(userId).document("movies").setData(Map.fromIterables(
+      await FirebaseFirestore.instance.collection(userId).doc("movies").update(Map.fromIterables(
         List.generate(db["movie"].length, (index) => Uuid().v1()), 
         moviesValues
       ));
-      await Firestore.instance.collection(userId).document("people").setData(Map.fromIterables(
+      await FirebaseFirestore.instance.collection(userId).doc("people").update(Map.fromIterables(
         List.generate(db["people"].length, (index) => Uuid().v1()),
         peopleValues,
       ));
-      await Firestore.instance.collection(userId).document("series").setData({});
-      await Firestore.instance.collection(userId).document("collections").setData({});
-      await Firestore.instance.collection(userId).document("tags").setData({});
-      await Firestore.instance.collection(userId).document("metadata").updateData({
+      await FirebaseFirestore.instance.collection(userId).doc("series").update({});
+      await FirebaseFirestore.instance.collection(userId).doc("collections").update({});
+      await FirebaseFirestore.instance.collection(userId).doc("tags").update({});
+      await FirebaseFirestore.instance.collection(userId).doc("metadata").update({
         "data_transferred": true,
       });
     } on Exception catch(e) {
@@ -85,12 +85,12 @@ class FirestoreQueries {
   static Future<bool> initDb() async {
     try {
       String userId = await FireauthQueries.getUserId;
-      await Firestore.instance.collection(userId).document("movies").setData({});
-      await Firestore.instance.collection(userId).document("people").setData({});
-      await Firestore.instance.collection(userId).document("series").setData({});
-      await Firestore.instance.collection(userId).document("collections").setData({});
-      await Firestore.instance.collection(userId).document("tags").setData({});
-      await Firestore.instance.collection(userId).document("metadata").setData({
+      await FirebaseFirestore.instance.collection(userId).doc("movies").update({});
+      await FirebaseFirestore.instance.collection(userId).doc("people").update({});
+      await FirebaseFirestore.instance.collection(userId).doc("series").update({});
+      await FirebaseFirestore.instance.collection(userId).doc("collections").update({});
+      await FirebaseFirestore.instance.collection(userId).doc("tags").update({});
+      await FirebaseFirestore.instance.collection(userId).doc("metadata").update({
         "data_transferred": false,
         "account_created": (DateTime.now().millisecondsSinceEpoch/1000).ceil()
       });
@@ -105,7 +105,7 @@ class FirestoreQueries {
   static Future<String> addElement(QueryTypes elementType, Map data) async {
     String id = Uuid().v1();
     try {
-      (await _getUserCollection).document(_dbRouteFromElement(elementType)).updateData({
+      (await _getUserCollection).doc(_dbRouteFromElement(elementType)).update({
         id: {
           "base_id": data["id"],
           "title": data["title"] ?? data["original_title"] ?? data["name"] ?? data["original_name"],
@@ -133,7 +133,7 @@ class FirestoreQueries {
   }
   static Future<bool> removeElement(QueryTypes elementType, String id) async {
     try {
-      (await _getUserCollection).document(_dbRouteFromElement(elementType)).updateData({
+      (await _getUserCollection).doc(_dbRouteFromElement(elementType)).update({
         id: FieldValue.delete()
       });
     } on Exception catch(e) {
@@ -145,7 +145,7 @@ class FirestoreQueries {
 
   static Future<bool> createTag(String id, String name) async {
     try {
-      (await _getUserCollection).document("tags").updateData({id: name});
+      (await _getUserCollection).doc("tags").update({id: name});
     } on Exception catch(e) {
       print(e);
       return false;
@@ -157,7 +157,7 @@ class FirestoreQueries {
       Map globalTags = await getTags();
       if (globalTags == null) return null;
 
-      List tagsIds = (await (await _getUserCollection).document(_dbRouteFromElement(elementType)).get()).data[id]["added_tags"];
+      List tagsIds = (await (await _getUserCollection).doc(_dbRouteFromElement(elementType)).get()).data()[id]["added_tags"];
       //On créé une List de map avec l'id et le nom
       return List.generate(tagsIds.length, (int index) => List.from(globalTags.keys).contains(tagsIds[index]) ? {
         "name": Utils.capitalize(globalTags[tagsIds[index]]), //Capitale sur la première lettre
@@ -170,7 +170,7 @@ class FirestoreQueries {
   } 
   static Future<bool> removeTag(String id) async {
     try {
-      (await _getUserCollection).document("tags").updateData({id: FieldValue.delete()});
+      (await _getUserCollection).doc("tags").update({id: FieldValue.delete()});
     } on Exception catch(e) {
       print(e);
       return false;
@@ -196,7 +196,7 @@ class FirestoreQueries {
       }
     }
     try {
-      (await _getUserCollection).document(_dbRouteFromElement(elementType)).updateData({
+      (await _getUserCollection).doc(_dbRouteFromElement(elementType)).update({
         "$elId.added_tags": idToAdd
       });
     } on Exception catch(e) {
@@ -207,32 +207,32 @@ class FirestoreQueries {
   }
   static Future<Map> getTags() async {
     try {
-      return (await (await _getUserCollection).document("tags").get()).data;
+      return (await (await _getUserCollection).doc("tags").get()).data();
     } on Exception catch(e) {
       print(e);
       return null;
     }
   }
-  static Future<String> getIdFromDbId(QueryTypes elementType, String db_id) async {
-    String el =  (await _getElementFromBaseId(db_id, elementType)).length > 0 ? (await _getElementFromBaseId(db_id, elementType))[0] : null;
+  static Future<String> getIdFromDbId(QueryTypes elementType, String dbID) async {
+    String el =  (await _getElementFromBaseId(dbID, elementType)).length > 0 ? (await _getElementFromBaseId(dbID, elementType))[0] : null;
     return el;
   }
   //Renvoie si un element est ajouté en fonction de son id TMDB
-  static Future<bool> isElementAdded(QueryTypes elementType, String db_id) async {
-    return (await _getElementFromBaseId(db_id, elementType)).length > 0;
+  static Future<bool> isElementAdded(QueryTypes elementType, String dbID) async {
+    return (await _getElementFromBaseId(dbID, elementType)).length > 0;
   }
   static Future<bool> isElementFav(QueryTypes elementType, String id) async {
-    return (await (await _getUserCollection).document(_dbRouteFromElement(elementType)).get()).data[id]["fav"];
+    return (await (await _getUserCollection).doc(_dbRouteFromElement(elementType)).get()).data()[id]["fav"];
   }
   static Future<bool> isElementToSee(QueryTypes elementType, String id) async {
-    return (await (await _getUserCollection).document(_dbRouteFromElement(elementType)).get()).data[id]["to_see"];
+    return (await (await _getUserCollection).doc(_dbRouteFromElement(elementType)).get()).data()[id]["to_see"];
   }
   static Future<bool> isElementSeen(QueryTypes elementType, String id) async {
-    return (await (await _getUserCollection).document(_dbRouteFromElement(elementType)).get()).data[id]["seen"];
+    return (await (await _getUserCollection).doc(_dbRouteFromElement(elementType)).get()).data()[id]["seen"];
   }
   static Future<bool> setElementFav(QueryTypes elementType, String id, bool state) async {
     try {
-      await (await _getUserCollection).document(_dbRouteFromElement(elementType)).updateData({
+      await (await _getUserCollection).doc(_dbRouteFromElement(elementType)).update({
         "$id.fav": state,
         "$id.fav_timestamp": Timestamp.now().seconds
       });
@@ -244,7 +244,7 @@ class FirestoreQueries {
   }
   static Future<bool> setElementToSee(QueryTypes elementType, String id, bool state) async {
     try {
-      await (await _getUserCollection).document(_dbRouteFromElement(elementType)).updateData({
+      await (await _getUserCollection).doc(_dbRouteFromElement(elementType)).update({
         "$id.to_see": state,
         "$id.to_see_timestamp": Timestamp.now().seconds
       });
@@ -256,7 +256,7 @@ class FirestoreQueries {
   }
   static Future<bool> setElementSeen(QueryTypes elementType, String id, bool state) async {
     try {
-      await (await _getUserCollection).document(_dbRouteFromElement(elementType)).updateData({
+      await (await _getUserCollection).doc(_dbRouteFromElement(elementType)).update({
         "$id.seen": state,
         "$id.seen_timestamp": Timestamp.now().seconds
       });
@@ -271,11 +271,11 @@ class FirestoreQueries {
     Stream stream;
     try {  
       if (type != QueryTypes.all)
-        stream = (await _getUserCollection).document(_dbRouteFromElement(type)).snapshots().skip(offset);
+        stream = (await _getUserCollection).doc(_dbRouteFromElement(type)).snapshots().skip(offset);
       else {
         List<QueryTypes> types = List.from(QueryTypes.values)..removeAt(0);
         stream = CombineLatestStream.list(await Future.wait(types.map((QueryTypes type) async {
-          return (await _getUserCollection).document(_dbRouteFromElement(type)).snapshots();
+          return (await _getUserCollection).doc(_dbRouteFromElement(type)).snapshots();
         }))).skip(offset);
       }
 
@@ -289,11 +289,11 @@ class FirestoreQueries {
   }
   //Récupère les données de l'utilisateur courant
   static Future<CollectionReference> get _getUserCollection async => 
-    Firestore.instance.collection(await FireauthQueries.getUserId);
+    FirebaseFirestore.instance.collection(await FireauthQueries.getUserId);
 
   // Retrouve un element à partir de l'ID de TMDB et de son type
   static Future<List> _getElementFromBaseId(String baseId, QueryTypes element) async {
-    Map data = (await (await _getUserCollection).document(_dbRouteFromElement(element)).get()).data;
+    Map data = (await (await _getUserCollection).doc(_dbRouteFromElement(element)).get()).data();
     List returner = [];
     for (String key in data.keys) {
       if (data[key]["base_id"].toString() == baseId) {
@@ -304,7 +304,7 @@ class FirestoreQueries {
     return returner;
   }
 
-  static Future<int> get getUserTimestamp async => (await (await _getUserCollection).document("metadata").get()).data["account_created"];
+  static Future<int> get getUserTimestamp async => (await (await _getUserCollection).doc("metadata").get()).data()["account_created"] ?? 0;
 
   // Récupère la route de la bdd à partir de l'élément
   static String _dbRouteFromElement(QueryTypes element) {
@@ -312,18 +312,18 @@ class FirestoreQueries {
   }
 
   static Future<int> statNumberEl(QueryTypes element) async {
-    return (await (await _getUserCollection).document(_dbRouteFromElement(element)).get()).data.length;
+    return (await (await _getUserCollection).doc(_dbRouteFromElement(element)).get()).data().length;
   }
 
   static Future<int> get statNumberTags async {
-    return (await (await _getUserCollection).document("tags").get()).data.length;
+    return (await (await _getUserCollection).doc("tags").get()).data().length;
   }
     //[0] : Seen, [1] : To see, [2] : fav
   static Future<List> get statNumberGeneral async {
-    Map movies = (await (await _getUserCollection).document("movies").get()).data;
-    Map people = (await (await _getUserCollection).document("people").get()).data;
-    Map tv = (await (await _getUserCollection).document("series").get()).data;
-    Map collections = (await (await _getUserCollection).document("collections").get()).data;
+    Map movies = (await (await _getUserCollection).doc("movies").get()).data();
+    Map people = (await (await _getUserCollection).doc("people").get()).data();
+    Map tv = (await (await _getUserCollection).doc("series").get()).data();
+    Map collections = (await (await _getUserCollection).doc("collections").get()).data();
     Map generalData = Map.from(movies)..addAll(people)..addAll(tv)..addAll(collections);
     List<int> stats = [0, 0, 0];
     for (var key in generalData.keys) {

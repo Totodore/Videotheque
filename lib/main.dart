@@ -1,5 +1,7 @@
 import 'package:Videotheque/api/fireauthQueries.dart';
 import 'package:Videotheque/api/firestoreQueries.dart';
+import 'package:Videotheque/views/SplashScreenView.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Videotheque/views/app_view.dart';
@@ -19,9 +21,13 @@ void main() async {
   runApp(MaterialApp(
     title: 'Vidéothèque',
     color: Color(0xFF008577),
-    initialRoute: await FireauthQueries.needSignIn ? "/auth" : "/",
+    initialRoute: "/splash",
     routes: {
       "/": (context) => AppView(),
+      "/splash": (context) => SplashScreenView(() async {
+        await Firebase.initializeApp();
+        return await FireauthQueries.needSignIn ? "/auth" : "/";
+      }),
       "/auth": (context) => AuthView(),
       "/webapp/": (context) => WebApp(),
       "/search/": (context) => SearchView(),
