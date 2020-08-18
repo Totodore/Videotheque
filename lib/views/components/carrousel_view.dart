@@ -8,16 +8,17 @@ import 'package:Videotheque/controllers/components/carrousel_controller.dart';
 
 class CarrouselView extends StatelessWidget {
 
-  QueryTypes type;
-  List data;
-  Function showEl;
+  final QueryTypes type;
+  final List data;
+  final Function showEl;
+  final bool _isEpisode;
 
-  CarrouselView(this.type, this.data, [this.showEl]);
+  CarrouselView(this.type, this.data, [this.showEl, this._isEpisode]);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => CarrouselController(context, type, data, showEl),
+      create: (context) => CarrouselController(context, type, data, showEl, this._isEpisode),
       child: Consumer<CarrouselController>(
         builder: (context, controller, child) {
           return Padding(
@@ -55,7 +56,7 @@ class CarrouselView extends StatelessWidget {
                               blur: 2,                      
                             ),
                           ),
-                          controller.isPeople ? Positioned(
+                          controller.dispTitle ? Positioned(
                             bottom: 0,
                             right: 0,
                             left: 0,

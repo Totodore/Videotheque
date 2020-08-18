@@ -10,17 +10,13 @@ import 'package:uuid/uuid.dart';
 
 class CarrouselController extends ChangeNotifier {
   
-  QueryTypes _type;
-  List _carrouselData;
-  BuildContext _context;
-  Function _showEl;
+  final QueryTypes _type;
+  final List _carrouselData;
+  final BuildContext _context;
+  final Function _showEl;
+  final bool _isEpisode;
 
-  CarrouselController(BuildContext viewContext, QueryTypes viewType, List viewData, [Function showEl]) {
-    _type = viewType;
-    _carrouselData = viewData;
-    _context = viewContext;
-    _showEl = showEl;
-
+  CarrouselController(this._context, this._type, this._carrouselData, [this._showEl, this._isEpisode]) {
     _sortAndFilterData();
   }
 
@@ -72,6 +68,8 @@ class CarrouselController extends ChangeNotifier {
   String getNameElement(int index) {
     if (_type == QueryTypes.movie)
       return _carrouselData[index]["title"] != null ? _carrouselData[index]["title"] : _carrouselData[index]["original_title"];
+    else if (_type == QueryTypes.tv && _isEpisode)
+      return "Épisode ${index+1}";
     else 
       return _carrouselData[index]["name"] != null ? _carrouselData[index]["name"] : _carrouselData[index]["original_name"];
   } 
@@ -91,7 +89,7 @@ class CarrouselController extends ChangeNotifier {
 
   int get length => _carrouselData.length;
 
-  bool get isPeople => _type == QueryTypes.person;
+  bool get dispTitle => _type == QueryTypes.person || (_isEpisode ?? false);
 
   ImageTypes get imageType => _type == QueryTypes.person ? ImageTypes.Poster : ImageTypes.Profile;
 }
