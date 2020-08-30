@@ -61,18 +61,18 @@ class FirestoreQueries {
           "type": "person"
         });
       }
-      await FirebaseFirestore.instance.collection(userId).doc("movies").update(Map.fromIterables(
+      await await FirebaseFirestore.instance.collection(userId).doc("movies").update(Map.fromIterables(
         List.generate(db["movie"].length, (index) => Uuid().v1()), 
         moviesValues
       ));
-      await FirebaseFirestore.instance.collection(userId).doc("people").update(Map.fromIterables(
+      await await FirebaseFirestore.instance.collection(userId).doc("people").update(Map.fromIterables(
         List.generate(db["people"].length, (index) => Uuid().v1()),
         peopleValues,
       ));
-      await FirebaseFirestore.instance.collection(userId).doc("series").update({});
-      await FirebaseFirestore.instance.collection(userId).doc("collections").update({});
-      await FirebaseFirestore.instance.collection(userId).doc("tags").update({});
-      await FirebaseFirestore.instance.collection(userId).doc("metadata").update({
+      await await FirebaseFirestore.instance.collection(userId).doc("series");
+      await await FirebaseFirestore.instance.collection(userId).doc("collections");
+      await await FirebaseFirestore.instance.collection(userId).doc("tags");
+      await await FirebaseFirestore.instance.collection(userId).doc("metadata").update({
         "data_transferred": true,
       });
     } on Exception catch(e) {
@@ -85,12 +85,14 @@ class FirestoreQueries {
   static Future<bool> initDb() async {
     try {
       String userId = await FireauthQueries.getUserId;
-      await FirebaseFirestore.instance.collection(userId).doc("movies").update({});
-      await FirebaseFirestore.instance.collection(userId).doc("people").update({});
-      await FirebaseFirestore.instance.collection(userId).doc("series").update({});
-      await FirebaseFirestore.instance.collection(userId).doc("collections").update({});
-      await FirebaseFirestore.instance.collection(userId).doc("tags").update({});
-      await FirebaseFirestore.instance.collection(userId).doc("metadata").update({
+      print("User id : $userId");
+      // FirebaseFirestore.instance.
+      await FirebaseFirestore.instance.collection(userId).doc("movies").set({});
+      await FirebaseFirestore.instance.collection(userId).doc("people").set({});
+      await FirebaseFirestore.instance.collection(userId).doc("series").set({});
+      await FirebaseFirestore.instance.collection(userId).doc("collections").set({});
+      await FirebaseFirestore.instance.collection(userId).doc("tags").set({});
+      await FirebaseFirestore.instance.collection(userId).doc("metadata").set({
         "data_transferred": false,
         "account_created": (DateTime.now().millisecondsSinceEpoch/1000).ceil()
       });
