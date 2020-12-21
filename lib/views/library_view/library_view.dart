@@ -26,6 +26,7 @@ class LibraryViewStates extends State<LibraryView> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ChangeNotifierProvider<LibraryController>(
       create: (context) => LibraryController(context),
       child: Consumer<LibraryController>(builder: (context, controller, child) {

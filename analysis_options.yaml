@@ -1,0 +1,6 @@
+analyzer:
+  errors:
+    # 'flutter analyze' exits with 1 even on 'info':
+    # https://github.com/flutter/flutter/issues/20855
+    todo: ignore
+    must_be_immutable: ignore

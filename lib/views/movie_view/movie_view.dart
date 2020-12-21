@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:background_app_bar/background_app_bar.dart';
-import 'package:community_material_icon/community_material_icon.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';

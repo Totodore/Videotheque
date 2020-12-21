@@ -66,7 +66,7 @@ class HomeController extends CustomChangeNotifier {
   }
   List _getToSee() {
     return _libraryData.where((element) => element["to_see"]).toList()
-      ..sort((a, b) => (a["to_see_timestamp"] ??= 0) < (b["to_see_timestamp"] ?? 0) ? 1 : -1);;
+      ..sort((a, b) => (a["to_see_timestamp"] ??= 0) < (b["to_see_timestamp"] ?? 0) ? 1 : -1);
   }
 
   Function sendMailConfirm = FireauthQueries.sendMailConfirm;
