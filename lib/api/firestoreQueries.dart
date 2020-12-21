@@ -61,18 +61,18 @@ class FirestoreQueries {
           "type": "person"
         });
       }
-      await await FirebaseFirestore.instance.collection(userId).doc("movies").update(Map.fromIterables(
+      await FirebaseFirestore.instance.collection(userId).doc("movies").update(Map.fromIterables(
         List.generate(db["movie"].length, (index) => Uuid().v1()), 
         moviesValues
       ));
-      await await FirebaseFirestore.instance.collection(userId).doc("people").update(Map.fromIterables(
+      await FirebaseFirestore.instance.collection(userId).doc("people").update(Map.fromIterables(
         List.generate(db["people"].length, (index) => Uuid().v1()),
         peopleValues,
       ));
-      await await FirebaseFirestore.instance.collection(userId).doc("series");
-      await await FirebaseFirestore.instance.collection(userId).doc("collections");
-      await await FirebaseFirestore.instance.collection(userId).doc("tags");
-      await await FirebaseFirestore.instance.collection(userId).doc("metadata").update({
+      FirebaseFirestore.instance.collection(userId).doc("series");
+      FirebaseFirestore.instance.collection(userId).doc("collections");
+      FirebaseFirestore.instance.collection(userId).doc("tags");
+      await FirebaseFirestore.instance.collection(userId).doc("metadata").update({
         "data_transferred": true,
       });
     } on Exception catch(e) {
@@ -124,7 +124,7 @@ class FirestoreQueries {
           "to_see_timestamp": 0,
           "seen": false,
           "seen_timestamp": 0,
-          "type": EnumToString.parse(elementType)
+          "type": EnumToString.convertToString(elementType)
         }
       });
     } on Exception catch(e) {

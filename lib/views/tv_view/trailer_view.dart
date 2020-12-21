@@ -1,4 +1,3 @@
-import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';

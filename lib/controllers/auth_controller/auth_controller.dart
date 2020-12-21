@@ -138,6 +138,7 @@ class AuthController extends ChangeNotifier {
       notifyListeners();
       return false;
     } on Exception catch(e) {
+      debugPrint(e.toString());
       GlobalsFunc.snackBar(scaffoldContext, "Erreur lors de votre inscription.");
       return false;
     }
@@ -149,6 +150,7 @@ class AuthController extends ChangeNotifier {
       return "Les mots de passe ne concordent pas";
     if (passwdConfirmController.text.length < 6)
       return "Mot de passe pas suffisament sécurisé";
+    return null;
   }
 
   List<bool> get selectedToggles => [registerSelected, !registerSelected];

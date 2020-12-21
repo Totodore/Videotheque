@@ -23,7 +23,7 @@ class LibraryStickyView extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (BuildContext context) => LibraryStickyController(context, _type, _parentController, _rippleAnimationController),
           child: Consumer<LibraryStickyController>(
-            builder: (context, controller, child) => SliverStickyHeaderBuilder(
+            builder: (context, controller, child) => SliverStickyHeader.builder(
               key: controller.stickyHeaderKey,
               controller: controller.libraryHeaderController,
               builder: (BuildContext context, SliverStickyHeaderState state) => Stack(
