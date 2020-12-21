@@ -1,75 +1,68 @@
 name: Videotheque
 description: >-
-    Gérer votre bibliothèque de films ! Cherchez, Ajoutez, Triez, Le tour est
-    joué !
+  Gérer votre bibliothèque de films ! Cherchez, Ajoutez, Triez, Le tour est
+  joué !
 version: 3.0.7+22
 environment:
-    sdk: '>=2.1.0 <3.0.0'
+  sdk: ">=2.1.0 <3.0.0"
 dependencies:
-    flutter:
-        sdk: flutter
-    shared_preferences: ^0.5.6
-    http: 0.12.0+2
-    webview_flutter: 0.3.18+1
-    url_launcher: ^5.4.1
-    flutter_launcher_icons: ^0.7.4
-    firebase: ^7.1.0
-    skeleton_text: ^1.0.0
-    sliver_scaffold: ^0.0.7
-    cupertino_icons: ^0.1.2
-    progressive_image: ^1.0.1
-    bottom_navy_bar: ^5.3.2
-    flutter_custom_clippers: ^1.1.0
-    drop_cap_text: ^1.0.7
-    background_app_bar: ^1.0.1
-    flutter_speed_dial: ^1.2.5
-    community_material_icon: ^3.5.95
-    intl: ^0.16.1
-    keyboard_utils: ^1.2.0
-    uuid: ^2.0.4
-    flutter_native_splash: ^0.1.9
-    provider: ^4.0.4
-    cached_network_image: ^2.2.0
-    firebase_auth: ^0.18.0
-    google_sign_in: ^4.4.4
-    cloud_firestore: ^0.14.0
-    firebase_core: ^0.5.0
-    firebase_remote_config: ^0.3.0+3
-    enum_to_string: ^1.0.9
-    flutter_sticky_header: ^0.4.2
-    flutter_staggered_animations: ^0.1.2
-    rxdart: ^0.24.1
-    ndialog: ^2.1.0+6
-    flutter_animated_dialog: ^1.1.0
-    store_redirect: ^1.0.2
-    
+  flutter:
+    sdk: flutter
+  shared_preferences: ^0.5.6
+  http: 0.12.0+2
+  url_launcher: ^5.4.1
+  flutter_launcher_icons: ^0.7.4
+  firebase: ^7.1.0
+  skeleton_text: ^1.0.0
+  sliver_scaffold: ^0.0.7
+  cupertino_icons: ^0.1.2
+  progressive_image: ^1.0.1
+  bottom_navy_bar: ^5.3.2
+  flutter_custom_clippers: ^1.1.0
+  drop_cap_text: ^1.0.7
+  background_app_bar: ^1.0.1
+  flutter_speed_dial: ^1.2.5
+  community_material_icon: ^5.4.55
+  intl: ^0.16.1
+  keyboard_utils: ^1.2.0
+  uuid: ^2.0.4
+  flutter_native_splash: ^0.1.9
+  provider: ^4.0.4
+  cached_network_image: ^2.2.0
+  firebase_auth: ^0.18.0
+  google_sign_in: ^4.4.4
+  cloud_firestore: ^0.14.0
+  firebase_core: ^0.5.0
+  firebase_remote_config: ^0.3.0+3
+  enum_to_string: ^1.0.9
+  flutter_sticky_header: ^0.4.2
+  flutter_staggered_animations: ^0.1.2
+  rxdart: ^0.24.1
+  ndialog: ^2.1.0+6
+  flutter_animated_dialog: ^1.1.0
+  store_redirect: ^1.0.2
+
 dev_dependencies:
-    flutter_test:
-        sdk: flutter
+  flutter_test:
+    sdk: flutter
 flutter_icons:
-    android: launcher_icon
-    ios: false
-    image_path_android: icon.png
+  android: launcher_icon
+  ios: false
+  image_path_android: icon.png
 flutter:
-    uses-material-design: true
-    assets:
-        - assets/loading.png
-        - assets/launcher_iconV2.png
-        - assets/splash.png
-        - assets/NoImage.jpg
-    fonts:
-        -
-            family: Aladin
-            fonts:
-                -
-                    asset: fonts/title.ttf
-        -
-            family: itty
-            fonts:
-                -
-                    asset: fonts/itty.otf
-        -
-            family: Rubik
-            fonts:
-                -
-                    asset: fonts/Rubik-Medium.ttf
+  uses-material-design: true
+  assets:
+    - assets/loading.png
+    - assets/launcher_iconV2.png
+    - assets/splash.png
+    - assets/NoImage.jpg
+  fonts:
+    - family: Aladin
+      fonts:
+        - asset: fonts/title.ttf
+    - family: itty
+      fonts:
+        - asset: fonts/itty.otf
+    - family: Rubik
+      fonts:
+        - asset: fonts/Rubik-Medium.ttf
