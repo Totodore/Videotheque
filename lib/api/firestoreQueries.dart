@@ -1,4 +1,4 @@
-import 'package:Videotheque/api/FireauthQueries.dart';
+import 'package:Videotheque/api/fireauthQueries.dart';
 import 'package:Videotheque/api/tmdbQueries.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/utils/utils.dart';
