@@ -1,5 +1,4 @@
 import 'package:Videotheque/api/fireauthQueries.dart';
-import 'package:Videotheque/api/firestoreQueries.dart';
 import 'package:Videotheque/views/SplashScreenView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ import 'package:Videotheque/views/collection_view/collection_view.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
 import 'package:Videotheque/views/auth_view.dart/auth_view.dart';
 import 'package:flutter/services.dart';
-import 'webApp.dart';
 import 'globals.dart';
 
 void main() async {
@@ -29,7 +27,6 @@ void main() async {
         return await FireauthQueries.needSignIn ? "/auth" : "/";
       }),
       "/auth": (context) => AuthView(),
-      "/webapp/": (context) => WebApp(),
       "/search/": (context) => SearchView(),
       "/element/movie/": (context) => MovieView(),
       "/element/person/": (context) => PersonView(),
