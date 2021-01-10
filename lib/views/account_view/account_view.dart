@@ -259,19 +259,6 @@ class AccountView extends StatelessWidget {
                           )
                         ),
                         DividerComponent(GlobalsColor.darkGreen),
-                        AnimatedCrossFade(
-                          duration: Duration(milliseconds: 350),
-                          firstChild: Container(),
-                          secondChild: Card(
-                            child: ListTile(
-                              onTap: controller.transferDb,
-                              leading: Icon(CommunityMaterialIcons.database_import, color: PersonView.baseColor),
-                              title: Text("Récupérer mes données", style: TextStyle(fontWeight: FontWeight.w600, color: PersonView.baseColor)),
-                              trailing: Icon(Icons.keyboard_arrow_right),
-                            )
-                          ),
-                          crossFadeState: controller.dispTransferDb ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                        ),
                         Card(
                           child: ListTile(
                             onTap: controller.removeData,

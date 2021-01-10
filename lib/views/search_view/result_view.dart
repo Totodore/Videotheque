@@ -7,7 +7,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-import 'package:Videotheque/utils/utils.dart';
+import 'package:Videotheque/utils/Utils.dart';
 
 class ResultSearchView extends StatelessWidget {
   QueryTypes type;
