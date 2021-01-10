@@ -4,7 +4,6 @@ import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/views/home_view/carrousel_view.dart';
 import 'package:Videotheque/views/home_view/components/AskMailComponent.dart';
 import 'package:Videotheque/views/home_view/components/LoadingComponent.dart';
-import 'package:Videotheque/views/home_view/components/TransfertDBComponent.dart';
 import 'package:Videotheque/views/home_view/components/appBar_component.dart';
 import 'package:Videotheque/views/home_view/components/askForCoffee_component.dart';
 import 'package:Videotheque/views/home_view/components/noContentComponent.dart';
@@ -33,12 +32,6 @@ class HomeView extends StatelessWidget {
                       crossFadeState: !controller.isTransferDismissedHidden ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
                       duration: const Duration(milliseconds: 200)
                     ) : Container(),
-                    !controller.isTransferDismissedHidden ? controller.askTransferDB ?
-                    TransfertDBComponent(
-                      controller.confirmTransfertDB, 
-                      controller.hideTransfertDB, 
-                      controller.onDismissed
-                    ) : Container() : Container(),
                     AnimatedCrossFade(
                       firstChild: LoadingComponent(), 
                       secondChild: controller.hasNoContent ? NoContentComponent() : Column(children: 

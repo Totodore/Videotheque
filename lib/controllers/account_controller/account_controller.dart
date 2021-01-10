@@ -1,10 +1,8 @@
 import 'package:Videotheque/api/fireauthQueries.dart';
 import 'package:Videotheque/api/fireconfigQueries.dart';
-import 'package:Videotheque/api/firestoreQueries.dart';
-import 'package:Videotheque/components/TransferDBDialogComponent.dart';
+import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/utils/utils.dart';
 import 'package:Videotheque/views/account_view/components/ChangeMailComponent.dart';
 import 'package:Videotheque/views/account_view/components/ChangeNameComponent.dart';
 import 'package:Videotheque/views/account_view/components/ChangePasswordComponent.dart';
@@ -127,17 +125,6 @@ class AccountController extends ChangeNotifier {
         mainColor: PersonView.baseColor,
       ));
   }
-  void transferDb() async {
-    _textEditingController = TextEditingController(text: await FireauthQueries.getUserMail);
-    showAnimatedDialog(
-      animationType: DialogTransitionType.slideFromBottom,
-      duration: const Duration(milliseconds: 200),
-      context: _context, 
-      barrierDismissible: true,
-      builder: (BuildContext innerContext) =>
-        TransferDBDialogComponent(_abortPopup, _confirmTransferDB, _textEditingController, innerContext)
-    );
-  }
 
   void changePassword() {
     _textEditingController = TextEditingController();
@@ -187,12 +174,6 @@ class AccountController extends ChangeNotifier {
       Navigator.pushReplacementNamed(context, "/auth");
     else
       GlobalsFunc.snackBar(_context, res);
-  }
-
-  void _confirmTransferDB(context) async {
-    String mail = _textEditingController.text;
-    Navigator.pop(context);
-    Utils.transferDB(mail, _context);
   }
 
   void _confirmPasswordChange(BuildContext context) async {

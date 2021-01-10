@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:Videotheque/api/fireauthQueries.dart';
-import 'package:Videotheque/api/firestoreQueries.dart';
+import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

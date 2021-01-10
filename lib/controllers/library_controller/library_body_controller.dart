@@ -3,7 +3,7 @@ import 'package:Videotheque/utils/customChangeNotifier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/api/firestoreQueries.dart';
+import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:flutter/material.dart';
 
 class LibraryBodyController extends CustomChangeNotifier {

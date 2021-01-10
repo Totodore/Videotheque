@@ -1,10 +1,8 @@
 import 'package:Videotheque/api/fireauthQueries.dart';
 import 'package:Videotheque/api/fireconfigQueries.dart';
-import 'package:Videotheque/api/firestoreQueries.dart';
-import 'package:Videotheque/components/TransferDBDialogComponent.dart';
+import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/utils/customChangeNotifier.dart';
-import 'package:Videotheque/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +17,6 @@ class HomeController extends CustomChangeNotifier {
   bool _askTransferDB = false;
   bool _isMailConfirmed = true;
   String _mail = "";
-  TextEditingController _textEditingController;
 
   States _dataState = States.Loading;
 
@@ -70,23 +67,6 @@ class HomeController extends CustomChangeNotifier {
   }
 
   Function sendMailConfirm = FireauthQueries.sendMailConfirm;
-
-  void confirmTransfertDB() async {
-    _textEditingController = TextEditingController(text: await FireauthQueries.getUserMail);
-    showDialog(context: _context, child: TransferDBDialogComponent(
-      _onDialogClose, 
-      _onDialogConfirm,
-      _textEditingController, 
-      _context)
-    );
-  }
-
-  void _onDialogClose(BuildContext context) => Navigator.pop(context);
-
-  void _onDialogConfirm(BuildContext context) {
-    Navigator.pop(context);
-    Utils.transferDB(_textEditingController.text, _context);
-  } 
 
   void hideTransfertDB() async {
     _askTransferDbDismissed = true;

@@ -1,4 +1,4 @@
-import 'package:Videotheque/api/firestoreQueries.dart';
+import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/api/tmdbQueries.dart';

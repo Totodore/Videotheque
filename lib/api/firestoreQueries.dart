@@ -1,7 +1,6 @@
 import 'package:Videotheque/api/fireauthQueries.dart';
-import 'package:Videotheque/api/tmdbQueries.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/utils/utils.dart';
+import 'package:Videotheque/utils/Utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,78 +9,6 @@ import 'package:uuid/uuid.dart';
 class FirestoreQueries {
   static Future<bool> hasDB(String uid) async =>
       (await FirebaseFirestore.instance.collection(uid).get()).docs.length > 0;
-  //Effectue un transfert de données depuis la bdd en parametre vers firebase
-  //On remplace les clef par des UUID et on met les id tmdb dans un nv champs
-  static Future<bool> transferDb(Map db) async {
-    try {
-      String userId = await FireauthQueries.getUserId;
-      List moviesValues = [];
-      List peopleValues = [];
-      for (String key in db["movie"].keys) {
-        Map el = db["movie"][key];
-        Map data = await TMDBQueries.getMovie(el["id"].toString());
-        List baseTags = List.generate(data["genres"].length, (index) => data["genres"][index]["id"]);
-        moviesValues.add({
-          "base_id": el["id"],
-          "creation_date": (el["date"]/1000).ceil(),
-          "title": el["title"],
-          "image_url": data["poster_path"],
-          "added_tags": [],
-          "popularity": data["popularity"] ?? 0,
-          "base_tags": baseTags ?? [],
-          "overview": data["overview"],
-          "backdrop_url": data["backdrop_path"],
-          "fav": false,
-          "fav_timestamp": 0,
-          "to_see": false,
-          "to_see_timestamp": 0,
-          "seen": false,
-          "seen_timestamp": 0,
-          "type": "movie"
-        });
-      }
-      for (String key in db["people"].keys) {
-        Map el = db["people"][key];
-        Map data = await TMDBQueries.getPerson(el["id"].toString());
-        peopleValues.add({
-          "base_id": el["id"],
-          "creation_date": (el["date"]/1000).ceil(),
-          "title": el["title"],
-          "image_url": data["profile_path"],
-          "added_tags": [],
-          "popularity": data["popularity"] ?? 0,
-          "base_tags": [],
-          "overview": data["biography"],
-          "fav": false,
-          "fav_timestamp": 0,
-          "to_see": false,
-          "to_see_timestamp": 0,
-          "seen": false,
-          "seen_timestamp": 0,
-          "type": "person"
-        });
-      }
-      await FirebaseFirestore.instance.collection(userId).doc("movies").update(Map.fromIterables(
-        List.generate(db["movie"].length, (index) => Uuid().v1()), 
-        moviesValues
-      ));
-      await FirebaseFirestore.instance.collection(userId).doc("people").update(Map.fromIterables(
-        List.generate(db["people"].length, (index) => Uuid().v1()),
-        peopleValues,
-      ));
-      FirebaseFirestore.instance.collection(userId).doc("series");
-      FirebaseFirestore.instance.collection(userId).doc("collections");
-      FirebaseFirestore.instance.collection(userId).doc("tags");
-      await FirebaseFirestore.instance.collection(userId).doc("metadata").update({
-        "data_transferred": true,
-      });
-    } on Exception catch(e) {
-      print(e);
-      return false;
-    }
-    return true;
-  }
-
   static Future<bool> initDb() async {
     try {
       String userId = await FireauthQueries.getUserId;

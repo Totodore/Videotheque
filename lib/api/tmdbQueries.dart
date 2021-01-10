@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/utils/utils.dart';
+import 'package:Videotheque/utils/Utils.dart';
 
 class TMDBQueries {
 

@@ -3,7 +3,7 @@ import 'package:Videotheque/components/skeleton_carrousel_component.dart';
 import 'package:Videotheque/components/skeleton_tag_component.dart';
 
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/utils/utils.dart';
+import 'package:Videotheque/utils/Utils.dart';
 
 import 'package:Videotheque/controllers/person_controller/person_controller.dart';
 
