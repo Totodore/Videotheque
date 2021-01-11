@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:Videotheque/Env.dart';
 import 'package:http/http.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/utils/Utils.dart';
@@ -6,11 +7,10 @@ import 'package:path/path.dart' as p;
 
 class TMDBQueries {
 
-  static const String key = GlobalsData.apiKey;
   static const String lang = GlobalsData.lang; 
-  static const String api_endpoint = "api.themoviedb.org";
 
   Future<Response> actualQuerySearch;
+
 
   Future<Map<String, dynamic>> onlineSearchMulti(String query, [int offset = 1]) async {
     return sortNoContent(await searchQuery("search/multi", query, offset), QueryTypes.all);
@@ -120,8 +120,8 @@ class TMDBQueries {
     return defaultQuery(path, { "query": query, "offset": offset.toString() });
   }
   Future<Map<String, dynamic>> defaultQuery(String path, [Map<String, String> params]) async {
-    Uri url = new Uri.https(api_endpoint, p.join("3", path), (params ?? new Map())..addAll({
-      "api_key": key,
+    Uri url = new Uri.https(environment.TMDB_LINK, p.join("3", path), (params ?? new Map())..addAll({
+      "api_key": environment.TMDB_API_KEY,
       "language": lang,
       "include_adult": "false"
     }));
