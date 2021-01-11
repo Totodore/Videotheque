@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:Videotheque/services/BarcodeLookup.dart';
 import 'package:Videotheque/services/FireauthQueries.dart';
 import 'package:Videotheque/services/FireconfigQueries.dart';
 import 'package:Videotheque/services/FirestoreQueries.dart';
@@ -142,7 +144,10 @@ class SearchController extends ChangeNotifier {
   Future<void> _scan() async {
     try {
       barcode = await BarcodeScanner.scan();
-      print(barcode);
+      searchInputController.text = await Singletons.instance<BarcodeLookup>().getTitle(barcode);
+      searchInputController.selection = TextSelection.collapsed(offset: searchInputController.text.length-1);
+      searchQuery(searchInputController.text);
+      notifyListeners();
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         GlobalsFunc.snackBar(context, "L'accès à la caméra est désactivé");
@@ -150,10 +155,12 @@ class SearchController extends ChangeNotifier {
         GlobalsFunc.snackBar(context);
         print(e);
       }
-    } on FormatException{
+    } on HttpException {
+      GlobalsFunc.snackBar(context, "Erreur lors de la récupération du film, réessayez...");
+    } on FormatException {
       // GlobalsFunc.snackBar(context, "Erreur lors du scan, réessayez...");
     } catch (e) {
-      GlobalsFunc.snackBar(context);
+      GlobalsFunc.snackBar(context, "Erreur lors du scan du code barre, réessayez...");
       print(e);
     }
   }
