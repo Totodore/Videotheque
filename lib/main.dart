@@ -1,4 +1,8 @@
-import 'package:Videotheque/api/fireauthQueries.dart';
+import 'package:Videotheque/api/FireauthQueries.dart';
+import 'package:Videotheque/api/FireconfigQueries.dart';
+import 'package:Videotheque/api/FirestoreQueries.dart';
+import 'package:Videotheque/api/TmdbQueries.dart';
+import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/SplashScreenView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,19 +18,25 @@ import 'package:flutter/services.dart';
 import 'globals.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  registerSingletons();
+  await configureApp();
+
+  AppView mainView;
   runApp(MaterialApp(
     title: 'Vidéothèque',
     color: Color(0xFF008577),
     initialRoute: "/splash",
     routes: {
-      "/": (context) => AppView(),
       "/splash": (context) => SplashScreenView(() async {
-        await Firebase.initializeApp();
-        return await FireauthQueries.needSignIn ? "/auth" : "/";
+        if (await Singletons.instance<FireauthQueries>().needSignIn)
+          return "/auth";
+        else {
+          mainView.logged();
+          return "/";
+        }
       }),
-      "/auth": (context) => AuthView(),
+      "/": (context) => mainView ??= AppView(),
+      "/auth": (context) => AuthView(mainView),
       "/search/": (context) => SearchView(),
       "/element/movie/": (context) => MovieView(),
       "/element/person/": (context) => PersonView(),
@@ -58,4 +68,18 @@ void main() async {
       )
     ),
   ));
+}
+
+registerSingletons() {
+  print("Registering singletons...");
+  Singletons.registerSingleton(new FireauthQueries());
+  Singletons.registerSingleton(new FireconfigQueries());
+  Singletons.registerSingleton(new FirestoreQueries());
+  Singletons.registerSingleton(new TMDBQueries());
+}
+
+configureApp() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await Firebase.initializeApp();
 }

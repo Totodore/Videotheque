@@ -10,12 +10,22 @@ import 'package:Videotheque/controllers/app_controller.dart';
 import 'package:Videotheque/globals.dart';
 
 class AppView extends StatelessWidget {
-  final List<Widget> _children = [
-    HomeView(),
-    LibraryView(),
-    SearchView(),
-    AccountView(),
-  ];
+  List<Widget> _children;
+
+  AppView() {
+    _children = [
+      SearchView(),
+    ];
+  }
+
+  logged(){
+    _children = [
+      HomeView(),
+      LibraryView(),
+      _children[0],
+      AccountView(),
+    ];
+  }
   
   @override
   Widget build(BuildContext context) {

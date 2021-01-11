@@ -1,5 +1,9 @@
+import 'package:Videotheque/api/FireauthQueries.dart';
+import 'package:Videotheque/api/FireconfigQueries.dart';
+import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/api/tmdbQueries.dart';
+import 'package:Videotheque/api/TmdbQueries.dart';
+import 'package:Videotheque/utils/Singletons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
@@ -22,6 +26,11 @@ class EpisodeController extends ChangeNotifier {
     fetchTrailers();
   }
 
+  FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
+  FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
+  FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
+  TMDBQueries tmdbQueries = Singletons.instance<TMDBQueries>();
+
   void fetchDetails() {
     objectsStates[ElementsTypes.InfoTags] = States.Loading;
     details = [
@@ -36,7 +45,7 @@ class EpisodeController extends ChangeNotifier {
     objectsStates[ElementsTypes.CastingCarrousel] = States.Loading;
     objectsStates[ElementsTypes.CrewCarrousel] = States.Loading;
     notifyListeners();
-    Map results = await TMDBQueries.getTvEpisodesCredits(tvId, seasonNumber, data["episode_number"].toString());
+    Map results = await tmdbQueries.getTvEpisodesCredits(tvId, seasonNumber, data["episode_number"].toString());
     List crew = results["crew"];
     List cast = results["cast"];
     List guests = results["guest_stars"];
@@ -61,7 +70,7 @@ class EpisodeController extends ChangeNotifier {
   void fetchTrailers() async {
     objectsStates[ElementsTypes.YoutubeTrailer] = States.Loading;
     notifyListeners();
-    List results = (await TMDBQueries.getTvEpisodesVideos(tvId, seasonNumber, data["episode_number"].toString()))["results"];
+    List results = (await tmdbQueries.getTvEpisodesVideos(tvId, seasonNumber, data["episode_number"].toString()))["results"];
     
     for (Map trailer in results) {
       if (trailer["site"] == "YouTube") {

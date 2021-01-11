@@ -1,7 +1,8 @@
-import 'package:Videotheque/api/fireauthQueries.dart';
-import 'package:Videotheque/api/fireconfigQueries.dart';
+import 'package:Videotheque/api/FireauthQueries.dart';
+import 'package:Videotheque/api/FireconfigQueries.dart';
 import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/utils/customChangeNotifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,11 @@ class HomeController extends CustomChangeNotifier {
 
   States _dataState = States.Loading;
 
+
+  FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
+  FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
+  FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
+  
   HomeController(this._context) {
     if (this.mounted)
       _getLibrary();
@@ -28,7 +34,7 @@ class HomeController extends CustomChangeNotifier {
 
   void _getLibrary() {
     _dataState = States.Loading;
-    FirestoreQueries.setElementsListener(QueryTypes.all, _onAllLibraryElement);
+    firestore.setElementsListener(QueryTypes.all, _onAllLibraryElement);
   }
 
   ///type : [List<DocumentSnapshot>]
@@ -39,9 +45,9 @@ class HomeController extends CustomChangeNotifier {
 
     try {
       _askTransferDB = !(await SharedPreferences.getInstance()).containsKey("hideTransferDB") ?? true;
-      _isMailConfirmed = await FireauthQueries.getUserMailVerified;
+      _isMailConfirmed = await fireauth.getUserMailVerified;
       print("Mail confirmed : $_isMailConfirmed");
-      if (!_isMailConfirmed) _mail = await FireauthQueries.getUserMail;
+      if (!_isMailConfirmed) _mail = await fireauth.getUserMail;
     } on Exception {
       _askTransferDB = true;
       _isMailConfirmed = true;
@@ -66,7 +72,9 @@ class HomeController extends CustomChangeNotifier {
       ..sort((a, b) => (a["to_see_timestamp"] ??= 0) < (b["to_see_timestamp"] ?? 0) ? 1 : -1);
   }
 
-  Function sendMailConfirm = FireauthQueries.sendMailConfirm;
+  void sendMailConfirm() {
+    fireauth.sendMailConfirm(_context);
+  }
 
   void hideTransfertDB() async {
     _askTransferDbDismissed = true;
@@ -80,7 +88,7 @@ class HomeController extends CustomChangeNotifier {
   }
 
   void onDonateClick() async {
-    String donateLink = await FireconfigQueries.donationLink;
+    String donateLink = await fireconfig.donationLink;
     if (donateLink == null || donateLink.length == 0) {
       GlobalsFunc.snackBar(_context, "Erreur ! Vérifiez votre connexion internet");
       return;

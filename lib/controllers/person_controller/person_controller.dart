@@ -1,7 +1,10 @@
+import 'package:Videotheque/api/FireauthQueries.dart';
+import 'package:Videotheque/api/FireconfigQueries.dart';
 import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/api/tmdbQueries.dart';
+import 'package:Videotheque/api/TmdbQueries.dart';
+import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/person_view/addtag_view.dart';
 import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +24,12 @@ class PersonController extends ChangeNotifier {
   List addedGenreTags = [];
   List loadedInfoTags = [];
   Map mainData = {};
+
+  FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
+  FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
+  FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
+  TMDBQueries tmdbQueries = Singletons.instance<TMDBQueries>();
+
 
   PersonController(this.context) {
     heroTag = GlobalsArgs.transfertArg[1];
@@ -47,12 +56,12 @@ class PersonController extends ChangeNotifier {
   }
 
   Future fetchDbId() async {
-    return id = await FirestoreQueries.getIdFromDbId(QueryTypes.person, preloadData["id"].toString());
+    return id = await firestore.getIdFromDbId(QueryTypes.person, preloadData["id"].toString());
   }
 
   void fetchDbStats() async {
     isAdded = true;
-    isFav = await FirestoreQueries.isElementFav(QueryTypes.person, id);
+    isFav = await firestore.isElementFav(QueryTypes.person, id);
     notifyListeners();
   }
   void clearDbStats() {
@@ -64,7 +73,7 @@ class PersonController extends ChangeNotifier {
     objectsStates[ElementsTypes.InfoTags] = States.Loading;
     objectsStates[ElementsTypes.GenreTags] = States.Loading;
     notifyListeners();
-    mainData = await TMDBQueries.getPerson(preloadData["id"].toString());
+    mainData = await tmdbQueries.getPerson(preloadData["id"].toString());
     loadedInfoTags = [
       mainData["place_of_birth"] != null ? "Né(e) à ${mainData["place_of_birth"]}" : null,
       mainData["birthday"] != null  ? "Né(e) le ${DateFormat('dd/MM/yyyy').format(DateTime.parse(mainData["birthday"]))}" : null,
@@ -78,17 +87,17 @@ class PersonController extends ChangeNotifier {
     notifyListeners();
   }
   void fetchTags() async {
-    addedGenreTags = await FirestoreQueries.getElementTags(QueryTypes.person, id);
+    addedGenreTags = await firestore.getElementTags(QueryTypes.person, id);
   }
 
   void fetchKnownForMovies() async {
     objectsStates[ElementsTypes.KnownForMovieCarrousel] = States.Loading;
     notifyListeners();
-    Map data = await TMDBQueries.getKnownForMovies(preloadData["id"].toString());
+    Map data = await tmdbQueries.getKnownForMovies(preloadData["id"].toString());
     List knownFor = List.from(data["cast"])..addAll(data["crew"]);
     knownFor.removeWhere((element) => element["poster_path"] == null);
 
-    carrouselData[ElementsTypes.KnownForMovieCarrousel] = TMDBQueries.sortByPopularity(knownFor);
+    carrouselData[ElementsTypes.KnownForMovieCarrousel] = tmdbQueries.sortByPopularity(knownFor);
     objectsStates[ElementsTypes.KnownForMovieCarrousel] = knownFor != null && knownFor.length > 0 ? States.Added : States.Empty;
     notifyListeners();
   }
@@ -96,16 +105,16 @@ class PersonController extends ChangeNotifier {
   void fetchKnownForTv() async {
     objectsStates[ElementsTypes.KnownForTvCarrousel] = States.Loading;
     notifyListeners();
-    Map data = await TMDBQueries.getKnownForTv(preloadData["id"].toString());
+    Map data = await tmdbQueries.getKnownForTv(preloadData["id"].toString());
     List knownFor = List.from(data["cast"])..addAll(data["crew"]);
     knownFor.removeWhere((element) => element["poster_path"] == null);
 
-    carrouselData[ElementsTypes.KnownForTvCarrousel] = TMDBQueries.sortByPopularity(knownFor);
+    carrouselData[ElementsTypes.KnownForTvCarrousel] = tmdbQueries.sortByPopularity(knownFor);
     objectsStates[ElementsTypes.KnownForTvCarrousel] = knownFor != null && knownFor.length > 0 ? States.Added : States.Empty;
     notifyListeners();
   }
   void addPerson() async {
-    id = await FirestoreQueries.addElement(QueryTypes.person, preloadData);
+    id = await firestore.addElement(QueryTypes.person, preloadData);
     if (id != null) {
       isAdded = true;
     }
@@ -117,7 +126,7 @@ class PersonController extends ChangeNotifier {
       return AlertDialogComponent(
         content: "Êtes-vous sur de supprimer cette personne de votre vidéothèque ?",
         onConfirmed: () async {  //On confirm
-          if (await FirestoreQueries.removeElement(QueryTypes.person, id)) {
+          if (await firestore.removeElement(QueryTypes.person, id)) {
             clearDbStats();
             notifyListeners();
           }
@@ -134,13 +143,13 @@ class PersonController extends ChangeNotifier {
   void onFavTapped(BuildContext scaffoldContext) async {
         Scaffold.of(scaffoldContext).hideCurrentSnackBar();
     if (!isFav) {
-      if (await FirestoreQueries.setElementFav(QueryTypes.person, id, true)) {
+      if (await firestore.setElementFav(QueryTypes.person, id, true)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["name"]} ajouté aux favoris')));
         isFav = true;
       }
     }
     else {
-      if (await FirestoreQueries.setElementFav(QueryTypes.person, id, false)) {
+      if (await firestore.setElementFav(QueryTypes.person, id, false)) {
         isFav = false;
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["name"]} retiré des favoris')));
       }
@@ -162,7 +171,7 @@ class PersonController extends ChangeNotifier {
   void applyTagsEdits(List newTags) async {
     objectsStates[ElementsTypes.GenreTags] = States.Loading;
     notifyListeners();
-    addedGenreTags = await FirestoreQueries.updateElementTags(QueryTypes.person, newTags, id) ?? addedGenreTags;
+    addedGenreTags = await firestore.updateElementTags(QueryTypes.person, newTags, id) ?? addedGenreTags;
       
     objectsStates[ElementsTypes.GenreTags] = addedGenreTags.length > 0 ? States.Added : States.Empty;
     notifyListeners();

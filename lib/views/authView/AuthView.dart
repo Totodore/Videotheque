@@ -4,9 +4,15 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Videotheque/controllers/auth_controller/auth_controller.dart';
+import 'package:Videotheque/controllers/auth_controller/AuthController.dart';
+
+import '../app_view.dart';
 
 class AuthView extends StatelessWidget {
+  AppView mainView;
+  
+  AuthView(this.mainView);
+
   final OutlineInputBorder inputBorder = new OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(3)),
     borderSide: BorderSide(
@@ -27,7 +33,7 @@ class AuthView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AuthController>(
-      create: (context) => AuthController(context),
+      create: (context) => AuthController(context, mainView),
       child: Consumer<AuthController>(
         builder: (context, controller, child) {
           return WillPopScope(
