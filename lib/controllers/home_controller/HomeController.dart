@@ -1,19 +1,22 @@
+import 'package:Videotheque/models/FireconfigInfos.dart';
 import 'package:Videotheque/services/FireauthQueries.dart';
 import 'package:Videotheque/services/FireconfigQueries.dart';
 import 'package:Videotheque/services/FirestoreQueries.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/utils/CustomChangeNotifier.dart';
+import 'package:Videotheque/views/home_view/carrousel_view.dart';
+import 'package:Videotheque/views/home_view/components/InfoComponent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends CustomChangeNotifier {
   final BuildContext _context;
   List<HomeCarrousels> _toDisplayCarroussels = List.from(HomeCarrousels.values)..shuffle();
   List _libraryData = [];
-  bool _askTransferDbDismissed = false;
   bool _isMailConfirmed = true;
 
   States _dataState = States.Loading;
@@ -76,15 +79,20 @@ class HomeController extends CustomChangeNotifier {
     notifyListeners();
   }
 
-  void hideTransfertDB() async {
-    _askTransferDbDismissed = true;
-    notifyListeners();
-    (await SharedPreferences.getInstance()).setBool("hideTransferDB", true);
-  }
-
-  void onDismissed() {
-    _askTransferDbDismissed = true;
-    notifyListeners();
+  void onDismissed(FireconfigInfos infos, [bool link = false]) async {
+    final shared = await SharedPreferences.getInstance();
+    if ((link && (infos.dismiss_click ?? false))) {
+      launch(infos.link);
+      await shared.setBool(infos.id, true);
+      await fireconfig.fetch();
+      notifyListeners();
+    } else if (link && !(infos.dismiss_click ?? false))
+      launch(infos.link);
+    else if (!link) {
+      await shared.setBool(infos.id, true);
+      await fireconfig.fetch();
+      notifyListeners();
+    }
   }
 
   HomeCarrousels getRandomCarrousel(int index) {
@@ -111,8 +119,18 @@ class HomeController extends CustomChangeNotifier {
   bool get isLoading => _dataState == States.Loading;
   bool get hasNoContent => _dataState == States.Empty;
 
-  bool get isTransferDismissedHidden => _askTransferDbDismissed;
-
   bool get mailConfirmed => _isMailConfirmed;
   int get carrouselLength => HomeCarrousels.values.length;
+
+  List<Widget> get carrousels {
+    return List.generate(carrouselLength, (int index) {
+      HomeCarrousels type = getRandomCarrousel(index);
+      if (type == null) return Container();
+      return CarrouselView(type, getCarrouselData(type), getCarrouselTitle(type));
+    });
+  }
+
+  List<Widget> get infos {
+    return List.generate(fireconfig.infosLength, (i) => InfoComponent(fireconfig.infos[i], this.onDismissed));
+  }
 }

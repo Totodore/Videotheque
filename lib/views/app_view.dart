@@ -1,5 +1,5 @@
 import 'package:Videotheque/views/account_view/account_view.dart';
-import 'package:Videotheque/views/home_view/home_view.dart';
+import 'package:Videotheque/views/home_view/HomeView.dart';
 import 'package:Videotheque/views/library_view/library_view.dart';
 import 'package:Videotheque/views/search_view/search_view.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
