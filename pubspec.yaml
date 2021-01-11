@@ -43,7 +43,7 @@ dependencies:
   store_redirect: ^1.0.2
   barcode_scan_fix: ^1.0.2
   permission_handler: ^5.0.1+1
-
+  html: ^0.14.0+4
 dev_dependencies:
   flutter_test:
     sdk: flutter
