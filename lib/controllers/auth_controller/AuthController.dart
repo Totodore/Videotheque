@@ -8,7 +8,6 @@ import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/app_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthController extends ChangeNotifier {
