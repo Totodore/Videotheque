@@ -70,6 +70,12 @@ class HomeController extends CustomChangeNotifier {
     fireauth.sendMailConfirm(_context);
   }
 
+  void mailSended() async {
+    await fireauth.reloadData();
+    _isMailConfirmed ??= await fireauth.userMailVerified;
+    notifyListeners();
+  }
+
   void hideTransfertDB() async {
     _askTransferDbDismissed = true;
     notifyListeners();

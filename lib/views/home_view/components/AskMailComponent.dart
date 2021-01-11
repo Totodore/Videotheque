@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 class AskMailComponent extends StatelessWidget {
   final Function _sendMail;
-  AskMailComponent(this._sendMail);  
+  final Function _mailSended;
+
+  AskMailComponent(this._sendMail, this._mailSended);  
   
   @override
   Widget build(BuildContext context) => Card(
@@ -32,6 +34,12 @@ class AskMailComponent extends StatelessWidget {
               elevation: 2,
               highlightElevation: 3,
               onPressed: () => _sendMail(context),
+            ),
+            FlatButton(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              color: GlobalsColor.darkGreen,
+              child: Text("J'ai vérifié mon email"),
+              onPressed: _mailSended, 
             )
           ],
         )
