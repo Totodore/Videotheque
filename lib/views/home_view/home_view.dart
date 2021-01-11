@@ -1,4 +1,4 @@
-import 'package:Videotheque/controllers/home_controller/home_controller.dart';
+import 'package:Videotheque/controllers/home_controller/HomeController.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/views/home_view/carrousel_view.dart';
 import 'package:Videotheque/views/home_view/components/AskMailComponent.dart';
@@ -30,7 +30,7 @@ class HomeView extends StatelessWidget {
                       secondChild: controller.hasNoContent ? NoContentComponent() : Column(children: 
                         [
                           Padding(padding: EdgeInsets.only(top: 10), child: Container(),),
-                          !controller.mailConfirmed ? AskMailComponent(controller.sendMailConfirm, controller.userMail) : Container(),
+                          !controller.mailConfirmed ? AskMailComponent(controller.sendMailConfirm) : Container(),
                         ]..addAll(List.generate(controller.carrouselLength, (int index) {
                           HomeCarrousels type = controller.getRandomCarrousel(index);
                           if (type == null) return Container();
