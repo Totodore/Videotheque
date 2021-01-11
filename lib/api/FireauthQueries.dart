@@ -30,15 +30,15 @@ class FireauthQueries {
         email: mail, 
         password: pass
       );
-    } on PlatformException catch(e) {
+    } on FirebaseAuthException catch(e) {
       switch (e.code) {
-        case "ERROR_INVALID_EMAIL":
+        case "invalid-email":
           returner[0] = "Email invalide";
           break;
-        case "ERROR_WRONG_PASSWORD":
+        case "wrong-password":
           returner[1] = "Mot de passe invalide";
           break;
-        case "ERROR_USER_NOT_FOUND":
+        case "user-not-found":
           returner[0] = "Email invalide";
           break;
         case "ERROR_TOO_MANY_REQUESTS":
@@ -67,15 +67,15 @@ class FireauthQueries {
 
       authResult.user.sendEmailVerification();
       print("User signed in : ${authResult.user.email}");
-    } on PlatformException catch(e) {
+    } on FirebaseAuthException catch(e) {
       switch (e.code) {
-        case "ERROR_EMAIL_ALREADY_IN_USE":
+        case "email-already-in-use":
           returner[0] = "L'email que vous avez entré existe déjà";
           break;
-        case "ERROR_WEAK_PASSWORD":
+        case "weak-password":
           returner[1] = "Mot de passe trop faible";
           break;
-        case "ERROR_INVALID_EMAIL":
+        case "invalid-email":
           returner[0] = "Email invalide";
           break;
         default: returner[2] = true;
@@ -94,8 +94,8 @@ class FireauthQueries {
     String res;
     try {
       await (FirebaseAuth.instance.currentUser).delete();
-    } on PlatformException catch(e) {
-      if (e.code == "ERROR_REQUIRES_RECENT_LOGIN") {
+    } on FirebaseAuthException catch(e) {
+      if (e.code == "requires-recent-login") {
         connect(await userMail, pass);
         return deleteAccount(pass);
       }
@@ -130,12 +130,12 @@ class FireauthQueries {
     String mail = await userMail;
     try {
       await FirebaseAuth.instance.currentUser.updatePassword(pass);
-    } on PlatformException catch(e) {
+    } on FirebaseAuthException catch(e) {
       switch (e.code) {
-        case "ERROR_WEAK_PASSWORD":
+        case "weak-password":
           res = "Erreur : Mot de passe trop faible";
           break;
-        case "ERROR_REQUIRES_RECENT_LOGIN":
+        case "requires-recent-login":
           await connect(mail, oldPass);
           return setUserPass(mail, pass); 
         default: res = "Erreur lors de la modification du mot de passe";
@@ -151,15 +151,15 @@ class FireauthQueries {
     try {
       User user = FirebaseAuth.instance.currentUser;
       await user.updateEmail(mail);
-    } on PlatformException catch(e) {
+    } on FirebaseAuthException catch(e) {
       switch (e.code) {
-        case "ERROR_REQUIRES_RECENT_LOGIN":
+        case "requires-recent-login":
           await connect(oldMail, oldPass);
           return setUserMail(mail, oldPass);
-        case "ERROR_EMAIL_ALREADY_IN_USE":
+        case "email-already-in-use":
           res = "Erreur : Cet email est déjà utilisé";
           break;
-        case "ERROR_INVALID_CREDENTIAL": 
+        case "invalid-email": 
           res = "Erreur : Email invalide";
           break;
         default:
