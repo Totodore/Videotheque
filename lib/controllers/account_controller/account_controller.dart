@@ -51,9 +51,9 @@ class AccountController extends ChangeNotifier {
   void fetchAccountData() async {
     accountDataState = States.Loading;
     notifyListeners();
-    name = await fireauth.getUserName;
-    mail = await fireauth.getUserMail;
-    accountCreation = await fireauth.getUserDate;
+    name = await fireauth.userName;
+    mail = await fireauth.userMail;
+    accountCreation = await fireauth.userDate;
     if (name != null && mail != null && accountCreation != null)
       accountDataState = States.Added;
     notifyListeners();

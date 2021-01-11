@@ -7,7 +7,6 @@ import 'package:Videotheque/utils/customChangeNotifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeController extends CustomChangeNotifier {
@@ -45,9 +44,9 @@ class HomeController extends CustomChangeNotifier {
 
     try {
       _askTransferDB = !(await SharedPreferences.getInstance()).containsKey("hideTransferDB") ?? true;
-      _isMailConfirmed = await fireauth.getUserMailVerified;
+      _isMailConfirmed = await fireauth.userMailVerified;
       print("Mail confirmed : $_isMailConfirmed");
-      if (!_isMailConfirmed) _mail = await fireauth.getUserMail;
+      if (!_isMailConfirmed) _mail = await fireauth.userMail;
     } on Exception {
       _askTransferDB = true;
       _isMailConfirmed = true;
@@ -87,15 +86,6 @@ class HomeController extends CustomChangeNotifier {
     notifyListeners();
   }
 
-  void onDonateClick() async {
-    String donateLink = await fireconfig.donationLink;
-    if (donateLink == null || donateLink.length == 0) {
-      GlobalsFunc.snackBar(_context, "Erreur ! Vérifiez votre connexion internet");
-      return;
-    }
-    launch(donateLink);
-  }
-
   HomeCarrousels getRandomCarrousel(int index) {
     HomeCarrousels carrousel = _toDisplayCarroussels[index];
     return _isCarrouselEmpty(carrousel) ? null : carrousel;
@@ -103,7 +93,6 @@ class HomeController extends CustomChangeNotifier {
 
   bool _isCarrouselEmpty(HomeCarrousels carrousel) => getCarrouselData(carrousel).isEmpty;
   
-
   List getCarrouselData(HomeCarrousels type) {
     switch (type) {
       case HomeCarrousels.LastAdded:
