@@ -45,7 +45,6 @@ class AccountController extends ChangeNotifier {
   AccountController(this._context) {
     fetchAccountData();
     fetchStats();
-    fetchTransferDB();
   }
 
   void fetchAccountData() async {
@@ -72,11 +71,6 @@ class AccountController extends ChangeNotifier {
     statNumberSeen = statsNumberGeneral[0];
     statNumberTags = await firestore.statNumberTags;
     statsStates = States.Added;
-    notifyListeners();
-  }
-
-  void fetchTransferDB() async {
-    dispTransferDb = await fireconfig.canTransferDb;
     notifyListeners();
   }
 
