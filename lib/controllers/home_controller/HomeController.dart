@@ -3,7 +3,7 @@ import 'package:Videotheque/api/FireconfigQueries.dart';
 import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/utils/Singletons.dart';
-import 'package:Videotheque/utils/customChangeNotifier.dart';
+import 'package:Videotheque/utils/CustomChangeNotifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
