@@ -130,15 +130,15 @@ class AuthController extends ChangeNotifier {
         await authResult.user.delete();
         return false;
       }
-    } on PlatformException catch(e) {
+    } on FirebaseAuthException catch(e) {
       switch (e.code) {
-        case "ERROR_EMAIL_ALREADY_IN_USE":
+        case "email-already-in-use":
           emailError = "L'email que vous avez entré existe déjà";
           break;
-        case "ERROR_WEAK_PASSWORD":
+        case "weak-password":
           passwdError = "Mot de passe trop faible";
           break;
-        case "ERROR_INVALID_EMAIL":
+        case "invalid-email":
           emailError = "Email invalide";
           break;
         default: GlobalsFunc.snackBar(scaffoldContext, "Erreur lors de votre inscription.");
@@ -149,6 +149,8 @@ class AuthController extends ChangeNotifier {
     } on Exception catch(e) {
       debugPrint(e.toString());
       GlobalsFunc.snackBar(scaffoldContext, "Erreur lors de votre inscription.");
+      pendingTransfer = false;
+      notifyListeners();
       return false;
     }
     return true;
