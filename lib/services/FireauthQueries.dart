@@ -1,4 +1,4 @@
-import 'package:Videotheque/api/FirestoreQueries.dart';
+import 'package:Videotheque/services/FirestoreQueries.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:firebase_auth/firebase_auth.dart';

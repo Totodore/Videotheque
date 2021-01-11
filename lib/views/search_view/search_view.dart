@@ -1,6 +1,7 @@
 import 'package:Videotheque/controllers/search_controller/search_controller.dart';
 import 'package:Videotheque/views/search_view/components/loading.dart';
 import 'package:Videotheque/views/search_view/result_view.dart';
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,7 @@ class SearchViewState extends State<SearchView> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SearchController>(
-      create: (context) => SearchController(),
+      create: (context) => SearchController(context),
       child: Consumer<SearchController>(builder: (context, controller, child) {
         resultsPageController.addListener(() {
             controller.updateTabIndex(resultsPageController.index);
@@ -70,6 +71,15 @@ class SearchViewState extends State<SearchView> with TickerProviderStateMixin {
                             onSubmitted: controller.searchQuery,
                             onChanged: controller.onchangeQuery,
                           ),
+                          actions: [
+                            IconButton(
+                              icon: Icon(
+                                CommunityMaterialIcons.barcode_scan,
+                                size: 28
+                              ),
+                              onPressed: controller.barcodeScan,
+                            )
+                          ],
                           leading: AnimatedSwitcher(
                             child: controller.searchInputController.text.length > 0
                               ? IconButton(

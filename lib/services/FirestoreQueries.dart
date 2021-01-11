@@ -1,4 +1,4 @@
-import 'package:Videotheque/api/FireauthQueries.dart';
+import 'package:Videotheque/services/FireauthQueries.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/utils/Utils.dart';

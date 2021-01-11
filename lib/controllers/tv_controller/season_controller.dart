@@ -1,8 +1,8 @@
-import 'package:Videotheque/api/FireauthQueries.dart';
-import 'package:Videotheque/api/FireconfigQueries.dart';
-import 'package:Videotheque/api/FirestoreQueries.dart';
+import 'package:Videotheque/services/FireauthQueries.dart';
+import 'package:Videotheque/services/FireconfigQueries.dart';
+import 'package:Videotheque/services/FirestoreQueries.dart';
 import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/api/TmdbQueries.dart';
+import 'package:Videotheque/services/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/tv_view/episode_view.dart';
 import 'package:flutter/material.dart';

@@ -1,17 +1,22 @@
 import 'dart:async';
 
-import 'package:Videotheque/api/FireauthQueries.dart';
-import 'package:Videotheque/api/FireconfigQueries.dart';
-import 'package:Videotheque/api/FirestoreQueries.dart';
+import 'package:Videotheque/services/FireauthQueries.dart';
+import 'package:Videotheque/services/FireconfigQueries.dart';
+import 'package:Videotheque/services/FirestoreQueries.dart';
 import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/api/TmdbQueries.dart';
+import 'package:Videotheque/services/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
+import 'package:barcode_scan_fix/barcode_scan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SearchController extends ChangeNotifier {
   final focusNode = FocusNode();
   final searchInputController = TextEditingController();
   final tabLength = QueryTypes.values.length;
+  final BuildContext context;
+  String barcode;
 
   Map<QueryTypes, States> loadedViews = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) => States.Nothing)); //List which represent each view if it has been loaded
   //List which represent offset of result per view
@@ -31,7 +36,7 @@ class SearchController extends ChangeNotifier {
   FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
   TMDBQueries tmdbQueries = Singletons.instance<TMDBQueries>();
 
-  SearchController() {
+  SearchController(this.context) {
     focusNode.requestFocus();
   }
   
@@ -119,5 +124,37 @@ class SearchController extends ChangeNotifier {
     innerBoxScrolled = isScrolled;
     if (innerBoxScrolled)
       focusNode.unfocus();
+  }
+
+  Future<void> barcodeScan() async {
+    if (!await _requestPermissions()) {
+      GlobalsFunc.snackBar(context, "L'accès à la caméra est désactivé");
+    } else
+      _scan();
+  }
+
+  
+  Future<bool> _requestPermissions() async {
+    PermissionStatus status = await Permission.camera.request();
+    return status == PermissionStatus.granted || status == PermissionStatus.restricted;
+  }
+
+  Future<void> _scan() async {
+    try {
+      barcode = await BarcodeScanner.scan();
+      print(barcode);
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+        GlobalsFunc.snackBar(context, "L'accès à la caméra est désactivé");
+      } else {
+        GlobalsFunc.snackBar(context);
+        print(e);
+      }
+    } on FormatException{
+      // GlobalsFunc.snackBar(context, "Erreur lors du scan, réessayez...");
+    } catch (e) {
+      GlobalsFunc.snackBar(context);
+      print(e);
+    }
   }
 }

@@ -1,7 +1,7 @@
-import 'package:Videotheque/api/FireauthQueries.dart';
-import 'package:Videotheque/api/FireconfigQueries.dart';
-import 'package:Videotheque/api/FirestoreQueries.dart';
-import 'package:Videotheque/api/TmdbQueries.dart';
+import 'package:Videotheque/services/FireauthQueries.dart';
+import 'package:Videotheque/services/FireconfigQueries.dart';
+import 'package:Videotheque/services/FirestoreQueries.dart';
+import 'package:Videotheque/services/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/SplashScreenView.dart';
 import 'package:firebase_core/firebase_core.dart';
