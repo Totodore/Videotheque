@@ -41,6 +41,8 @@ dependencies:
   ndialog: ^2.1.0+6
   flutter_animated_dialog: ^1.1.0
   store_redirect: ^1.0.2
+  barcode_scan_fix: ^1.0.2
+  permission_handler: ^5.0.1+1
 
 dev_dependencies:
   flutter_test:
