@@ -19,8 +19,8 @@ import 'package:flutter/services.dart';
 import 'Globals.dart';
 
 void main() async {
-  registerSingletons();
   await configureApp();
+  registerSingletons();
 
   AppView mainView;
   runApp(MaterialApp(
@@ -84,5 +84,4 @@ configureApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp();
-  print(await Singletons.instance<BarcodeLookup>().getTitle("5050582305777"));
 }
