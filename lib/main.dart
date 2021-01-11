@@ -1,3 +1,4 @@
+import 'package:Videotheque/services/BarcodeLookup.dart';
 import 'package:Videotheque/services/FireauthQueries.dart';
 import 'package:Videotheque/services/FireconfigQueries.dart';
 import 'package:Videotheque/services/FirestoreQueries.dart';
@@ -76,10 +77,12 @@ registerSingletons() {
   Singletons.registerSingleton(new FireauthQueries());
   Singletons.registerSingleton(new FireconfigQueries());
   Singletons.registerSingleton(new TMDBQueries());
+  Singletons.registerSingleton(new BarcodeLookup());
 }
 
 configureApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp();
+  print(await Singletons.instance<BarcodeLookup>().getTitle("5050582305777"));
 }
