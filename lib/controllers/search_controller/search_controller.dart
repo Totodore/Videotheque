@@ -1,7 +1,11 @@
 import 'dart:async';
 
+import 'package:Videotheque/api/FireauthQueries.dart';
+import 'package:Videotheque/api/FireconfigQueries.dart';
+import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/api/tmdbQueries.dart';
+import 'package:Videotheque/api/TmdbQueries.dart';
+import 'package:Videotheque/utils/Singletons.dart';
 import 'package:flutter/material.dart';
 
 class SearchController extends ChangeNotifier {
@@ -22,6 +26,11 @@ class SearchController extends ChangeNotifier {
   String actualQuery = "";
   bool triggerChangeListener = false;
 
+  FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
+  FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
+  FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
+  TMDBQueries tmdbQueries = Singletons.instance<TMDBQueries>();
+
   SearchController() {
     focusNode.requestFocus();
   }
@@ -40,22 +49,22 @@ class SearchController extends ChangeNotifier {
     Map<String, dynamic> result;
     switch (searchingSelectedSort) {
       case QueryTypes.all:
-        result = await TMDBQueries.onlineSearchMulti(query);
+        result = await tmdbQueries.onlineSearchMulti(query);
         break;
       case QueryTypes.movie:
-        result = await TMDBQueries.onlineSearchMovie(query);
+        result = await tmdbQueries.onlineSearchMovie(query);
         break;
       case QueryTypes.person:
-        result = await TMDBQueries.onlineSearchPerson(query);
+        result = await tmdbQueries.onlineSearchPerson(query);
         break;
       case QueryTypes.tv:
-        result = await TMDBQueries.onlineSearchTV(query);
+        result = await tmdbQueries.onlineSearchTV(query);
         break;
       case QueryTypes.collection:
-        result = await TMDBQueries.onlineSearchCollection(query);
+        result = await tmdbQueries.onlineSearchCollection(query);
         break;
       // case QueryTypes.companies:
-        // result = await TMDBQueries.onlineSearchCompanies(query);
+        // result = await tmdbQueries.onlineSearchCompanies(query);
         // break;
     }
 

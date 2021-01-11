@@ -2,7 +2,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 
 class FireconfigQueries {
-  static Future<String> get donationLink async {
+  Future<String> get donationLink async {
     final RemoteConfig remoteConfig = await RemoteConfig.instance;
     remoteConfig.setConfigSettings(RemoteConfigSettings(debugMode: !kReleaseMode));
     String donationLink = "";
@@ -22,7 +22,7 @@ class FireconfigQueries {
     return donationLink;
   }
 
-  static Future<bool> get canTransferDb async {
+  Future<bool> get canTransferDb async {
     final RemoteConfig remoteConfig = await RemoteConfig.instance;
     remoteConfig.setConfigSettings(RemoteConfigSettings(debugMode: !kReleaseMode));
     bool canTransferDb = false;

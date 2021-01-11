@@ -1,8 +1,9 @@
-import 'package:Videotheque/api/fireauthQueries.dart';
-import 'package:Videotheque/api/fireconfigQueries.dart';
+import 'package:Videotheque/api/FireauthQueries.dart';
+import 'package:Videotheque/api/FireconfigQueries.dart';
 import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
 import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/account_view/components/ChangeMailComponent.dart';
 import 'package:Videotheque/views/account_view/components/ChangeNameComponent.dart';
 import 'package:Videotheque/views/account_view/components/ChangePasswordComponent.dart';
@@ -37,6 +38,10 @@ class AccountController extends ChangeNotifier {
   TextEditingController _textEditingController;
   TextEditingController _textEditingController2;
 
+  FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
+  FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
+  FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
+
   AccountController(this._context) {
     fetchAccountData();
     fetchStats();
@@ -46,9 +51,9 @@ class AccountController extends ChangeNotifier {
   void fetchAccountData() async {
     accountDataState = States.Loading;
     notifyListeners();
-    name = await FireauthQueries.getUserName;
-    mail = await FireauthQueries.getUserMail;
-    accountCreation = await FireauthQueries.getUserDate;
+    name = await fireauth.getUserName;
+    mail = await fireauth.getUserMail;
+    accountCreation = await fireauth.getUserDate;
     if (name != null && mail != null && accountCreation != null)
       accountDataState = States.Added;
     notifyListeners();
@@ -57,21 +62,21 @@ class AccountController extends ChangeNotifier {
   void fetchStats() async {
     statsStates = States.Loading;
     notifyListeners();
-    List<int> statsNumberGeneral = await FirestoreQueries.statNumberGeneral; 
-    statNumberMovies = await FirestoreQueries.statNumberEl(QueryTypes.movie);
-    statNumberPeople = await FirestoreQueries.statNumberEl(QueryTypes.person);
-    statNumberTv = await FirestoreQueries.statNumberEl(QueryTypes.tv);
-    statNumberCollection = await FirestoreQueries.statNumberEl(QueryTypes.collection);
+    List<int> statsNumberGeneral = await firestore.statNumberGeneral; 
+    statNumberMovies = await firestore.statNumberEl(QueryTypes.movie);
+    statNumberPeople = await firestore.statNumberEl(QueryTypes.person);
+    statNumberTv = await firestore.statNumberEl(QueryTypes.tv);
+    statNumberCollection = await firestore.statNumberEl(QueryTypes.collection);
     statNumberFav = statsNumberGeneral[2];
     statNumberToSee = statsNumberGeneral[1];
     statNumberSeen = statsNumberGeneral[0];
-    statNumberTags = await FirestoreQueries.statNumberTags;
+    statNumberTags = await firestore.statNumberTags;
     statsStates = States.Added;
     notifyListeners();
   }
 
   void fetchTransferDB() async {
-    dispTransferDb = await FireconfigQueries.canTransferDb;
+    dispTransferDb = await fireconfig.canTransferDb;
     notifyListeners();
   }
 
@@ -81,7 +86,7 @@ class AccountController extends ChangeNotifier {
   }
 
   void logout() async {
-    await FireauthQueries.logout();
+    await fireauth.logout();
     Navigator.of(_context).pushReplacementNamed("/auth");
   }
 
@@ -114,7 +119,7 @@ class AccountController extends ChangeNotifier {
         buttonAbort: "Annuler",
         onConfirmed: () async {  //On confirm
           Navigator.pop(innerContext);
-          if (await FirestoreQueries.initDb()) {
+          if (await firestore.initDb()) {
             GlobalsFunc.snackBar(_context, "Vos données ont bien été supprimées");
             fetchStats();
           } else GlobalsFunc.snackBar(_context, "Erreur lors de la suppression de vos données");
@@ -169,7 +174,7 @@ class AccountController extends ChangeNotifier {
 
   void _onConfirmRemoveAccount(BuildContext context) async {
     Navigator.pop(context);
-    String res = await FireauthQueries.deleteAccount(_textEditingController.text);
+    String res = await fireauth.deleteAccount(_textEditingController.text);
     if (res == null)
       Navigator.pushReplacementNamed(context, "/auth");
     else
@@ -180,7 +185,7 @@ class AccountController extends ChangeNotifier {
     String pass = _textEditingController.text;
     String newPass = _textEditingController2.text;
     Navigator.pop(context);
-    String res = await FireauthQueries.setUserPass(newPass, pass);
+    String res = await fireauth.setUserPass(newPass, pass);
     if (res == null)
       GlobalsFunc.snackBar(_context, "Votre mot de passe à bien été modifié");
     else
@@ -191,7 +196,7 @@ class AccountController extends ChangeNotifier {
     String pass = _textEditingController.text;
     String email = _textEditingController2.text;
     Navigator.pop(context);
-    String res = await FireauthQueries.setUserMail(email, pass);
+    String res = await fireauth.setUserMail(email, pass);
     if (res == null) {
       GlobalsFunc.snackBar(context, "Votre email à bien été modifié");
       mail = email;
@@ -202,7 +207,7 @@ class AccountController extends ChangeNotifier {
   void _onConfirmChangeName(BuildContext context) async {
     String username = _textEditingController.text;
     Navigator.pop(context);
-    await FireauthQueries.setUserName(username);
+    await fireauth.setUserName(username);
     GlobalsFunc.snackBar(_context, "Votre nom à bien été modifié");
     name = username;
     notifyListeners();

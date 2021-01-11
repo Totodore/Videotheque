@@ -1,5 +1,6 @@
-import 'package:Videotheque/api/fireauthQueries.dart';
+import 'package:Videotheque/api/FireauthQueries.dart';
 import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/utils/Utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -7,11 +8,14 @@ import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 
 class FirestoreQueries {
-  static Future<bool> hasDB(String uid) async =>
+
+  FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
+
+  Future<bool> hasDB(String uid) async =>
       (await FirebaseFirestore.instance.collection(uid).get()).docs.length > 0;
-  static Future<bool> initDb() async {
+  Future<bool> initDb() async {
     try {
-      String userId = await FireauthQueries.getUserId;
+      String userId = await fireauth.getUserId;
       print("User id : $userId");
       // FirebaseFirestore.instance.
       await FirebaseFirestore.instance.collection(userId).doc("movies").set({});
@@ -31,7 +35,7 @@ class FirestoreQueries {
   }
 
   //Ajoute un un element à la bdd
-  static Future<String> addElement(QueryTypes elementType, Map data) async {
+  Future<String> addElement(QueryTypes elementType, Map data) async {
     String id = Uuid().v1();
     try {
       (await _getUserCollection).doc(_dbRouteFromElement(elementType)).update({
@@ -60,7 +64,7 @@ class FirestoreQueries {
     }
     return id;
   }
-  static Future<bool> removeElement(QueryTypes elementType, String id) async {
+  Future<bool> removeElement(QueryTypes elementType, String id) async {
     try {
       (await _getUserCollection).doc(_dbRouteFromElement(elementType)).update({
         id: FieldValue.delete()
@@ -72,7 +76,7 @@ class FirestoreQueries {
     return true;
   }
 
-  static Future<bool> createTag(String id, String name) async {
+  Future<bool> createTag(String id, String name) async {
     try {
       (await _getUserCollection).doc("tags").update({id: name});
     } on Exception catch(e) {
@@ -81,7 +85,7 @@ class FirestoreQueries {
     }
     return true;
   }
-  static Future<List> getElementTags(QueryTypes elementType, String id) async {
+  Future<List> getElementTags(QueryTypes elementType, String id) async {
     try {
       Map globalTags = await getTags();
       if (globalTags == null) return null;
@@ -97,7 +101,7 @@ class FirestoreQueries {
       return null;
     }
   } 
-  static Future<bool> removeTag(String id) async {
+  Future<bool> removeTag(String id) async {
     try {
       (await _getUserCollection).doc("tags").update({id: FieldValue.delete()});
     } on Exception catch(e) {
@@ -106,7 +110,7 @@ class FirestoreQueries {
     }
     return true;
   }
-  static Future<List> updateElementTags(QueryTypes elementType, List tagsId, String elId) async {
+  Future<List> updateElementTags(QueryTypes elementType, List tagsId, String elId) async {
     Map globalsTags = await getTags();
     List idToAdd = [];
     if (globalsTags == null) return null;  //SI on arrive pas à récup la liste des tags on retourne false
@@ -134,7 +138,7 @@ class FirestoreQueries {
     }
     return getElementTags(elementType, elId);
   }
-  static Future<Map> getTags() async {
+  Future<Map> getTags() async {
     try {
       return (await (await _getUserCollection).doc("tags").get()).data();
     } on Exception catch(e) {
@@ -142,24 +146,24 @@ class FirestoreQueries {
       return null;
     }
   }
-  static Future<String> getIdFromDbId(QueryTypes elementType, String dbID) async {
+  Future<String> getIdFromDbId(QueryTypes elementType, String dbID) async {
     String el =  (await _getElementFromBaseId(dbID, elementType)).length > 0 ? (await _getElementFromBaseId(dbID, elementType))[0] : null;
     return el;
   }
   //Renvoie si un element est ajouté en fonction de son id TMDB
-  static Future<bool> isElementAdded(QueryTypes elementType, String dbID) async {
+  Future<bool> isElementAdded(QueryTypes elementType, String dbID) async {
     return (await _getElementFromBaseId(dbID, elementType)).length > 0;
   }
-  static Future<bool> isElementFav(QueryTypes elementType, String id) async {
+  Future<bool> isElementFav(QueryTypes elementType, String id) async {
     return (await (await _getUserCollection).doc(_dbRouteFromElement(elementType)).get()).data()[id]["fav"];
   }
-  static Future<bool> isElementToSee(QueryTypes elementType, String id) async {
+  Future<bool> isElementToSee(QueryTypes elementType, String id) async {
     return (await (await _getUserCollection).doc(_dbRouteFromElement(elementType)).get()).data()[id]["to_see"];
   }
-  static Future<bool> isElementSeen(QueryTypes elementType, String id) async {
+  Future<bool> isElementSeen(QueryTypes elementType, String id) async {
     return (await (await _getUserCollection).doc(_dbRouteFromElement(elementType)).get()).data()[id]["seen"];
   }
-  static Future<bool> setElementFav(QueryTypes elementType, String id, bool state) async {
+  Future<bool> setElementFav(QueryTypes elementType, String id, bool state) async {
     try {
       await (await _getUserCollection).doc(_dbRouteFromElement(elementType)).update({
         "$id.fav": state,
@@ -171,7 +175,7 @@ class FirestoreQueries {
     }
     return true;
   }
-  static Future<bool> setElementToSee(QueryTypes elementType, String id, bool state) async {
+  Future<bool> setElementToSee(QueryTypes elementType, String id, bool state) async {
     try {
       await (await _getUserCollection).doc(_dbRouteFromElement(elementType)).update({
         "$id.to_see": state,
@@ -183,7 +187,7 @@ class FirestoreQueries {
     }
     return true;
   }
-  static Future<bool> setElementSeen(QueryTypes elementType, String id, bool state) async {
+  Future<bool> setElementSeen(QueryTypes elementType, String id, bool state) async {
     try {
       await (await _getUserCollection).doc(_dbRouteFromElement(elementType)).update({
         "$id.seen": state,
@@ -196,7 +200,7 @@ class FirestoreQueries {
     return true;
   }
   //Ecoute les données de la bibliothèque qui arrivent
-  static void setElementsListener(QueryTypes type, Function onData, [int limit = -1, int offset = 0]) async {
+  void setElementsListener(QueryTypes type, Function onData, [int limit = -1, int offset = 0]) async {
     Stream stream;
     try {  
       if (type != QueryTypes.all)
@@ -217,11 +221,11 @@ class FirestoreQueries {
     }   
   }
   //Récupère les données de l'utilisateur courant
-  static Future<CollectionReference> get _getUserCollection async => 
-    FirebaseFirestore.instance.collection(await FireauthQueries.getUserId);
+  Future<CollectionReference> get _getUserCollection async => 
+    FirebaseFirestore.instance.collection(await fireauth.getUserId);
 
   // Retrouve un element à partir de l'ID de TMDB et de son type
-  static Future<List> _getElementFromBaseId(String baseId, QueryTypes element) async {
+  Future<List> _getElementFromBaseId(String baseId, QueryTypes element) async {
     Map data = (await (await _getUserCollection).doc(_dbRouteFromElement(element)).get()).data();
     List returner = [];
     for (String key in data.keys) {
@@ -233,22 +237,22 @@ class FirestoreQueries {
     return returner;
   }
 
-  static Future<int> get getUserTimestamp async => (await (await _getUserCollection).doc("metadata").get()).data()["account_created"] ?? 0;
+  Future<int> get getUserTimestamp async => (await (await _getUserCollection).doc("metadata").get()).data()["account_created"] ?? 0;
 
   // Récupère la route de la bdd à partir de l'élément
-  static String _dbRouteFromElement(QueryTypes element) {
+  String _dbRouteFromElement(QueryTypes element) {
     return GlobalsMessage.chipData[QueryTypes.values.indexOf(element)]["db_route"];
   }
 
-  static Future<int> statNumberEl(QueryTypes element) async {
+  Future<int> statNumberEl(QueryTypes element) async {
     return (await (await _getUserCollection).doc(_dbRouteFromElement(element)).get()).data().length;
   }
 
-  static Future<int> get statNumberTags async {
+  Future<int> get statNumberTags async {
     return (await (await _getUserCollection).doc("tags").get()).data().length;
   }
     //[0] : Seen, [1] : To see, [2] : fav
-  static Future<List> get statNumberGeneral async {
+  Future<List> get statNumberGeneral async {
     Map movies = (await (await _getUserCollection).doc("movies").get()).data();
     Map people = (await (await _getUserCollection).doc("people").get()).data();
     Map tv = (await (await _getUserCollection).doc("series").get()).data();

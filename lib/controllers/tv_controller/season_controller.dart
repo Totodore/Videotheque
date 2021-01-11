@@ -1,5 +1,9 @@
+import 'package:Videotheque/api/FireauthQueries.dart';
+import 'package:Videotheque/api/FireconfigQueries.dart';
+import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/api/tmdbQueries.dart';
+import 'package:Videotheque/api/TmdbQueries.dart';
+import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/tv_view/episode_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -15,6 +19,12 @@ class SeasonController extends ChangeNotifier {
   Map<ElementsTypes, List> carrouselData = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (index) => []));
 
   Map<ElementsTypes, States> objectsStates = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (index) => States.Nothing));
+
+  FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
+  FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
+  FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
+  TMDBQueries tmdbQueries = Singletons.instance<TMDBQueries>();
+
   SeasonController(this.context, this.data, this.heroTag, this.tvId) {
     fetchDetails();
     fetchEpisodes();
@@ -35,7 +45,7 @@ class SeasonController extends ChangeNotifier {
   void fetchEpisodes() async {
     objectsStates[ElementsTypes.EpisodesCarrousel] = States.Loading;
     notifyListeners();
-    Map results = await TMDBQueries.getTvSeason(tvId, data["season_number"].toString());
+    Map results = await tmdbQueries.getTvSeason(tvId, data["season_number"].toString());
     List episodes = List.from(results["episodes"]);
     for (Map episode in episodes) episode["poster_path"] = data["poster_path"]; 
     carrouselData[ElementsTypes.EpisodesCarrousel] = results["episodes"];
@@ -47,7 +57,7 @@ class SeasonController extends ChangeNotifier {
     objectsStates[ElementsTypes.CastingCarrousel] = States.Loading;
     objectsStates[ElementsTypes.CrewCarrousel] = States.Loading;
     notifyListeners();
-    Map results = await TMDBQueries.getTvSeasonCredits(tvId, data["season_number"].toString());
+    Map results = await tmdbQueries.getTvSeasonCredits(tvId, data["season_number"].toString());
     List crew = results["crew"];
     List cast = results["cast"];
     if (crew != null) {
@@ -66,7 +76,7 @@ class SeasonController extends ChangeNotifier {
   void fetchTrailers() async {
     objectsStates[ElementsTypes.YoutubeTrailer] = States.Loading;
     notifyListeners();
-    List results = (await TMDBQueries.getTvSeasonVideos(tvId, data["season_number"].toString()))["results"];
+    List results = (await tmdbQueries.getTvSeasonVideos(tvId, data["season_number"].toString()))["results"];
     
     for (Map trailer in results) {
       if (trailer["site"] == "YouTube") {

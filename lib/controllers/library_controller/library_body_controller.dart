@@ -1,9 +1,12 @@
-import 'package:Videotheque/api/tmdbQueries.dart';
+import 'package:Videotheque/api/FireauthQueries.dart';
+import 'package:Videotheque/api/FireconfigQueries.dart';
+import 'package:Videotheque/api/FirestoreQueries.dart';
+import 'package:Videotheque/api/TmdbQueries.dart';
+import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/utils/customChangeNotifier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:flutter/material.dart';
 
 class LibraryBodyController extends CustomChangeNotifier {
@@ -33,6 +36,11 @@ class LibraryBodyController extends CustomChangeNotifier {
   Map<String, dynamic> tags = {};
   List _libraryData = [];
 
+  FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
+  FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
+  FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
+  TMDBQueries tmdbQueries = Singletons.instance<TMDBQueries>();
+
 
   LibraryBodyController(this.context, this.type) {
 
@@ -46,22 +54,22 @@ class LibraryBodyController extends CustomChangeNotifier {
     objectsStates[ElementsTypes.MainData] = States.Loading;
     notifyListeners();
     if (type == QueryTypes.all)
-      FirestoreQueries.setElementsListener(type, onAllLibraryElement);
+      firestore.setElementsListener(type, onAllLibraryElement);
     else
-      FirestoreQueries.setElementsListener(type, onLibraryElement);
+      firestore.setElementsListener(type, onLibraryElement);
   }
 
   getTags() async {
-    tags = await FirestoreQueries.getTags();
+    tags = await firestore.getTags();
     List inTags = [];
     if (type == QueryTypes.movie || type == QueryTypes.all) {
-      inTags = (await TMDBQueries.getTagListMovie())["genres"];
+      inTags = (await tmdbQueries.getTagListMovie())["genres"];
       for (Map inTag in inTags) {
         tags[inTag["id"].toString()] = inTag["name"];
       }
     }
     if (type == QueryTypes.tv || type == QueryTypes.all){
-      inTags = (await TMDBQueries.getTagListTv())["genres"];
+      inTags = (await tmdbQueries.getTagListTv())["genres"];
       for (Map inTag in inTags) {
         tags[inTag["id"].toString()] = inTag["name"];
       }
