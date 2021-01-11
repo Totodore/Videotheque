@@ -1,4 +1,3 @@
-import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/controllers/home_controller/home_controller.dart';
 import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/views/home_view/carrousel_view.dart';
@@ -26,12 +25,6 @@ class HomeView extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   child: Column(children: [
                     AppBarComponent(),
-                    controller.askTransferDB ? AnimatedCrossFade(
-                      firstChild: DividerComponent(GlobalsColor.darkGreen),
-                      secondChild: Container(), 
-                      crossFadeState: !controller.isTransferDismissedHidden ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
-                      duration: const Duration(milliseconds: 200)
-                    ) : Container(),
                     AnimatedCrossFade(
                       firstChild: LoadingComponent(), 
                       secondChild: controller.hasNoContent ? NoContentComponent() : Column(children: 
@@ -42,7 +35,7 @@ class HomeView extends StatelessWidget {
                           HomeCarrousels type = controller.getRandomCarrousel(index);
                           if (type == null) return Container();
                           return CarrouselView(type, controller.getCarrouselData(type), controller.getCarrouselTitle(type));
-                        }))..add(AskForCoffeeComponent(controller.onDonateClick))
+                        }))..add(AskForCoffeeComponent())
                       ),
                       crossFadeState: controller.isLoading ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
                       duration: const Duration(milliseconds: 200)

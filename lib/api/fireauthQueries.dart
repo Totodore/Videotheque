@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class FireauthQueries {
 
-  FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
   
   //Si l'utilisateur ne veut pas utiliser de compte
   Future<bool> get needSignIn async {
@@ -98,7 +97,7 @@ class FireauthQueries {
       await (FirebaseAuth.instance.currentUser).delete();
     } on PlatformException catch(e) {
       if (e.code == "ERROR_REQUIRES_RECENT_LOGIN") {
-        connect(await getUserMail, pass);
+        connect(await userMail, pass);
         return deleteAccount(pass);
       }
       else res = "Une erreur est apparue lors de la suppression de votre compte";
@@ -108,11 +107,11 @@ class FireauthQueries {
     return res;
   }
 
-  Future<String> get getUserId async => FirebaseAuth.instance.currentUser.uid;
-  Future<String> get getUserName async => FirebaseAuth.instance.currentUser.displayName;
-  Future<String> get getUserMail async => FirebaseAuth.instance.currentUser.email;
-  Future<String> get getUserDate async => DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch((await firestore.getUserTimestamp)*1000));
-  Future<bool> get getUserMailVerified async => FirebaseAuth.instance.currentUser.emailVerified;
+  Future<String> get userId async => FirebaseAuth.instance.currentUser.uid;
+  Future<String> get userName async => FirebaseAuth.instance.currentUser.displayName;
+  Future<String> get userMail async => FirebaseAuth.instance.currentUser.email;
+  Future<String> get userDate async => DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch((await Singletons.instance<FirestoreQueries>().getUserTimestamp)*1000));
+  Future<bool> get userMailVerified async => FirebaseAuth.instance.currentUser.emailVerified;
 
   Future<void> sendMailConfirm(BuildContext context) async {
     try {
@@ -129,7 +128,7 @@ class FireauthQueries {
   }
   Future<String> setUserPass(String pass, String oldPass) async {
     String res;
-    String mail = await getUserMail;
+    String mail = await userMail;
     try {
       await FirebaseAuth.instance.currentUser.updatePassword(pass);
     } on PlatformException catch(e) {
@@ -149,7 +148,7 @@ class FireauthQueries {
   }
   Future<String> setUserMail(String mail, String oldPass) async {
     String res;
-    String oldMail = await getUserMail;
+    String oldMail = await userMail;
     try {
       User user = FirebaseAuth.instance.currentUser;
       await user.updateEmail(mail);

@@ -9,13 +9,11 @@ import 'package:uuid/uuid.dart';
 
 class FirestoreQueries {
 
-  FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
-
   Future<bool> hasDB(String uid) async =>
       (await FirebaseFirestore.instance.collection(uid).get()).docs.length > 0;
   Future<bool> initDb() async {
     try {
-      String userId = await fireauth.getUserId;
+      String userId = await Singletons.instance<FireauthQueries>().userId;
       print("User id : $userId");
       // FirebaseFirestore.instance.
       await FirebaseFirestore.instance.collection(userId).doc("movies").set({});
@@ -222,7 +220,7 @@ class FirestoreQueries {
   }
   //Récupère les données de l'utilisateur courant
   Future<CollectionReference> get _getUserCollection async => 
-    FirebaseFirestore.instance.collection(await fireauth.getUserId);
+    FirebaseFirestore.instance.collection(await Singletons.instance<FireauthQueries>().userId);
 
   // Retrouve un element à partir de l'ID de TMDB et de son type
   Future<List> _getElementFromBaseId(String baseId, QueryTypes element) async {

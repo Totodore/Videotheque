@@ -72,9 +72,9 @@ void main() async {
 
 registerSingletons() {
   print("Registering singletons...");
+  Singletons.registerSingleton(new FirestoreQueries());
   Singletons.registerSingleton(new FireauthQueries());
   Singletons.registerSingleton(new FireconfigQueries());
-  Singletons.registerSingleton(new FirestoreQueries());
   Singletons.registerSingleton(new TMDBQueries());
 }
 
