@@ -3,7 +3,7 @@ import 'package:Videotheque/api/FireconfigQueries.dart';
 import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/api/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
-import 'package:Videotheque/utils/customChangeNotifier.dart';
+import 'package:Videotheque/utils/CustomChangeNotifier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:Videotheque/globals.dart';
