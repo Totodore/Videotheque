@@ -30,7 +30,7 @@ class HomeView extends StatelessWidget {
                       secondChild: controller.hasNoContent ? NoContentComponent() : Column(children: 
                         [
                           Padding(padding: EdgeInsets.only(top: 10), child: Container(),),
-                          !controller.mailConfirmed ? AskMailComponent(controller.sendMailConfirm) : Container(),
+                          !controller.mailConfirmed ? AskMailComponent(controller.sendMailConfirm, controller.mailSended) : Container(),
                         ]..addAll(List.generate(controller.carrouselLength, (int index) {
                           HomeCarrousels type = controller.getRandomCarrousel(index);
                           if (type == null) return Container();

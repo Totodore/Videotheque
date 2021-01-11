@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FireauthQueries {
-
   
   //Si l'utilisateur ne veut pas utiliser de compte
   Future<bool> get needSignIn async {
@@ -171,5 +170,7 @@ class FireauthQueries {
     }
     return res;
   }
+  
   Future<void> reloadData() async => FirebaseAuth.instance.currentUser.reload();
+
 }
