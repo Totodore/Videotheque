@@ -6,7 +6,7 @@ import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/utils/CustomChangeNotifier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:flutter/material.dart';
 
 class LibraryBodyController extends CustomChangeNotifier {

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:Videotheque/api/FireauthQueries.dart';
 import 'package:Videotheque/api/FireconfigQueries.dart';
 import 'package:Videotheque/api/FirestoreQueries.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/app_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';

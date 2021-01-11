@@ -15,7 +15,7 @@ import 'package:Videotheque/views/collection_view/collection_view.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
 import 'package:Videotheque/views/authView/AuthView.dart';
 import 'package:flutter/services.dart';
-import 'globals.dart';
+import 'Globals.dart';
 
 void main() async {
   registerSingletons();

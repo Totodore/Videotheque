@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:Videotheque/controllers/library_controller/library_body_controller.dart';
 import 'package:Videotheque/controllers/library_controller/library_sticky_controller.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Utils.dart';
 import 'package:Videotheque/views/library_view/customSearchPainter.dart';
 import 'package:flutter/cupertino.dart';

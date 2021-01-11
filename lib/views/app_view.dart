@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:Videotheque/controllers/app_controller.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 
 class AppView extends StatelessWidget {
   List<Widget> _children;

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:Videotheque/Env.dart';
 import 'package:http/http.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Utils.dart';
 import 'package:path/path.dart' as p;
 
