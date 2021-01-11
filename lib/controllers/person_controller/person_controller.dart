@@ -2,7 +2,7 @@ import 'package:Videotheque/api/FireauthQueries.dart';
 import 'package:Videotheque/api/FireconfigQueries.dart';
 import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/api/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/person_view/addtag_view.dart';

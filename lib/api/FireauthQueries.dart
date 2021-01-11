@@ -1,5 +1,5 @@
 import 'package:Videotheque/api/FirestoreQueries.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

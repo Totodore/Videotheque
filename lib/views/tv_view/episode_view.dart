@@ -4,7 +4,7 @@ import 'package:Videotheque/components/skeleton_tag_component.dart';
 
 import 'package:Videotheque/controllers/tv_controller/episode_controller.dart';
 
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Utils.dart';
 
 import 'package:Videotheque/views/tv_view/tag_view.dart';

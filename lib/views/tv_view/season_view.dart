@@ -13,7 +13,7 @@ import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:progressive_image/progressive_image.dart';
 
 import 'package:Videotheque/controllers/tv_controller/season_controller.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Utils.dart';
 
 class SeasonView extends StatelessWidget {

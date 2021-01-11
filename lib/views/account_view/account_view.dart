@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:Videotheque/controllers/account_controller/AccountController.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 class AccountView extends StatelessWidget {
   final TextStyle textStyle = TextStyle(
     color: GlobalsColor.darkGreen,

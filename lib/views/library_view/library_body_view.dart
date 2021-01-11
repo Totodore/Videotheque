@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:Videotheque/controllers/library_controller/library_body_controller.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/views/library_view/component/noData.dart';
 import 'package:Videotheque/views/library_view/library_body_header_view.dart';
 import 'package:Videotheque/views/library_view/library_sticky_view.dart';

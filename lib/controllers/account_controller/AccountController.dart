@@ -2,7 +2,7 @@ import 'package:Videotheque/api/FireauthQueries.dart';
 import 'package:Videotheque/api/FireconfigQueries.dart';
 import 'package:Videotheque/api/FirestoreQueries.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/account_view/components/ChangeMailComponent.dart';
 import 'package:Videotheque/views/account_view/components/ChangeNameComponent.dart';

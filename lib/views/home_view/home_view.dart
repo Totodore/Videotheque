@@ -1,5 +1,5 @@
 import 'package:Videotheque/controllers/home_controller/HomeController.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/views/home_view/carrousel_view.dart';
 import 'package:Videotheque/views/home_view/components/AskMailComponent.dart';
 import 'package:Videotheque/views/home_view/components/LoadingComponent.dart';
