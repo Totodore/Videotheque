@@ -1,8 +1,7 @@
 import 'package:Videotheque/Globals.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:store_redirect/store_redirect.dart';
-
+import 'package:in_app_review/in_app_review.dart';
 class AskForCoffeeComponent extends StatelessWidget {
 
   @override
@@ -32,7 +31,7 @@ class AskForCoffeeComponent extends StatelessWidget {
                   child: Text("Laisser un commentaire"),
                   elevation: 2,
                   highlightElevation: 3,
-                  onPressed: StoreRedirect.redirect,
+                  onPressed: InAppReview.instance.openStoreListing,
                 )
               ],
             )
