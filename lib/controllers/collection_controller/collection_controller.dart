@@ -1,7 +1,10 @@
-import 'package:Videotheque/api/firestoreQueries.dart';
+import 'package:Videotheque/services/FireauthQueries.dart';
+import 'package:Videotheque/services/FireconfigQueries.dart';
+import 'package:Videotheque/services/FirestoreQueries.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
-import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/api/tmdbQueries.dart';
+import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/services/TmdbQueries.dart';
+import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/collection_view/addtag_view.dart';
 import 'package:Videotheque/views/collection_view/collection_view.dart';
 import 'package:flutter/material.dart';
@@ -45,15 +48,20 @@ class CollectionController extends ChangeNotifier {
   }
 
 
+  FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
+  FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
+  FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
+  TMDBQueries tmdbQueries = Singletons.instance<TMDBQueries>();
+
   Future fetchDbId() async {
-    return id = await FirestoreQueries.getIdFromDbId(QueryTypes.collection, data["id"].toString());
+    return id = await firestore.getIdFromDbId(QueryTypes.collection, data["id"].toString());
   }
 
   void fetchDbStats() async {
     isAdded = true;
-    isToSee = await FirestoreQueries.isElementToSee(QueryTypes.collection, id);
-    isSeen = await FirestoreQueries.isElementSeen(QueryTypes.collection, id);
-    isFav = await FirestoreQueries.isElementFav(QueryTypes.collection, id);
+    isToSee = await firestore.isElementToSee(QueryTypes.collection, id);
+    isSeen = await firestore.isElementSeen(QueryTypes.collection, id);
+    isFav = await firestore.isElementFav(QueryTypes.collection, id);
     notifyListeners();
   }
   void clearDbStats() {
@@ -64,7 +72,7 @@ class CollectionController extends ChangeNotifier {
   }
   
   void addCollection() async {
-    id = await FirestoreQueries.addElement(QueryTypes.collection, data);
+    id = await firestore.addElement(QueryTypes.collection, data);
     if (id != null) {
       isAdded = true;
     }
@@ -76,7 +84,7 @@ class CollectionController extends ChangeNotifier {
       return AlertDialogComponent(
         content: "Êtes-vous sur de supprimer cette collection de votre vidéothèque ?",
         onConfirmed: () async {  //On confirm
-          if (await FirestoreQueries.removeElement(QueryTypes.collection, id)) {
+          if (await firestore.removeElement(QueryTypes.collection, id)) {
             clearDbStats();
             notifyListeners();
           }
@@ -93,13 +101,13 @@ class CollectionController extends ChangeNotifier {
   void onCollectionToSeeTapped(BuildContext scaffoldContext) async {
     Scaffold.of(scaffoldContext).hideCurrentSnackBar();
     if (!isToSee) {
-      if (await FirestoreQueries.setElementToSee(QueryTypes.collection, id, true)) {
+      if (await firestore.setElementToSee(QueryTypes.collection, id, true)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["name"]} ajouté aux collections à voir')));
         isToSee = true;
       }
     }
     else {
-      if (await FirestoreQueries.setElementToSee(QueryTypes.collection, id, false)) {
+      if (await firestore.setElementToSee(QueryTypes.collection, id, false)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["name"]} retiré des collections à voir')));
         isToSee = false;
       }
@@ -110,13 +118,13 @@ class CollectionController extends ChangeNotifier {
   void onCollectionSeenTapped(BuildContext scaffoldContext) async {
     Scaffold.of(scaffoldContext).hideCurrentSnackBar();
     if (!isSeen) {
-      if (await FirestoreQueries.setElementSeen(QueryTypes.collection, id, true)) {
+      if (await firestore.setElementSeen(QueryTypes.collection, id, true)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["name"]} ajouté aux collections vues')));
         isSeen = true;
       }
     }
     else {
-      if (await FirestoreQueries.setElementSeen(QueryTypes.collection, id, false)) {
+      if (await firestore.setElementSeen(QueryTypes.collection, id, false)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["name"]} retiré des collections vues')));
         isSeen = false;
       }
@@ -127,13 +135,13 @@ class CollectionController extends ChangeNotifier {
   void onFavTapped(BuildContext scaffoldContext) async {
     Scaffold.of(scaffoldContext).hideCurrentSnackBar();
     if (!isFav) {
-      if (await FirestoreQueries.setElementFav(QueryTypes.collection, id, true)) {
+      if (await firestore.setElementFav(QueryTypes.collection, id, true)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["title"]} ajouté aux favoris')));
         isFav = true;
       }
     }
     else {
-      if (await FirestoreQueries.setElementFav(QueryTypes.collection, id, false)) {
+      if (await firestore.setElementFav(QueryTypes.collection, id, false)) {
         isFav = false;
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${data["title"]} retiré des favoris')));
       }
@@ -144,7 +152,7 @@ class CollectionController extends ChangeNotifier {
   void fetchTags() async {
     objectsStates[ElementsTypes.GenreTags] = States.Loading;
     notifyListeners();
-    addedGenreTags = await FirestoreQueries.getElementTags(QueryTypes.collection, id);
+    addedGenreTags = await firestore.getElementTags(QueryTypes.collection, id);
     objectsStates[ElementsTypes.GenreTags] = States.Added;
     notifyListeners();
   }
@@ -152,7 +160,7 @@ class CollectionController extends ChangeNotifier {
     objectsStates[ElementsTypes.MoviesCarrousel] = States.Loading;
     objectsStates[ElementsTypes.MainData] = States.Loading;
     notifyListeners();
-    Map results = await TMDBQueries.getCollection(data["id"].toString());
+    Map results = await tmdbQueries.getCollection(data["id"].toString());
     List movies = results["parts"];
     if (movies != null)
       movies.removeWhere((el) => el["poster_path"] == null);
@@ -192,7 +200,7 @@ class CollectionController extends ChangeNotifier {
   void applyTagsEdits(List newTags) async {
     objectsStates[ElementsTypes.GenreTags] = States.Loading;
     notifyListeners();
-    addedGenreTags = await FirestoreQueries.updateElementTags(QueryTypes.collection, newTags, id) ?? addedGenreTags;
+    addedGenreTags = await firestore.updateElementTags(QueryTypes.collection, newTags, id) ?? addedGenreTags;
     objectsStates[ElementsTypes.GenreTags] = addedGenreTags.length > 0 ? States.Added : States.Empty;
     notifyListeners();
   }

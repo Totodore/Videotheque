@@ -1,4 +1,4 @@
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/SlidePageRoute.dart';
 import 'package:Videotheque/views/collection_view/collection_view.dart';
 import 'package:Videotheque/views/movie_view/movie_view.dart';

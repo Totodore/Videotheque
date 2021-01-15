@@ -1,11 +1,12 @@
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AskMailComponent extends StatelessWidget {
   final Function _sendMail;
-  final String _mail;
-  AskMailComponent(this._sendMail, this._mail);  
+  final Function _mailSended;
+
+  AskMailComponent(this._sendMail, this._mailSended);  
   
   @override
   Widget build(BuildContext context) => Card(
@@ -15,7 +16,7 @@ class AskMailComponent extends StatelessWidget {
     child: Padding(
       padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 5),
       child: Column(children: [
-        Text("Vous n'avez pas vérifié votre adresse mail : $_mail, pensez à vérifier vos spams.",
+        Text("Vous n'avez pas vérifié votre adresse mail, pensez à vérifier vos spams.",
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 15.5,
@@ -32,7 +33,13 @@ class AskMailComponent extends StatelessWidget {
               child: Text("Renvoyer l'email"),
               elevation: 2,
               highlightElevation: 3,
-              onPressed: () => _sendMail(context, _mail),
+              onPressed: () => _sendMail(context),
+            ),
+            FlatButton(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              color: GlobalsColor.darkGreen,
+              child: Text("J'ai vérifié mon email"),
+              onPressed: _mailSended, 
             )
           ],
         )

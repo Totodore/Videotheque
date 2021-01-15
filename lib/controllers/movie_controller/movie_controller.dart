@@ -1,7 +1,10 @@
-import 'package:Videotheque/api/firestoreQueries.dart';
+import 'package:Videotheque/services/FireauthQueries.dart';
+import 'package:Videotheque/services/FireconfigQueries.dart';
+import 'package:Videotheque/services/FirestoreQueries.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
-import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/api/tmdbQueries.dart';
+import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/services/TmdbQueries.dart';
+import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/movie_view/addtag_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +26,11 @@ class MovieController extends ChangeNotifier {
   bool isFav = false;
   bool isToSee = false;
   bool isSeen = false;
+
+  FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
+  FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
+  FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
+  TMDBQueries tmdbQueries = Singletons.instance<TMDBQueries>();
 
 
   MovieController(this.context) {
@@ -51,14 +59,14 @@ class MovieController extends ChangeNotifier {
   }
 
   Future fetchDbId() async {
-    return id = await FirestoreQueries.getIdFromDbId(QueryTypes.movie, preloadData["id"].toString());
+    return id = await firestore.getIdFromDbId(QueryTypes.movie, preloadData["id"].toString());
   }
 
   void fetchDbStats() async {
     isAdded = true;
-    isToSee = await FirestoreQueries.isElementToSee(QueryTypes.movie, id);
-    isSeen = await FirestoreQueries.isElementSeen(QueryTypes.movie, id);
-    isFav = await FirestoreQueries.isElementFav(QueryTypes.movie, id);
+    isToSee = await firestore.isElementToSee(QueryTypes.movie, id);
+    isSeen = await firestore.isElementSeen(QueryTypes.movie, id);
+    isFav = await firestore.isElementFav(QueryTypes.movie, id);
     notifyListeners();
   }
   void clearDbStats() {
@@ -70,7 +78,7 @@ class MovieController extends ChangeNotifier {
   void fetchInfosTags() async {
     objectsStates[ElementsTypes.InfoTags] = States.Loading;    
     notifyListeners();
-    Map data = await TMDBQueries.getMovie(preloadData["id"].toString());
+    Map data = await tmdbQueries.getMovie(preloadData["id"].toString());
     loadedInfosTags = [
       data["release_date"] != null ? "Sortie : " + DateFormat('dd/MM/yyyy').format(DateTime.parse(data["release_date"])) : null,
       data["vote_average"] != null && data["vote_average"] > 0 ? "${data["vote_average"]} ★" : null,
@@ -85,14 +93,14 @@ class MovieController extends ChangeNotifier {
   void fetchGenreTags() async {
     objectsStates[ElementsTypes.GenreTags] = States.Loading;
     notifyListeners();
-    for (Map genre in Map.from(await TMDBQueries.getTagListMovie())["genres"]) {
+    for (Map genre in Map.from(await tmdbQueries.getTagListMovie())["genres"]) {
       for (int genre_id in preloadData["genre_ids"]) {
         if (genre["id"] == genre_id)
           loadedGenreTags.add(genre);
       }
     }
     if (id != null)
-      addedGenreTags = await FirestoreQueries.getElementTags(QueryTypes.movie, id);
+      addedGenreTags = await firestore.getElementTags(QueryTypes.movie, id);
     objectsStates[ElementsTypes.GenreTags] = List.from(List.from(loadedGenreTags)..addAll(addedGenreTags)).length > 0 ? States.Added : States.Empty;
     notifyListeners();
   }
@@ -101,7 +109,7 @@ class MovieController extends ChangeNotifier {
     objectsStates[ElementsTypes.CastingCarrousel] = States.Loading;
     objectsStates[ElementsTypes.CrewCarrousel] = States.Loading;
     notifyListeners();
-    Map data = await TMDBQueries.getMovieCredits(preloadData["id"].toString());
+    Map data = await tmdbQueries.getMovieCredits(preloadData["id"].toString());
     data["cast"].removeWhere((element) => element["profile_path"] == null);
     data["crew"].removeWhere((element) => element["profile_path"] == null);
     carrouselData[ElementsTypes.CastingCarrousel] = data["cast"];
@@ -113,7 +121,7 @@ class MovieController extends ChangeNotifier {
   void fetchSimilarMovies() async {
     objectsStates[ElementsTypes.SimilarCarrousel] = States.Loading;
     notifyListeners();
-    List similars = TMDBQueries.sortByPopularity(Map.from(await TMDBQueries.getMovieSimilar(preloadData["id"].toString()))["results"]);
+    List similars = tmdbQueries.sortByPopularity(Map.from(await tmdbQueries.getMovieSimilar(preloadData["id"].toString()))["results"]);
     similars.removeWhere((element) => element["poster_path"] == null);
     carrouselData[ElementsTypes.SimilarCarrousel] = similars;
     objectsStates[ElementsTypes.SimilarCarrousel] = carrouselData[ElementsTypes.SimilarCarrousel] != null && carrouselData[ElementsTypes.SimilarCarrousel].length > 0 ? States.Added : States.Empty;
@@ -123,7 +131,7 @@ class MovieController extends ChangeNotifier {
   void fetchTrailer() async {
     objectsStates[ElementsTypes.YoutubeTrailer] = States.Loading;
     notifyListeners();
-    carrouselData[ElementsTypes.YoutubeTrailer] = Map.from(await TMDBQueries.getMovieTrailer(preloadData["id"].toString()))["results"];
+    carrouselData[ElementsTypes.YoutubeTrailer] = Map.from(await tmdbQueries.getMovieTrailer(preloadData["id"].toString()))["results"];
 
     for (Map trailer in carrouselData[ElementsTypes.YoutubeTrailer]) {
       if (trailer["site"] == "YouTube") {
@@ -136,7 +144,7 @@ class MovieController extends ChangeNotifier {
   }
   
   void addMovie() async {
-    id = await FirestoreQueries.addElement(QueryTypes.movie, preloadData);
+    id = await firestore.addElement(QueryTypes.movie, preloadData);
     if (id != null) {
       isAdded = true;
     }
@@ -148,7 +156,7 @@ class MovieController extends ChangeNotifier {
       return AlertDialogComponent(
         content: "Êtes-vous sur de supprimer ce film de votre vidéothèque ?",
         onConfirmed: () async {  //On confirm
-          if (await FirestoreQueries.removeElement(QueryTypes.movie, id)) {
+          if (await firestore.removeElement(QueryTypes.movie, id)) {
             clearDbStats();
             notifyListeners();
           }
@@ -165,13 +173,13 @@ class MovieController extends ChangeNotifier {
   void onMovieToSeeTapped(BuildContext scaffoldContext) async {
     Scaffold.of(scaffoldContext).hideCurrentSnackBar();
     if (!isToSee) {
-      if (await FirestoreQueries.setElementToSee(QueryTypes.movie, id, true)) {
+      if (await firestore.setElementToSee(QueryTypes.movie, id, true)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["title"]} ajouté aux films à voir')));
         isToSee = true;
       }
     }
     else {
-      if (await FirestoreQueries.setElementToSee(QueryTypes.movie, id, false)) {
+      if (await firestore.setElementToSee(QueryTypes.movie, id, false)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["title"]} retiré des films à voir')));
         isToSee = false;
       }
@@ -182,13 +190,13 @@ class MovieController extends ChangeNotifier {
   void onMovieSeenTapped(BuildContext scaffoldContext) async {
     Scaffold.of(scaffoldContext).hideCurrentSnackBar();
     if (!isSeen) {
-      if (await FirestoreQueries.setElementSeen(QueryTypes.movie, id, true)) {
+      if (await firestore.setElementSeen(QueryTypes.movie, id, true)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["title"]} ajouté aux films vus')));
         isSeen = true;
       }
     }
     else {
-      if (await FirestoreQueries.setElementSeen(QueryTypes.movie, id, false)) {
+      if (await firestore.setElementSeen(QueryTypes.movie, id, false)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["title"]} retiré des films vus')));
         isSeen = false;
       }
@@ -199,13 +207,13 @@ class MovieController extends ChangeNotifier {
   void onFavTapped(BuildContext scaffoldContext) async {
     Scaffold.of(scaffoldContext).hideCurrentSnackBar();
     if (!isFav) {
-      if (await FirestoreQueries.setElementFav(QueryTypes.movie, id, true)) {
+      if (await firestore.setElementFav(QueryTypes.movie, id, true)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["title"]} ajouté aux favoris')));
         isFav = true;
       }
     }
     else {
-      if (await FirestoreQueries.setElementFav(QueryTypes.movie, id, false)) {
+      if (await firestore.setElementFav(QueryTypes.movie, id, false)) {
         isFav = false;
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["title"]} retiré des favoris')));
       }
@@ -227,7 +235,7 @@ class MovieController extends ChangeNotifier {
   void applyTagsEdits(List newTags) async {
     objectsStates[ElementsTypes.GenreTags] = States.Loading;
     notifyListeners();
-    addedGenreTags = await FirestoreQueries.updateElementTags(QueryTypes.movie, newTags, id) ?? addedGenreTags;
+    addedGenreTags = await firestore.updateElementTags(QueryTypes.movie, newTags, id) ?? addedGenreTags;
     objectsStates[ElementsTypes.GenreTags] = States.Added;
     notifyListeners();
   }

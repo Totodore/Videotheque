@@ -1,4 +1,9 @@
-import 'package:Videotheque/api/fireauthQueries.dart';
+import 'package:Videotheque/services/BarcodeLookup.dart';
+import 'package:Videotheque/services/FireauthQueries.dart';
+import 'package:Videotheque/services/FireconfigQueries.dart';
+import 'package:Videotheque/services/FirestoreQueries.dart';
+import 'package:Videotheque/services/TmdbQueries.dart';
+import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/SplashScreenView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -6,27 +11,27 @@ import 'package:flutter/material.dart';
 import 'package:Videotheque/views/app_view.dart';
 import 'package:Videotheque/views/movie_view/movie_view.dart';
 import 'package:Videotheque/views/person_view/person_view.dart';
-import 'package:Videotheque/views/search_view/search_view.dart';
+import 'package:Videotheque/views/search_view/SearchView.dart';
 import 'package:Videotheque/views/collection_view/collection_view.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
-import 'package:Videotheque/views/auth_view.dart/auth_view.dart';
+import 'package:Videotheque/views/authView/AuthView.dart';
 import 'package:flutter/services.dart';
-import 'globals.dart';
+import 'Globals.dart';
+
+AppView mainView;
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await configureApp();
+  registerSingletons();
+
   runApp(MaterialApp(
     title: 'Vidéothèque',
     color: Color(0xFF008577),
     initialRoute: "/splash",
     routes: {
-      "/": (context) => AppView(),
-      "/splash": (context) => SplashScreenView(() async {
-        await Firebase.initializeApp();
-        return await FireauthQueries.needSignIn ? "/auth" : "/";
-      }),
-      "/auth": (context) => AuthView(),
+      "/splash": (context) => SplashScreenView(checkSignin),
+      "/": (context) => mainView ??= AppView(),
+      "/auth": (context) => AuthView(mainView),
       "/search/": (context) => SearchView(),
       "/element/movie/": (context) => MovieView(),
       "/element/person/": (context) => PersonView(),
@@ -58,4 +63,28 @@ void main() async {
       )
     ),
   ));
+}
+
+registerSingletons() {
+  print("Registering singletons...");
+  Singletons.registerSingleton(new FirestoreQueries());
+  Singletons.registerSingleton(new FireauthQueries());
+  Singletons.registerSingleton(new FireconfigQueries());
+  Singletons.registerSingleton(new TMDBQueries());
+  Singletons.registerSingleton(new BarcodeLookup());
+}
+
+configureApp() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await Firebase.initializeApp();
+}
+
+Future<String> checkSignin() async {
+  if (await Singletons.instance<FireauthQueries>().needSignIn)
+    return "/auth";
+  else {
+    mainView.logged();
+    return "/";
+  }
 }
