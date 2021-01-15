@@ -2,9 +2,9 @@ import 'package:Videotheque/controllers/home_controller/HomeController.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/views/home_view/components/AskMailComponent.dart';
 import 'package:Videotheque/views/home_view/components/LoadingComponent.dart';
-import 'package:Videotheque/views/home_view/components/appBar_component.dart';
-import 'package:Videotheque/views/home_view/components/askForCoffee_component.dart';
-import 'package:Videotheque/views/home_view/components/noContentComponent.dart';
+import 'package:Videotheque/views/home_view/components/AppBarComponent.dart';
+import 'package:Videotheque/views/home_view/components/AskForCoffeeComponent.dart';
+import 'package:Videotheque/views/home_view/components/NoDataComponent.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
