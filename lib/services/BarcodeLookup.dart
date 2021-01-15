@@ -7,7 +7,7 @@ import 'package:http/http.dart';
 
 class BarcodeLookup {
 
-  final regex = new RegExp(r"[\+\[\]=-\(\)]", multiLine: false, caseSensitive: false);
+  final regex = new RegExp(r'[\+\[\]=\-\(\)]', multiLine: false, caseSensitive: false);
   
   Future<String> getTitle(String barcode) async {
     Uri url = new Uri.https(environment.BARCODE_ORIGIN, p.join("api/v1/search"), { "query": barcode });
