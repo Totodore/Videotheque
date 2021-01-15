@@ -18,24 +18,18 @@ import 'package:Videotheque/views/authView/AuthView.dart';
 import 'package:flutter/services.dart';
 import 'Globals.dart';
 
+AppView mainView;
+
 void main() async {
   await configureApp();
   registerSingletons();
 
-  AppView mainView;
   runApp(MaterialApp(
     title: 'Vidéothèque',
     color: Color(0xFF008577),
     initialRoute: "/splash",
     routes: {
-      "/splash": (context) => SplashScreenView(() async {
-        if (await Singletons.instance<FireauthQueries>().needSignIn)
-          return "/auth";
-        else {
-          mainView.logged();
-          return "/";
-        }
-      }),
+      "/splash": (context) => SplashScreenView(checkSignin),
       "/": (context) => mainView ??= AppView(),
       "/auth": (context) => AuthView(mainView),
       "/search/": (context) => SearchView(),
@@ -84,4 +78,13 @@ configureApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp();
+}
+
+Future<String> checkSignin() async {
+  if (await Singletons.instance<FireauthQueries>().needSignIn)
+    return "/auth";
+  else {
+    mainView.logged();
+    return "/";
+  }
 }
