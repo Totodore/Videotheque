@@ -5,7 +5,7 @@ import 'package:Videotheque/services/FirestoreQueries.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/utils/CustomChangeNotifier.dart';
-import 'package:Videotheque/views/home_view/carrousel_view.dart';
+import 'package:Videotheque/views/home_view/CarrouselView.dart';
 import 'package:Videotheque/views/home_view/components/InfoComponent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
