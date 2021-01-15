@@ -1,7 +1,10 @@
-import 'package:Videotheque/api/firestoreQueries.dart';
+import 'package:Videotheque/services/FireauthQueries.dart';
+import 'package:Videotheque/services/FireconfigQueries.dart';
+import 'package:Videotheque/services/FirestoreQueries.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
-import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/api/tmdbQueries.dart';
+import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/services/TmdbQueries.dart';
+import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/tv_view/season_view.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +28,12 @@ class TvController extends ChangeNotifier {
   bool isToSee = false;
   bool isSeen = false;
   BuildContext scaffoldContext;
+
+  
+  FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
+  FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
+  FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
+  TMDBQueries tmdbQueries = Singletons.instance<TMDBQueries>();
 
 
   TvController(this.context) {
@@ -55,14 +64,14 @@ class TvController extends ChangeNotifier {
 
   
   Future fetchDbId() async {
-    return id = await FirestoreQueries.getIdFromDbId(QueryTypes.tv, preloadData["id"].toString());
+    return id = await firestore.getIdFromDbId(QueryTypes.tv, preloadData["id"].toString());
   }
 
   void fetchDbStats() async {
     isAdded = true;
-    isToSee = await FirestoreQueries.isElementToSee(QueryTypes.tv, id);
-    isSeen = await FirestoreQueries.isElementSeen(QueryTypes.tv, id);
-    isFav = await FirestoreQueries.isElementFav(QueryTypes.tv, id);
+    isToSee = await firestore.isElementToSee(QueryTypes.tv, id);
+    isSeen = await firestore.isElementSeen(QueryTypes.tv, id);
+    isFav = await firestore.isElementFav(QueryTypes.tv, id);
     notifyListeners();
   }
   void clearDbStats() {
@@ -78,7 +87,7 @@ class TvController extends ChangeNotifier {
     objectsStates[ElementsTypes.MadeByCarrousel] = States.Loading;   
     notifyListeners();
 
-    Map data = await TMDBQueries.getTv(preloadData["id"].toString());
+    Map data = await tmdbQueries.getTv(preloadData["id"].toString());
     loadedInfosTags = [
       preloadData["vote_average"] != null && preloadData["vote_average"] > 0 ? preloadData["vote_average"].toString() + " ★" : null,
       data["in_production"] != null ? data["in_production"] ? "En production" :  "Terminée" : null,
@@ -108,14 +117,14 @@ class TvController extends ChangeNotifier {
   void fetchGenreTags() async {
     objectsStates[ElementsTypes.GenreTags] = States.Loading;
     notifyListeners();
-    for (Map genre in Map.from(await TMDBQueries.getTagListTv())["genres"]) {
+    for (Map genre in Map.from(await tmdbQueries.getTagListTv())["genres"]) {
       for (int genre_id in preloadData["genre_ids"]) {
         if (genre["id"] == genre_id)
           loadedGenreTags.add(genre);
       }
     }
     if (id != null)
-      addedGenreTags = await FirestoreQueries.getElementTags(QueryTypes.tv, id);
+      addedGenreTags = await firestore.getElementTags(QueryTypes.tv, id);
     objectsStates[ElementsTypes.GenreTags] = List.from(List.from(loadedGenreTags)..addAll(addedGenreTags)).length > 0 ? States.Added : States.Empty;
     notifyListeners();
   }
@@ -130,7 +139,7 @@ class TvController extends ChangeNotifier {
     objectsStates[ElementsTypes.CastingCarrousel] = States.Loading;
     objectsStates[ElementsTypes.CrewCarrousel] = States.Loading;
     notifyListeners();
-    Map data = await TMDBQueries.getTvCredits(preloadData["id"].toString());
+    Map data = await tmdbQueries.getTvCredits(preloadData["id"].toString());
     data["cast"].removeWhere((element) => element["profile_path"] == null);
     data["crew"].removeWhere((element) => element["profile_path"] == null);
     carrouselData[ElementsTypes.CastingCarrousel] = data["cast"];
@@ -143,7 +152,7 @@ class TvController extends ChangeNotifier {
   void fetchSimilarTv() async {
     objectsStates[ElementsTypes.SimilarCarrousel] = States.Loading;
     notifyListeners();
-    List data = TMDBQueries.sortByPopularity(Map.from(await TMDBQueries.getTvSimilar(preloadData["id"].toString()))["results"]);
+    List data = tmdbQueries.sortByPopularity(Map.from(await tmdbQueries.getTvSimilar(preloadData["id"].toString()))["results"]);
     data.removeWhere((element) => element["poster_path"] == null);
     carrouselData[ElementsTypes.SimilarCarrousel] = data;
     objectsStates[ElementsTypes.SimilarCarrousel] = data != null && data.length > 0 ? States.Added : States.Empty;
@@ -151,7 +160,7 @@ class TvController extends ChangeNotifier {
   }
 
   void addTv() async {
-    id = await FirestoreQueries.addElement(QueryTypes.tv, preloadData);
+    id = await firestore.addElement(QueryTypes.tv, preloadData);
     if (id != null) {
       isAdded = true;
     }
@@ -163,7 +172,7 @@ class TvController extends ChangeNotifier {
       return AlertDialogComponent(
         content: "Êtes-vous sur de supprimer cette série de votre vidéothèque ?",
         onConfirmed: () async {  //On confirm
-          if (await FirestoreQueries.removeElement(QueryTypes.tv, id)) {
+          if (await firestore.removeElement(QueryTypes.tv, id)) {
             clearDbStats();
             notifyListeners();
           }
@@ -180,13 +189,13 @@ class TvController extends ChangeNotifier {
   void onTvToSeeTapped(BuildContext scaffoldContext) async {
     Scaffold.of(scaffoldContext).hideCurrentSnackBar();
     if (!isToSee) {
-      if (await FirestoreQueries.setElementToSee(QueryTypes.tv, id, true)) {
+      if (await firestore.setElementToSee(QueryTypes.tv, id, true)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["name"]} ajouté aux séries à voir')));
         isToSee = true;
       }
     }
     else {
-      if (await FirestoreQueries.setElementToSee(QueryTypes.tv, id, false)) {
+      if (await firestore.setElementToSee(QueryTypes.tv, id, false)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["name"]} retiré des séries à voir')));
         isToSee = false;
       }
@@ -197,13 +206,13 @@ class TvController extends ChangeNotifier {
   void onTvSeenTapped(BuildContext scaffoldContext) async {
     Scaffold.of(scaffoldContext).hideCurrentSnackBar();
     if (!isSeen) {
-      if (await FirestoreQueries.setElementSeen(QueryTypes.tv, id, true)) {
+      if (await firestore.setElementSeen(QueryTypes.tv, id, true)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["name"]} ajouté aux séries vues')));
         isSeen = true;
       }
     }
     else {
-      if (await FirestoreQueries.setElementSeen(QueryTypes.tv, id, false)) {
+      if (await firestore.setElementSeen(QueryTypes.tv, id, false)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["name"]} retiré des séries vues')));
         isSeen = false;
       }
@@ -215,13 +224,13 @@ class TvController extends ChangeNotifier {
   void onFavTapped(BuildContext scaffoldContext) async {
     Scaffold.of(scaffoldContext).hideCurrentSnackBar();
     if (!isFav) {
-      if (await FirestoreQueries.setElementFav(QueryTypes.tv, id, true)) {
+      if (await firestore.setElementFav(QueryTypes.tv, id, true)) {
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["name"]} ajouté aux favoris')));
         isFav = true;
       }
     }
     else {
-      if (await FirestoreQueries.setElementFav(QueryTypes.tv, id, false)) {
+      if (await firestore.setElementFav(QueryTypes.tv, id, false)) {
         isFav = false;
         Scaffold.of(scaffoldContext).showSnackBar(SnackBar(content: Text('${preloadData["name"]} retiré des favoris')));
       }
@@ -243,7 +252,7 @@ class TvController extends ChangeNotifier {
   void applyTagsEdits(List newTags) async {
     objectsStates[ElementsTypes.GenreTags] = States.Loading;
     notifyListeners();
-    addedGenreTags = await FirestoreQueries.updateElementTags(QueryTypes.tv, newTags, id) ?? addedGenreTags;
+    addedGenreTags = await firestore.updateElementTags(QueryTypes.tv, newTags, id) ?? addedGenreTags;
     objectsStates[ElementsTypes.GenreTags] = States.Added;
     notifyListeners();
   }

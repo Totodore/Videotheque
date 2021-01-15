@@ -1,21 +1,31 @@
 import 'package:Videotheque/views/account_view/account_view.dart';
-import 'package:Videotheque/views/home_view/home_view.dart';
+import 'package:Videotheque/views/home_view/HomeView.dart';
 import 'package:Videotheque/views/library_view/library_view.dart';
-import 'package:Videotheque/views/search_view/search_view.dart';
+import 'package:Videotheque/views/search_view/SearchView.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:Videotheque/controllers/app_controller.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 
 class AppView extends StatelessWidget {
-  final List<Widget> _children = [
-    HomeView(),
-    LibraryView(),
-    SearchView(),
-    AccountView(),
-  ];
+  List<Widget> _children;
+
+  AppView() {
+    _children = [
+      SearchView(),
+    ];
+  }
+
+  logged(){
+    _children = [
+      HomeView(),
+      LibraryView(),
+      _children[0],
+      AccountView(),
+    ];
+  }
   
   @override
   Widget build(BuildContext context) {

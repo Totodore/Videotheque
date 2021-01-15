@@ -5,8 +5,8 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Videotheque/controllers/account_controller/account_controller.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/controllers/account_controller/AccountController.dart';
+import 'package:Videotheque/Globals.dart';
 class AccountView extends StatelessWidget {
   final TextStyle textStyle = TextStyle(
     color: GlobalsColor.darkGreen,
@@ -259,19 +259,6 @@ class AccountView extends StatelessWidget {
                           )
                         ),
                         DividerComponent(GlobalsColor.darkGreen),
-                        AnimatedCrossFade(
-                          duration: Duration(milliseconds: 350),
-                          firstChild: Container(),
-                          secondChild: Card(
-                            child: ListTile(
-                              onTap: controller.transferDb,
-                              leading: Icon(CommunityMaterialIcons.database_import, color: PersonView.baseColor),
-                              title: Text("Récupérer mes données", style: TextStyle(fontWeight: FontWeight.w600, color: PersonView.baseColor)),
-                              trailing: Icon(Icons.keyboard_arrow_right),
-                            )
-                          ),
-                          crossFadeState: controller.dispTransferDb ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                        ),
                         Card(
                           child: ListTile(
                             onTap: controller.removeData,

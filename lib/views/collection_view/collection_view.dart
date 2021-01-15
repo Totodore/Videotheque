@@ -10,8 +10,8 @@ import 'package:Videotheque/controllers/collection_controller/collection_control
 import 'package:Videotheque/views/collection_view/tag_view.dart';
 import 'package:Videotheque/views/components/carrousel_view.dart';
 
-import 'package:Videotheque/globals.dart';
-import 'package:Videotheque/utils/utils.dart';
+import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/utils/Utils.dart';
 
 import 'package:background_app_bar/background_app_bar.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';

@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Videotheque/utils/utils.dart';
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/utils/Utils.dart';
+import 'package:Videotheque/Globals.dart';
 
 import 'package:Videotheque/views/movie_view/tag_view.dart';
 import 'package:Videotheque/views/movie_view/trailer_view.dart';

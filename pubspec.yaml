@@ -2,7 +2,7 @@ name: Videotheque
 description: >-
   Gérer votre bibliothèque de films ! Cherchez, Ajoutez, Triez, Le tour est
   joué !
-version: 3.0.7+22
+version: 3.0.7+25
 environment:
   sdk: ">=2.1.0 <3.0.0"
 dependencies:
@@ -40,11 +40,17 @@ dependencies:
   rxdart: ^0.24.1
   ndialog: ^2.1.0+6
   flutter_animated_dialog: ^1.1.0
-  store_redirect: ^1.0.2
-
+  barcode_scan_fix: ^1.0.2
+  permission_handler: ^5.0.1+1
+  json_annotation: ^3.1.1
+  in_app_review: ^1.0.4
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  json_serializable: ^3.5.1
+  build_runner: ^1.10.12
+
 flutter_icons:
   android: launcher_icon
   ios: false

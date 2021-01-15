@@ -1,5 +1,5 @@
 
-import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/Globals.dart';
 import 'package:flutter/material.dart';
 
 class ResultSearchController extends ChangeNotifier {
