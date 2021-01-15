@@ -11,6 +11,7 @@ import 'package:Videotheque/utils/Singletons.dart';
 import 'package:barcode_scan_fix/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ndialog/ndialog.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class SearchController extends ChangeNotifier {
@@ -142,10 +143,13 @@ class SearchController extends ChangeNotifier {
   }
 
   Future<void> _scan() async {
+    CustomProgressDialog dialog;
     try {
       barcode = await BarcodeScanner.scan();
+      dialog = this._dispLoadingDialog();
       searchInputController.text = await Singletons.instance<BarcodeLookup>().getTitle(barcode);
-      searchInputController.selection = TextSelection.collapsed(offset: searchInputController.text.length-1);
+      searchInputController.selection = TextSelection.collapsed(offset: searchInputController.text.length);
+      dialog?.dismiss();
       searchQuery(searchInputController.text);
       notifyListeners();
     } on PlatformException catch (e) {
@@ -155,13 +159,28 @@ class SearchController extends ChangeNotifier {
         GlobalsFunc.snackBar(context);
         print(e);
       }
+      dialog?.dismiss();
     } on HttpException {
       GlobalsFunc.snackBar(context, "Erreur lors de la récupération du film, réessayez...");
+      dialog?.dismiss();
     } on FormatException {
       // GlobalsFunc.snackBar(context, "Erreur lors du scan, réessayez...");
     } catch (e) {
       GlobalsFunc.snackBar(context, "Erreur lors du scan du code barre, réessayez...");
+      dialog?.dismiss();
       print(e);
     }
+  }
+
+  CustomProgressDialog _dispLoadingDialog() {
+    CustomProgressDialog progressDialog = CustomProgressDialog(context, 
+      blur: 5,
+      loadingWidget: LinearProgressIndicator(
+        backgroundColor: GlobalsColor.green,
+        valueColor: AlwaysStoppedAnimation<Color>(GlobalsColor.darkGreen),
+      )
+    );
+    progressDialog.show();
+    return progressDialog;
   }
 }
