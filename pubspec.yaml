@@ -44,6 +44,7 @@ dependencies:
   permission_handler: ^5.0.1+1
   json_annotation: ^3.1.1
   in_app_review: ^1.0.4
+  fl_chart: ^0.12.2
   
 dev_dependencies:
   flutter_test:

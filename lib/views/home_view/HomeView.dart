@@ -1,6 +1,7 @@
 import 'package:Videotheque/controllers/home_controller/HomeController.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/views/home_view/components/AskMailComponent.dart';
+import 'package:Videotheque/views/home_view/components/ChartComponent.dart';
 import 'package:Videotheque/views/home_view/components/LoadingComponent.dart';
 import 'package:Videotheque/views/home_view/components/AppBarComponent.dart';
 import 'package:Videotheque/views/home_view/components/AskForCoffeeComponent.dart';
@@ -30,7 +31,10 @@ class HomeView extends StatelessWidget {
                         controller.infos..addAll([
                           Padding(padding: EdgeInsets.only(top: 10), child: Container()),
                           !controller.mailConfirmed ? AskMailComponent(controller.sendMailConfirm, controller.mailSended) : Container(),
-                        ])..addAll(controller.carrousels)..add(AskForCoffeeComponent())
+                        ])..addAll(controller.carrousels)..addAll([
+                          ChartComponent(controller.addedMoviesChartData),
+                          AskForCoffeeComponent()
+                        ])
                       ),
                       crossFadeState: controller.isLoading ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
                       duration: const Duration(milliseconds: 200)

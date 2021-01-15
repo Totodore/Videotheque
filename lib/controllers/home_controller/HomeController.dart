@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:Videotheque/models/FireconfigInfos.dart';
 import 'package:Videotheque/services/FireauthQueries.dart';
 import 'package:Videotheque/services/FireconfigQueries.dart';
@@ -51,8 +53,10 @@ class HomeController extends CustomChangeNotifier {
     } on Exception {
       _isMailConfirmed = true;
     }
-    if (_libraryData != null && _libraryData.length > 0)
+    if (_libraryData != null && _libraryData.length > 0) {
       _dataState = States.Added;
+      addedMoviesChartData;
+    }
     else
       _dataState = States.Empty;
     if (this.mounted)
@@ -140,5 +144,17 @@ class HomeController extends CustomChangeNotifier {
 
   List<Widget> get infos {
     return List.generate(fireconfig.infosLength, (i) => InfoComponent(fireconfig.infos[i], this.onDismissed));
+  }
+
+  Map<double, double> get addedMoviesChartData {
+    List<int> times = this._libraryData.where((e) => e["creation_date"] != null).map<int>((e) => e["creation_date"]).toList();
+    var map = Map<double, double>();
+    for(int time in times) {
+      var date = DateTime.fromMillisecondsSinceEpoch(time*1000);
+      var absMonth = date.month + (date.year - 2019) * 12;
+      var val = map[absMonth.toDouble()];
+      map[absMonth.toDouble()] = val != null ? val + 1 : 1;
+    }
+    return map;
   }
 }
