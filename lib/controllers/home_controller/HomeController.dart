@@ -9,6 +9,7 @@ import 'package:Videotheque/views/home_view/carrousel_view.dart';
 import 'package:Videotheque/views/home_view/components/InfoComponent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,6 +30,7 @@ class HomeController extends CustomChangeNotifier {
   HomeController(this._context) {
     if (this.mounted)
       _getLibrary();
+    this._askReview();
   }
 
 
@@ -67,6 +69,12 @@ class HomeController extends CustomChangeNotifier {
   List _getToSee() {
     return _libraryData.where((element) => element["to_see"]).toList()
       ..sort((a, b) => (a["to_see_timestamp"] ??= 0) < (b["to_see_timestamp"] ?? 0) ? 1 : -1);
+  }
+
+  Future<void> _askReview() async {
+    var review = InAppReview.instance;
+    if (await review.isAvailable())
+      review.requestReview();
   }
 
   void sendMailConfirm() {
