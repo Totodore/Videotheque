@@ -164,7 +164,7 @@ class SearchViewState extends State<SearchView> with TickerProviderStateMixin {
                       case States.Nothing: returner = IconSearchView(QueryTypes.values[index]); break;
                       case States.Error: returner = IconErrorView();  break;
                       case States.Empty: returner = IconNothingView();  break;
-                      case States.Loading: returner = LoadingView(GlobalsMessage.chipData[index]["color"]);  break;
+                      case States.Loading: returner = LoadingView(GlobalsMessage.chipData[index]["color"], false);  break;
                       case States.Added: returner = ResultSearchView(type, controller.getDataResults(type)); break; 
                     }
                     return returner;
