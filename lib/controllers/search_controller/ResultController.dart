@@ -1,14 +1,19 @@
 
 import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/models/api/ApiSearchElModel.dart';
 import 'package:Videotheque/models/api/ApiSearchModel.dart';
 import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
 import 'package:Videotheque/models/api/ApiSearchPersonModel.dart';
 import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
 import 'package:Videotheque/models/api/ApiSearchCollectionModel.dart';
-import 'package:Videotheque/views/SearchView/components/MovieCardComponent.dart';
-import 'package:Videotheque/views/SearchView/components/PersonCardComponent.dart';
-import 'package:Videotheque/views/SearchView/components/TvCardComponent.dart';
-import 'package:Videotheque/views/SearchView/components/CollectionCardComponent.dart';
+import 'package:Videotheque/views/SearchView/components/cards/MovieCardComponent.dart';
+import 'package:Videotheque/views/SearchView/components/cards/PersonCardComponent.dart';
+import 'package:Videotheque/views/SearchView/components/cards/TvCardComponent.dart';
+import 'package:Videotheque/views/SearchView/components/cards/CollectionCardComponent.dart';
+import 'package:Videotheque/views/SearchView/components/imgs/CollectionImgComponent.dart';
+import 'package:Videotheque/views/SearchView/components/imgs/MovieImgComponent.dart';
+import 'package:Videotheque/views/SearchView/components/imgs/PersonImgComponent.dart';
+import 'package:Videotheque/views/SearchView/components/imgs/TvImgComponent.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -16,6 +21,8 @@ class ResultSearchController extends ChangeNotifier {
   QueryTypes sortType;
   ApiSearchModel data;
   BuildContext context;
+
+  bool cardMode = false;
 
   ResultSearchController(this.sortType, this.context, this.data);
 
@@ -52,4 +59,21 @@ class ResultSearchController extends ChangeNotifier {
     }
     return Container();
   }
+
+  List<Widget> getImgs() => data.results.map((ApiSearchElModel el) {
+    var uuid = new Uuid().v4();
+    var index = data.results.indexOf(el);
+    switch (el.media_type) {
+      case "movie":
+        return MovieImgComponent(el.getAs<ApiSearchMovieModel>(), uuid, elementTapped, index);
+      case "tv":
+        return TvImgComponent(el.getAs<ApiSearchTvModel>(), uuid, elementTapped, index);
+      case "person":
+        return PersonImgComponent(el.getAs<ApiSearchPersonModel>(), uuid, elementTapped, index);
+      case "collection":
+        return CollectionImgComponent(el.getAs<ApiSearchCollectionModel>(), uuid, elementTapped, index);
+      break;
+    }
+    return Container();
+  }).toList();
 }
