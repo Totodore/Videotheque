@@ -146,18 +146,7 @@ class GlobalsMessage {
       "library_fav": "Mes collections favorites",
       "library_seen": "Mes dernières collections vues",
       "library_to_see": "Mes dernières collection à voir"
-      
     },
-    // {
-    //   "name": companies,
-    //   "type": QueryTypes.companies,
-    //   "route": "company",
-    //   "color": Color(0XFF2f26c9),
-    //   "selected_color": Color(0XFF2f26c9).withAlpha(50),
-    //   "splash_color": Color(0XFF2f26c9).withAlpha(100),
-    //   "icon": Icons.business,
-    //   "db_route": "companies",
-    // }
   ]; 
 }
 
