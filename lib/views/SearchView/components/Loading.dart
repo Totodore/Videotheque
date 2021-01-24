@@ -108,7 +108,7 @@ class LoadingView extends StatelessWidget {
       crossAxisSpacing: 8,
       mainAxisSpacing: 8,
       childAspectRatio: 0.67,
-      children: List.generate(7, (int index) => SkeletonAnimation(
+      children: List.generate(8, (int index) => SkeletonAnimation(
         child: RaisedButton(
           elevation: 2,
           clipBehavior: Clip.hardEdge,
