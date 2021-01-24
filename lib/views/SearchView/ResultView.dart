@@ -27,24 +27,7 @@ class ResultSearchView extends StatelessWidget {
                 SliverOverlapInjector(
                   handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return AnimationConfiguration.staggeredList(
-                        position: index,
-                        duration: const Duration(milliseconds: 350),
-                        child: SlideAnimation(
-                          verticalOffset: 25,
-                          child: FadeInAnimation(
-                            child: controller.getCard(index)
-                          ),
-                        ),
-                      );
-                    },
-                    childCount: controller.data.results.length,
-                  ),
-                  // itemExtent: 300,
-                )
+                controller.cardMode ? getCardWidgets(controller) : getImgWidgets(controller)
               ],
             );
           }),
@@ -52,4 +35,35 @@ class ResultSearchView extends StatelessWidget {
       })
     );
   }
+
+  Widget getCardWidgets(ResultSearchController controller) => SliverList(
+    delegate: SliverChildBuilderDelegate(
+      (BuildContext context, int index) {
+        return AnimationConfiguration.staggeredList(
+          position: index,
+          duration: const Duration(milliseconds: 350),
+          child: SlideAnimation(
+            verticalOffset: 25,
+            child: FadeInAnimation(
+              child: controller.getCard(index)
+            ),
+          ),
+        );
+      },
+      childCount: controller.data.results.length,
+    ),
+    // itemExtent: 300,
+  );
+
+  Widget getImgWidgets(ResultSearchController controller) => SliverPadding(
+    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+    sliver: SliverGrid.count(
+      crossAxisCount: 2,
+      // maxCrossAxisExtent: MediaQuery.of(context).size.width/2,
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 8,
+      childAspectRatio: 0.67,
+      children: controller.getImgs()
+    ),
+  );
 }
