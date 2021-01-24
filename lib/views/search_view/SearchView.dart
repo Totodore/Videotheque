@@ -1,14 +1,14 @@
 import 'package:Videotheque/controllers/search_controller/SearchController.dart';
 import 'package:Videotheque/views/search_view/components/loading.dart';
-import 'package:Videotheque/views/search_view/result_view.dart';
+import 'package:Videotheque/views/search_view/ResultView.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/views/search_view/components/icon_error.dart';
-import 'package:Videotheque/views/search_view/components/icon_search.dart';
-import 'package:Videotheque/views/search_view/components/icon_nothing.dart';
+import 'package:Videotheque/views/search_view/components/IconError.dart';
+import 'package:Videotheque/views/search_view/components/IconSearch.dart';
+import 'package:Videotheque/views/search_view/components/IconNothing.dart';
 
 class SearchView extends StatefulWidget {
   @override

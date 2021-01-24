@@ -2,7 +2,7 @@ import 'package:Videotheque/models/FireconfigInfos.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class FireconfigQueries {
-  
+
   List<FireconfigInfos> _infos = [];
   RemoteConfig _remoteConfig;
   SharedPreferences _prefs;

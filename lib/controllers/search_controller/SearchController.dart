@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:Videotheque/models/api/ApiSearchModel.dart';
 import 'package:Videotheque/services/BarcodeLookup.dart';
 import 'package:Videotheque/services/FireauthQueries.dart';
 import 'package:Videotheque/services/FireconfigQueries.dart';
@@ -23,7 +24,7 @@ class SearchController extends ChangeNotifier {
 
   Map<QueryTypes, States> loadedViews = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) => States.Nothing)); //List which represent each view if it has been loaded
   //List which represent offset of result per view
-  Map<QueryTypes, List> dataLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) => null)); 
+  Map<QueryTypes, ApiSearchModel> dataLoadedView = Map.fromIterables(QueryTypes.values, List.generate(QueryTypes.values.length, (int index) => null)); 
 
   QueryTypes selectedSort = QueryTypes.all;
   int tabIndex = 0;
@@ -42,20 +43,20 @@ class SearchController extends ChangeNotifier {
   SearchController(this.context) {
     focusNode.requestFocus();
   }
-  
+
   void searchQuery(String query) async {
-    QueryTypes searchingSelectedSort = selectedSort; //On sauvegarde le type actuel au cas ou l'utilisateur change d'index pdt le chargement
+    QueryTypes type = selectedSort; //On sauvegarde le type actuel au cas ou l'utilisateur change d'index pdt le chargement
     if (query == null || query.isEmpty) {
       clearView();
       notifyListeners();
       return;
     }
     actualQuery = query;
-    loadedViews[searchingSelectedSort] = States.Loading;
+    loadedViews[type] = States.Loading;
     notifyListeners();
 
-    Map<String, dynamic> result;
-    switch (searchingSelectedSort) {
+    ApiSearchModel result;
+    switch (type) {
       case QueryTypes.all:
         result = await tmdbQueries.onlineSearchMulti(query);
         break;
@@ -71,23 +72,17 @@ class SearchController extends ChangeNotifier {
       case QueryTypes.collection:
         result = await tmdbQueries.onlineSearchCollection(query);
         break;
-      // case QueryTypes.companies:
-        // result = await tmdbQueries.onlineSearchCompanies(query);
-        // break;
     }
-
-    if (result["error"] != null) {
-      loadedViews[searchingSelectedSort] = States.Error;
-      notifyListeners();
-      return;
+    if (result.error != null) {
+      loadedViews[type] = States.Error;
+      print("Error while searching for $type: ${result.error}");
     }
-    else if (result["results"] == null || List.from(result["results"]).length == 0) {
-      loadedViews[searchingSelectedSort] = States.Empty;
-      notifyListeners();
-      return;
-    }   
-    dataLoadedView[searchingSelectedSort] = result["results"];
-    loadedViews[searchingSelectedSort] = States.Added;
+    else if ((result.results?.length ?? 0) <= 0) {
+      loadedViews[type] = States.Empty;
+    } else {
+      dataLoadedView[type] = result;
+      loadedViews[type] = States.Added;
+    }
     notifyListeners();
   }
 
@@ -117,7 +112,7 @@ class SearchController extends ChangeNotifier {
     }
   }
 
-  List getDataResults(QueryTypes type) {
+  ApiSearchModel getDataResults(QueryTypes type) {
     return dataLoadedView[type];
   }
 
