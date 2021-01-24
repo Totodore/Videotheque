@@ -18,7 +18,7 @@ class KnownForMovieComponent extends StatelessWidget {
         backgroundColor: Colors.transparent,
       ),
       labelStyle: TextStyle(color: Colors.black),
-      label: Text(data.title, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+      label: Text(data.title ?? data.original_title, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
       onPressed: () => onClick(index),
     ),
   );

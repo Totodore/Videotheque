@@ -19,10 +19,9 @@ class ApiSearchElModel {
   ApiSearchElModel(this.id, this.media_type);
 
   T getAs<T>() {
-    print(T);
     switch (T) {
       case ApiSearchMovieModel:
-        return ApiSearchElModel.fromJson(this.toJson()) as T;
+        return ApiSearchMovieModel.fromJson(this.toJson()) as T;
       case ApiSearchTvModel:
         return ApiSearchTvModel.fromJson(this.toJson()) as T;
       case ApiSearchPersonModel:

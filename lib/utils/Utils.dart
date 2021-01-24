@@ -7,7 +7,7 @@ import '../Globals.dart';
 
 class Utils {
   static Future<Response> fetchData(url) {
-    return get(url).timeout(Duration(seconds: 5));
+    return get(url).timeout(Duration(seconds: 30));
   }
 
   static ImageProvider fetchImage(String image,ImageTypes type, [bool thumb = false]) {

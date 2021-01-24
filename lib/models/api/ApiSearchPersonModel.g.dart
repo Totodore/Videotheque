@@ -13,11 +13,7 @@ ApiSearchPersonModel _$ApiSearchPersonModelFromJson(Map<String, dynamic> json) {
     json['adult'] as bool,
     json['name'] as String,
     (json['popularity'] as num)?.toDouble(),
-    (json['known_for'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ApiSearchElModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    ApiSearchPersonModel._knownForFromJson(json['known_for'] as List),
   );
 }
 

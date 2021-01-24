@@ -42,7 +42,8 @@ class ResultSearchController extends ChangeNotifier {
       case "tv":
         return TvCardComponent(el.getAs<ApiSearchTvModel>(), elementTapped, uuid, index);
       case "person":
-        return PersonCardComponent(el.getAs<ApiSearchPersonModel>(), elementTapped, uuid, knownElementTapped, index);
+        var data = el.getAs<ApiSearchPersonModel>();
+        return PersonCardComponent(data, elementTapped, uuid, knownElementTapped, index);
       break;
     }
     return Container();
