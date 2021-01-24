@@ -4,9 +4,11 @@ import 'package:Videotheque/models/api/ApiSearchModel.dart';
 import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
 import 'package:Videotheque/models/api/ApiSearchPersonModel.dart';
 import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
+import 'package:Videotheque/models/api/ApiSearchCollectionModel.dart';
 import 'package:Videotheque/views/SearchView/components/MovieCardComponent.dart';
 import 'package:Videotheque/views/SearchView/components/PersonCardComponent.dart';
 import 'package:Videotheque/views/SearchView/components/TvCardComponent.dart';
+import 'package:Videotheque/views/SearchView/components/CollectionCardComponent.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -44,6 +46,8 @@ class ResultSearchController extends ChangeNotifier {
       case "person":
         var data = el.getAs<ApiSearchPersonModel>();
         return PersonCardComponent(data, elementTapped, uuid, knownElementTapped, index);
+      case "collection":
+        return CollectionCardComponent(el.getAs<ApiSearchCollectionModel>(), elementTapped, uuid, index);
       break;
     }
     return Container();
