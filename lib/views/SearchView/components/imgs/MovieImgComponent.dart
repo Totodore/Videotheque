@@ -41,7 +41,7 @@ class MovieImgComponent extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () => onClick(GlobalsMessage.chipData[elIndex]["route"], heroTag),
+              onTap: () => onClick(GlobalsMessage.chipData[elIndex]["route"], index, heroTag),
               splashColor: Colors.black.withOpacity(0.2),
               highlightColor: Colors.black.withOpacity(0.1),
               child: Container(height: double.maxFinite, width: double.maxFinite),
