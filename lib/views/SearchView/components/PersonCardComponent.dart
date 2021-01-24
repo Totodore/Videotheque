@@ -3,8 +3,8 @@ import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
 import 'package:Videotheque/models/api/ApiSearchPersonModel.dart';
 import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
 import 'package:Videotheque/utils/Utils.dart';
-import 'package:Videotheque/views/search_view/components/KnownForMovieComponent.dart';
-import 'package:Videotheque/views/search_view/components/KnownForTvComponent.dart';
+import 'package:Videotheque/views/SearchView/components/KnownForMovieComponent.dart';
+import 'package:Videotheque/views/SearchView/components/KnownForTvComponent.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 

@@ -4,9 +4,9 @@ import 'package:Videotheque/models/api/ApiSearchModel.dart';
 import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
 import 'package:Videotheque/models/api/ApiSearchPersonModel.dart';
 import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
-import 'package:Videotheque/views/search_view/components/MovieCardComponent.dart';
-import 'package:Videotheque/views/search_view/components/PersonCardComponent.dart';
-import 'package:Videotheque/views/search_view/components/TvCardComponent.dart';
+import 'package:Videotheque/views/SearchView/components/MovieCardComponent.dart';
+import 'package:Videotheque/views/SearchView/components/PersonCardComponent.dart';
+import 'package:Videotheque/views/SearchView/components/TvCardComponent.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
