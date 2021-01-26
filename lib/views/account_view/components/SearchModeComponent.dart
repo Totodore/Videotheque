@@ -4,7 +4,6 @@ import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/controllers/account_controller/AccountController.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:random_color/random_color.dart';
 
 
 
