@@ -1,6 +1,5 @@
 
 import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/models/api/ApiSearchElModel.dart';
 import 'package:Videotheque/models/api/ApiSearchModel.dart';
 import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
 import 'package:Videotheque/models/api/ApiSearchPersonModel.dart';
