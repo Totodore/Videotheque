@@ -60,9 +60,9 @@ class ResultSearchController extends ChangeNotifier {
     return Container();
   }
 
-  List<Widget> getImgs() => data.results.map((ApiSearchElModel el) {
+  Widget getImg(int index) {
     var uuid = new Uuid().v4();
-    var index = data.results.indexOf(el);
+    var el = data.results[index];
     switch (el.media_type) {
       case "movie":
         return MovieImgComponent(el.getAs<ApiSearchMovieModel>(), uuid, elementTapped, index);
@@ -75,5 +75,5 @@ class ResultSearchController extends ChangeNotifier {
       break;
     }
     return Container();
-  }).toList();
+  }
 }
