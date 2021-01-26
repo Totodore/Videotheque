@@ -63,7 +63,17 @@ class ResultSearchView extends StatelessWidget {
       crossAxisSpacing: 8,
       mainAxisSpacing: 8,
       childAspectRatio: 0.67,
-      children: controller.getImgs()
+      children: List.generate(controller.data.results.length, (index) => AnimationConfiguration.staggeredGrid(
+        columnCount: 2,
+        position: index,
+        duration: const Duration(milliseconds: 350),
+        child: SlideAnimation(
+          verticalOffset: 25,
+          child: FadeInAnimation(
+            child: controller.getImg(index)
+          ),
+        ),
+      ))
     ),
   );
 }

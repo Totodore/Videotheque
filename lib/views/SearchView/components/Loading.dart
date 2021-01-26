@@ -108,19 +108,29 @@ class LoadingView extends StatelessWidget {
       crossAxisSpacing: 8,
       mainAxisSpacing: 8,
       childAspectRatio: 0.67,
-      children: List.generate(8, (int index) => SkeletonAnimation(
-        child: RaisedButton(
-          elevation: 2,
-          clipBehavior: Clip.hardEdge,
-          onPressed: () {},
-          highlightElevation: 4,
-          padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          child: Container(
-            color: Colors.grey[300]
-          )
-        )
-      ))
-    ),
+      children: List.generate(8, (index) => AnimationConfiguration.staggeredGrid(
+        columnCount: 2,
+        position: index,
+        duration: const Duration(milliseconds: 650),
+        child: SlideAnimation(
+          verticalOffset: 25,
+          child: FadeInAnimation(
+            child: SkeletonAnimation(
+              child: RaisedButton(
+                elevation: 2,
+                clipBehavior: Clip.hardEdge,
+                onPressed: () {},
+                highlightElevation: 4,
+                padding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                child: Container(
+                  color: Colors.grey[300]
+                )
+              )
+            ))
+          ),
+        ),
+      )
+    )
   );
 }
