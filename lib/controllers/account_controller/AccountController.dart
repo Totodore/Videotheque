@@ -11,6 +11,7 @@ import 'package:Videotheque/views/account_view/components/RemoveAccountComponent
 import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+import 'package:random_color/random_color.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountController extends ChangeNotifier {
@@ -41,6 +42,10 @@ class AccountController extends ChangeNotifier {
   FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
   FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
   FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
+
+  bool _newSearchDisplay = true;
+
+  final List<List<Color>> gradients = List.generate(6, (index) => List.generate(2, (index) => RandomColor().randomColor()));
 
   AccountController(this._context) {
     fetchAccountData();
@@ -90,6 +95,7 @@ class AccountController extends ChangeNotifier {
 
   void removeAccount() async {
     _textEditingController = TextEditingController();
+    await Future.delayed(const Duration(milliseconds: 200));
     showAnimatedDialog(
       animationType: DialogTransitionType.slideFromBottom,
       duration: const Duration(milliseconds: 200),
@@ -100,7 +106,8 @@ class AccountController extends ChangeNotifier {
       );
   }
 
-  void removeData() {
+  void removeData() async {
+    await Future.delayed(const Duration(milliseconds: 200));
     showAnimatedDialog(
       animationType: DialogTransitionType.slideFromBottom,
       duration: const Duration(milliseconds: 200),
@@ -125,9 +132,10 @@ class AccountController extends ChangeNotifier {
       ));
   }
 
-  void changePassword() {
+  void changePassword() async {
     _textEditingController = TextEditingController();
     _textEditingController2 = TextEditingController();
+    await Future.delayed(const Duration(milliseconds: 200));
     showAnimatedDialog(
       animationType: DialogTransitionType.slideFromBottom,
       duration: const Duration(milliseconds: 200),
@@ -139,9 +147,10 @@ class AccountController extends ChangeNotifier {
   }
 
   
-  void changeMail() {
+  void changeMail() async {
     _textEditingController = TextEditingController();
     _textEditingController2 = TextEditingController();
+    await Future.delayed(const Duration(milliseconds: 200));
     showAnimatedDialog(
       animationType: DialogTransitionType.slideFromBottom,
       duration: const Duration(milliseconds: 200),
@@ -152,8 +161,9 @@ class AccountController extends ChangeNotifier {
       );
   }
 
-  void changeName() {
+  void changeName() async {
     _textEditingController = TextEditingController();
+    await Future.delayed(const Duration(milliseconds: 200));
     showAnimatedDialog(
       animationType: DialogTransitionType.slideFromBottom,
       duration: const Duration(milliseconds: 200),
@@ -207,5 +217,11 @@ class AccountController extends ChangeNotifier {
     notifyListeners();
   }
 
-  set context(BuildContext context) => _context = context; 
+  set newSearchDisplay(bool newSearchDisplay) {
+    _newSearchDisplay = newSearchDisplay;
+    notifyListeners();
+  }
+  bool get newSearchDisplay => _newSearchDisplay;
+
+  set context(BuildContext context) => _context = context;
 }

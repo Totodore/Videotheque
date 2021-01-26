@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GlobalsColor {
-  static final darkGreen = Color(0xFF00574B);
+  static const darkGreen = Color(0xFF00574B);
   static final darkGreenDisabled = Color(0xFF00574B).withAlpha(100);
   static final plainDarkGreenDisabled = Color(0xFF99bcb7);
   static final green = Color(0xFF295f5f);
