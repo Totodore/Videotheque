@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
 import 'package:Videotheque/utils/Utils.dart';
-import 'package:Videotheque/controllers/home_controller/CarrouselController.dart';
+import 'package:Videotheque/controllers/HomeController/CarrouselController.dart';
 
 class CarrouselView extends StatelessWidget {
   final HomeCarrousels type;

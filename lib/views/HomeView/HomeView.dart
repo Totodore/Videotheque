@@ -1,10 +1,10 @@
-import 'package:Videotheque/controllers/home_controller/HomeController.dart';
+import 'package:Videotheque/controllers/HomeController/HomeController.dart';
 import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/views/home_view/components/AskMailComponent.dart';
-import 'package:Videotheque/views/home_view/components/LoadingComponent.dart';
-import 'package:Videotheque/views/home_view/components/AppBarComponent.dart';
-import 'package:Videotheque/views/home_view/components/AskForCoffeeComponent.dart';
-import 'package:Videotheque/views/home_view/components/NoDataComponent.dart';
+import 'package:Videotheque/views/HomeView/components/AskMailComponent.dart';
+import 'package:Videotheque/views/HomeView/components/LoadingComponent.dart';
+import 'package:Videotheque/views/HomeView/components/AppBarComponent.dart';
+import 'package:Videotheque/views/HomeView/components/AskForCoffeeComponent.dart';
+import 'package:Videotheque/views/HomeView/components/NoDataComponent.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
