@@ -1,5 +1,5 @@
 
-import 'package:Videotheque/controllers/search_controller/ResultController.dart';
+import 'package:Videotheque/controllers/SearchController/ResultController.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/models/api/ApiSearchModel.dart';
 import 'package:flutter/material.dart';
