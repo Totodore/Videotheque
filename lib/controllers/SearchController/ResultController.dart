@@ -14,7 +14,6 @@ import 'package:Videotheque/views/SearchView/components/imgs/MovieImgComponent.d
 import 'package:Videotheque/views/SearchView/components/imgs/PersonImgComponent.dart';
 import 'package:Videotheque/views/SearchView/components/imgs/TvImgComponent.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class ResultSearchController extends ChangeNotifier {
