@@ -1,4 +1,4 @@
-import 'package:Videotheque/views/account_view/AccountView.dart';
+import 'package:Videotheque/views/AccountView/AccountView.dart';
 import 'package:Videotheque/views/home_view/HomeView.dart';
 import 'package:Videotheque/views/library_view/library_view.dart';
 import 'package:Videotheque/views/SearchView/SearchView.dart';
