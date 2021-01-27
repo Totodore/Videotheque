@@ -12,6 +12,7 @@ import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:random_color/random_color.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountController extends ChangeNotifier {
@@ -20,13 +21,12 @@ class AccountController extends ChangeNotifier {
   String mail = "";
   String accountCreation = "";
   String donationLink = "";
-  
-  bool dispTransferDb = false;
+
   bool dispStats = false;
   States askCoffeeState = States.Nothing;
   States accountDataState = States.Nothing;
   States statsStates = States.Nothing;
-  
+
   int statNumberMovies = 0;
   int statNumberPeople = 0;
   int statNumberTv = 0;
@@ -43,7 +43,10 @@ class AccountController extends ChangeNotifier {
   FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
   FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
 
+  SharedPreferences _preferences;
+
   bool _newSearchDisplay = true;
+  bool _dispSearchOptions = false;
 
   final List<List<Color>> gradients = List.generate(6, (index) => List.generate(2, (index) => RandomColor().randomColor()));
 
@@ -66,6 +69,8 @@ class AccountController extends ChangeNotifier {
   void fetchStats() async {
     statsStates = States.Loading;
     notifyListeners();
+    _preferences = await SharedPreferences.getInstance();
+    newSearchDisplay = _preferences.getBool("old_search") ?? true;
     List<int> statsNumberGeneral = await firestore.statNumberGeneral; 
     statNumberMovies = await firestore.statNumberEl(QueryTypes.movie);
     statNumberPeople = await firestore.statNumberEl(QueryTypes.person);
@@ -219,9 +224,16 @@ class AccountController extends ChangeNotifier {
 
   set newSearchDisplay(bool newSearchDisplay) {
     _newSearchDisplay = newSearchDisplay;
+    _preferences.setBool("old_search", _newSearchDisplay);
     notifyListeners();
   }
+  set dispSearchOptions(bool dispSearchOptions) {
+    _dispSearchOptions = dispSearchOptions;
+    notifyListeners();
+  }
+
   bool get newSearchDisplay => _newSearchDisplay;
+  bool get dispSearchOptions => _dispSearchOptions;
 
   set context(BuildContext context) => _context = context;
 }
