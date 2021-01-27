@@ -1,4 +1,4 @@
-import 'package:Videotheque/controllers/search_controller/SearchController.dart';
+import 'package:Videotheque/controllers/SearchController/SearchController.dart';
 import 'package:Videotheque/views/SearchView/components/Loading.dart';
 import 'package:Videotheque/views/SearchView/ResultView.dart';
 import 'package:community_material_icon/community_material_icon.dart';
