@@ -20,7 +20,7 @@ class SearchView extends StatefulWidget {
 class SearchViewState extends State<SearchView> with TickerProviderStateMixin {
   TabController resultsPageController;
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     resultsPageController = TabController(vsync: this, length: QueryTypes.values.length, initialIndex: 0);
   }
@@ -164,8 +164,8 @@ class SearchViewState extends State<SearchView> with TickerProviderStateMixin {
                       case States.Nothing: returner = IconSearchView(QueryTypes.values[index]); break;
                       case States.Error: returner = IconErrorView();  break;
                       case States.Empty: returner = IconNothingView();  break;
-                      case States.Loading: returner = LoadingView(GlobalsMessage.chipData[index]["color"], false);  break;
-                      case States.Added: returner = ResultSearchView(type, controller.getDataResults(type)); break; 
+                      case States.Loading: returner = LoadingView(GlobalsMessage.chipData[index]["color"], controller.newDisplayResults);  break;
+                      case States.Added: returner = ResultSearchView(type, controller.getDataResults(type), controller.newDisplayResults); break; 
                     }
                     return returner;
                   })
