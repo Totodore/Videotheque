@@ -4,9 +4,9 @@ import 'package:skeleton_text/skeleton_text.dart';
 
 class LoadingView extends StatelessWidget {
   final Color baseColor;
-  final bool useCard;
+  final bool newDisplayResult;
 
-  const LoadingView(this.baseColor, this.useCard);
+  const LoadingView(this.baseColor, this.newDisplayResult);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class LoadingView extends StatelessWidget {
           SliverOverlapInjector(
             handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
           ),
-          useCard ? cardListView() : imgListView()
+          this.newDisplayResult ? imgListView() : cardListView()
       ]
     );
   }

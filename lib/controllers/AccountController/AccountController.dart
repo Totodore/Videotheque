@@ -70,7 +70,7 @@ class AccountController extends ChangeNotifier {
     statsStates = States.Loading;
     notifyListeners();
     _preferences = await SharedPreferences.getInstance();
-    newSearchDisplay = _preferences.getBool("old_search") ?? true;
+    newSearchDisplay = _preferences.getBool("new_search") ?? true;
     List<int> statsNumberGeneral = await firestore.statNumberGeneral; 
     statNumberMovies = await firestore.statNumberEl(QueryTypes.movie);
     statNumberPeople = await firestore.statNumberEl(QueryTypes.person);
@@ -224,7 +224,7 @@ class AccountController extends ChangeNotifier {
 
   set newSearchDisplay(bool newSearchDisplay) {
     _newSearchDisplay = newSearchDisplay;
-    _preferences.setBool("old_search", _newSearchDisplay);
+    _preferences.setBool("new_search", _newSearchDisplay);
     notifyListeners();
   }
   set dispSearchOptions(bool dispSearchOptions) {

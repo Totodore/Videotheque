@@ -7,14 +7,17 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 
 class ResultSearchView extends StatelessWidget {
-  QueryTypes type;
-  ApiSearchModel data;
-  ResultSearchView(this.type, this.data);
+  final QueryTypes type;
+  final ApiSearchModel data;
+  final bool newDisplayResult;
+
+  const ResultSearchView(this.type, this.data, this.newDisplayResult);
 
   @override
   Widget build(BuildContext context) {
+    print(newDisplayResult);
     return ChangeNotifierProvider<ResultSearchController>(
-      create: (context) => ResultSearchController(type, context, data),
+      create: (context) => ResultSearchController(type, context, data, ),
       child: Consumer<ResultSearchController>(builder: (context, controller, child) {
         return SafeArea(
           top: false,
@@ -27,7 +30,7 @@ class ResultSearchView extends StatelessWidget {
                 SliverOverlapInjector(
                   handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 ),
-                controller.cardMode ? getCardWidgets(controller) : getImgWidgets(controller)
+                newDisplayResult ? getImgWidgets(controller) : getCardWidgets(controller)
               ],
             );
           }),

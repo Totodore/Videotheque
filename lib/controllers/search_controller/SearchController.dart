@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchController extends ChangeNotifier {
   final focusNode = FocusNode();
@@ -34,6 +35,7 @@ class SearchController extends ChangeNotifier {
   bool test = true;
   String actualQuery = "";
   bool triggerChangeListener = false;
+  bool newDisplayResults = true;
 
   FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
   FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
@@ -42,6 +44,7 @@ class SearchController extends ChangeNotifier {
 
   SearchController(this.context) {
     focusNode.requestFocus();
+    SharedPreferences.getInstance().then((instance) => newDisplayResults = instance.getBool("new_search") ?? true);
   }
 
   void searchQuery(String query) async {
