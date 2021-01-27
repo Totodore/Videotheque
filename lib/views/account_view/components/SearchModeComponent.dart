@@ -19,19 +19,39 @@ class SearchModeComponent extends StatelessWidget {
       shadowColor: Colors.transparent,
       borderOnForeground: true,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(width: 1, color: Colors.grey[300])),
-      child: Column(
-        children: [
-          ListTile(
-            leading: Icon(CommunityMaterialIcons.movie_search, color: GlobalsColor.darkGreen),
-            title: Text("Affichage des recherches", style: TextStyle(fontWeight: FontWeight.w600, color: GlobalsColor.darkGreen)),
+      child: ExpansionTile(
+        leading: Icon(CommunityMaterialIcons.movie_search, color: GlobalsColor.darkGreen),
+        title: Text("Affichage des recherches", style: TextStyle(fontWeight: FontWeight.w600, color: GlobalsColor.darkGreen)),
+        onExpansionChanged: (value) => controller.dispSearchOptions = value,
+        trailing: AnimatedCrossFade(
+          firstChild: AnimatedCrossFade(
+            firstChild: Icon(Icons.keyboard_arrow_down),
+            secondChild: Icon(Icons.keyboard_arrow_up),
+            duration: Duration(milliseconds: 300),
+            crossFadeState: controller.dispSearchOptions ? CrossFadeState.showSecond : CrossFadeState.showFirst,
           ),
+          secondChild: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: SizedBox(
+              width: 23,
+              height: 23,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(GlobalsColor.darkGreen),
+              ),
+            ),
+          ),
+          crossFadeState: controller.statsStates == States.Added ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          duration: Duration(milliseconds: 350),
+        ),
+        children: [
           GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
             crossAxisSpacing: 10,
             childAspectRatio: 0.75,
             physics: NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             children: [
               OutlinedButton(onPressed: () => controller.newSearchDisplay = true,
                 style: ButtonStyle(
@@ -129,6 +149,32 @@ class SearchModeComponent extends StatelessWidget {
               ),
             ],
           ),
+          Row(
+            children: [
+              Expanded(
+                child: ListTile(
+                  leading: Radio(
+                    activeColor: GlobalsColor.darkGreen,
+                    value: true,
+                    groupValue: controller.newSearchDisplay,
+                    onChanged: (val) => controller.newSearchDisplay = val
+                  ),
+                  title: const Text("Images"),
+                ),
+              ),
+              Expanded(
+                child: ListTile(
+                  leading: Radio(
+                    activeColor: GlobalsColor.darkGreen,
+                    value: false,
+                    groupValue: controller.newSearchDisplay,
+                    onChanged: (val) => controller.newSearchDisplay = val,
+                  ),
+                  title: const Text("Détaillé"),
+                ),
+              )
+            ],
+          )
         ],
       ),
     );
