@@ -8,7 +8,7 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Videotheque/controllers/account_controller/AccountController.dart';
+import 'package:Videotheque/controllers/AccountController/AccountController.dart';
 import 'package:Videotheque/Globals.dart';
 class AccountView extends StatelessWidget {
   @override
