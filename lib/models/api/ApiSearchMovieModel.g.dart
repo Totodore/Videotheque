@@ -12,9 +12,7 @@ ApiSearchMovieModel _$ApiSearchMovieModelFromJson(Map<String, dynamic> json) {
     json['poster_path'] as String,
     json['adult'] as bool,
     json['overview'] as String,
-    json['release_date'] == null
-        ? null
-        : DateTime.parse(json['release_date'] as String),
+    const DateTimeConverter().fromJson(json['release_date'] as String),
     json['original_title'] as String,
     (json['genre_ids'] as List)?.map((e) => e as int)?.toList(),
     json['original_language'] as String,
@@ -34,7 +32,7 @@ Map<String, dynamic> _$ApiSearchMovieModelToJson(
       'poster_path': instance.poster_path,
       'adult': instance.adult,
       'overview': instance.overview,
-      'release_date': instance.release_date?.toIso8601String(),
+      'release_date': const DateTimeConverter().toJson(instance.release_date),
       'original_title': instance.original_title,
       'genre_ids': instance.genre_ids,
       'original_language': instance.original_language,

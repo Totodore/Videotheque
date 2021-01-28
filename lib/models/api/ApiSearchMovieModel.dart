@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:Videotheque/models/api/ApiSearchElModel.dart';
+import 'package:Videotheque/models/converters/DateTimeConverter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'ApiSearchMovieModel.g.dart';
@@ -13,6 +14,7 @@ class ApiSearchMovieModel extends ApiSearchElModel {
   final String poster_path;
   final bool adult;
   final String overview;
+  @DateTimeConverter()
   final DateTime release_date;
   final String original_title;
   final List<int> genre_ids;
