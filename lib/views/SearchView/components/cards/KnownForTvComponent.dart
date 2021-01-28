@@ -20,7 +20,7 @@ class KnownForTvComponent extends StatelessWidget {
       ),
       labelStyle: TextStyle(color: Colors.black),
       label: Text(data.name ?? data.original_name, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-      onPressed: () => onClick(index),
+      onPressed: () => onClick("tv", data),
     ),
   );
 }

@@ -29,6 +29,7 @@ class Utils {
       url += image;
       return CachedNetworkImageProvider(url, scale: 1);
     } on Exception {
+      return AssetImage("assets/img/loading.jpg");
     }
   }
 

@@ -110,13 +110,13 @@ class MovieView extends StatelessWidget {
                           repeat: ImageRepeat.noRepeat,
                           matchTextDirection: true,
                         ),
-                      ) : null,
+                      ) : Container(),
                     ),
                     SliverList(
                       delegate: SliverChildListDelegate([
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0, right: 10, top: 10, bottom: 0),
-                          child: DropCapText(
+                          child: (controller.preloadData["overview"]?.toString()?.length ?? 0) > 0 ? DropCapText(
                             controller.preloadData["overview"],
                             style: TextStyle(
                               fontSize: 17,
@@ -141,6 +141,26 @@ class MovieView extends StatelessWidget {
                                     height: 240,
                                     fit: BoxFit.cover,
                                   ),
+                                ),
+                              ),
+                            ),
+                          ) : Container(
+                            width: 160,
+                            height: 240,
+                            margin: const EdgeInsets.only(bottom: 10),
+                            alignment: Alignment.centerLeft,
+                            child: Card(
+                              elevation: 3,
+                              margin: EdgeInsets.only(bottom: 0),
+                              child: Hero(
+                                tag: controller.heroTag,
+                                child: ProgressiveImage(
+                                  placeholder: AssetImage("assets/img/loading.png"),
+                                  thumbnail: Utils.fetchImage(controller.preloadData["poster_path"], ImageTypes.Poster, true),
+                                  image: Utils.fetchImage(controller.preloadData["poster_path"], ImageTypes.Poster),
+                                  width: 160,
+                                  height: 240,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),

@@ -1,5 +1,6 @@
 
 import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/models/api/ApiSearchElModel.dart';
 import 'package:Videotheque/models/api/ApiSearchModel.dart';
 import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
 import 'package:Videotheque/models/api/ApiSearchPersonModel.dart';
@@ -24,10 +25,12 @@ class ResultSearchController extends ChangeNotifier {
   bool newSearchDisplay = true;
 
   ResultSearchController(this.sortType, this.context, this.data);
-  void knownElementTapped(String type, int index) {
+
+  void knownElementTapped(String type, ApiSearchElModel data) {
     String route = "/element/$type/";
     GlobalsArgs.actualRoute = route;
-    GlobalsArgs.transfertArg = List.from([data.results[index].toJson(), ""]);
+    print(data.toJson());
+    GlobalsArgs.transfertArg = List.from([data.toJson(), ""]);
     GlobalsArgs.isFromLibrary = false;
     Navigator.pushNamed(context, route, arguments: data);
   }
