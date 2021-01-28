@@ -6,7 +6,6 @@ import 'package:Videotheque/utils/Utils.dart';
 import 'package:Videotheque/views/SearchView/components/imgs/NoImgComponent.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
-import 'package:random_color/random_color.dart';
 
 class TvImgComponent extends StatelessWidget {
 

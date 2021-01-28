@@ -1,13 +1,13 @@
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
 import 'package:Videotheque/utils/Utils.dart';
+import 'package:Videotheque/views/tv_view/tv_view.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 
 class TvCardComponent extends StatelessWidget {
   final ApiSearchTvModel data;
   final Function onClick;
-  final int movieIndex = 2;
   final String heroTag;
   final int index;
 
@@ -21,24 +21,24 @@ class TvCardComponent extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: const BorderRadius.all(Radius.circular(5))),
       margin: EdgeInsets.all(6),
       child: InkWell(
-        onTap: () => onClick(GlobalsMessage.chipData[movieIndex]["route"], index, heroTag),
+        onTap: () => onClick("movie", index, heroTag),
         onDoubleTap: null,
         onLongPress: null,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(Icons.movie, color: GlobalsColor.darkGreen),
+              leading: Icon(Icons.tv, color: TvView.baseColor),
               title: Text(data.name ?? data.original_name ?? "", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
             ),
             Container(
-              padding: EdgeInsets.only(right: 7, left: 7, bottom: 7, top:0),
+              padding: EdgeInsets.only(right: 7, left: 7, bottom: data.hasBody ? 7 : 0, top: 0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  data.poster_path != null ? Hero(
+                  data.hasImg ? Hero(
                     tag: heroTag,
                     transitionOnUserGestures: true,
                     child: ProgressiveImage(
@@ -53,23 +53,22 @@ class TvCardComponent extends StatelessWidget {
                     )
                   ) : Container(),
                   Padding(
-                    child: Container(),
                     padding: EdgeInsets.only(left: 7),
                   ),
-                  Flexible(
-                    child: Text(data.overview ?? "",
+                  (data.overview?.length ?? 0) > 0 ? Flexible(
+                    child: Text(data.overview,
                       textWidthBasis: TextWidthBasis.parent,
                       textAlign: TextAlign.justify,
                       overflow: TextOverflow.fade,
                       maxLines: 10,
                       softWrap: true,
                     ),
-                  )
+                  ) : Container()
                 ],
               ),
             ),
             Divider(
-              color: GlobalsMessage.chipData[movieIndex]["color"],
+              color: TvView.baseColor,
               height: 2,
               thickness: 2,
             ),

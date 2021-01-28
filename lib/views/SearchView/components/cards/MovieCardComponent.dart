@@ -7,7 +7,6 @@ import 'package:progressive_image/progressive_image.dart';
 class MovieCardComponent extends StatelessWidget {
   final ApiSearchMovieModel data;
   final Function onClick;
-  final int movieIndex = 1;
   final String heroTag;
   final int index;
 
@@ -21,7 +20,7 @@ class MovieCardComponent extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: const BorderRadius.all(Radius.circular(5))),
       margin: EdgeInsets.all(6),
       child: InkWell(
-        onTap: () => onClick(GlobalsMessage.chipData[movieIndex]["route"], index, heroTag),
+        onTap: () => onClick("movie", index, heroTag),
         onDoubleTap: null,
         onLongPress: null,
         child: Column(
@@ -32,13 +31,13 @@ class MovieCardComponent extends StatelessWidget {
               title: Text(data.title ?? data.original_title ?? "", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
             ),
             Container(
-              padding: EdgeInsets.only(right: 7, left: 7, bottom: 7, top:0),
+              padding: EdgeInsets.only(right: 7, left: 7, bottom: data.hasBody ? 7 : 0, top:0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  data.poster_path != null ? Hero(
+                  data.hasImg ? Hero(
                     tag: heroTag,
                     transitionOnUserGestures: true, 
                     child: ProgressiveImage(
@@ -53,10 +52,9 @@ class MovieCardComponent extends StatelessWidget {
                     )
                   ) : Container(),
                   Padding(
-                    child: Container(),
-                    padding: EdgeInsets.only(left: 7),
+                    padding: data.hasImg ? EdgeInsets.only(left: 7) : EdgeInsets.zero,
                   ),
-                  Flexible(
+                  (data.overview?.length ?? 0) > 0 ? Flexible(
                     child: Text(data.overview ?? "",
                       textWidthBasis: TextWidthBasis.parent,
                       textAlign: TextAlign.justify,
@@ -64,12 +62,12 @@ class MovieCardComponent extends StatelessWidget {
                       maxLines: 10,
                       softWrap: true,
                     ),
-                  )
+                  ) : Container()
                 ],
               ),
             ),
             Divider(
-              color: GlobalsMessage.chipData[movieIndex]["color"],
+              color: GlobalsColor.darkGreen,
               height: 2,
               thickness: 2,
             ),

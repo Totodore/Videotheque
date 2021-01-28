@@ -37,5 +37,6 @@ class ApiSearchPersonModel extends ApiSearchElModel {
     }).toList();
 
   bool get hasImg => profile_path != null;
+  bool get hasBody => hasImg || (known_for?.length ?? 0) > 0;
 
 }
