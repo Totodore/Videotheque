@@ -2,7 +2,6 @@ import 'package:Videotheque/services/BarcodeLookup.dart';
 import 'package:Videotheque/services/FireauthQueries.dart';
 import 'package:Videotheque/services/FireconfigQueries.dart';
 import 'package:Videotheque/services/FirestoreQueries.dart';
-import 'package:Videotheque/services/Preferences.dart';
 import 'package:Videotheque/services/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/SplashScreenView.dart';
@@ -12,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:Videotheque/views/app_view.dart';
 import 'package:Videotheque/views/movie_view/movie_view.dart';
 import 'package:Videotheque/views/person_view/person_view.dart';
-import 'package:Videotheque/views/SearchView/SearchView.dart';
+import 'package:Videotheque/views/search_view/SearchView.dart';
 import 'package:Videotheque/views/collection_view/collection_view.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
 import 'package:Videotheque/views/authView/AuthView.dart';
@@ -68,7 +67,6 @@ void main() async {
 
 registerSingletons() {
   print("Registering singletons...");
-  Singletons.registerSingleton(new Preferences());
   Singletons.registerSingleton(new FirestoreQueries());
   Singletons.registerSingleton(new FireauthQueries());
   Singletons.registerSingleton(new FireconfigQueries());
