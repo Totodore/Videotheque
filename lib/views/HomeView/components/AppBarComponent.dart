@@ -13,7 +13,7 @@ class AppBarComponent extends StatelessWidget {
               alignment: Alignment.centerLeft,
               margin: EdgeInsets.only(top: 20, left: 10),
               child: Image(
-                image: AssetImage("assets/icon/launcher_iconV2.png"),
+                image: AssetImage("assets/icons/launcher_iconV2.png"),
                 width: MediaQuery.of(context).size.width/4,
                 fit: BoxFit.cover,
               ),
