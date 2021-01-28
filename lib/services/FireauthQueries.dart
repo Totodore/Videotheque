@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FireauthQueries {
-  
+
   //Si l'utilisateur ne veut pas utiliser de compte
   Future<bool> get needSignIn async {
     bool noAccount = (await SharedPreferences.getInstance()).getBool("no_account") ?? false;
@@ -19,7 +19,7 @@ class FireauthQueries {
 
   Future<bool> setNoAccount(bool noAccount) async {
     return (await SharedPreferences.getInstance()).setBool("no_account", noAccount);
-  } 
+  }
 
   //Return String error
   Future<List> connect(String mail, String pass) async {

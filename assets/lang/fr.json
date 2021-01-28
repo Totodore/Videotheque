@@ -1,0 +1,87 @@
+{
+	"lang": "Français",
+	"home": {
+		"last_seen": "Dernièrement visionnés",
+		"to_see": "à voir",
+		"last_added": "Dernièrement ajoutés",
+		"bottom_msg": "Si vous aimez Vidéothèque n'hésitez pas à rajouter un commentaire sur le Play Store. Cela permettra à cette application de rester gratuite et sans publicités ainsi que d'être plus connue.",
+		"bottom_msg_btn": "Laisser un commentaire"
+	},
+	"library": {
+		"carousels": {
+			"fav": "Mes favoris",
+			"composed": {
+				"fav": "Mes {categories} favori(s|es)",
+				"last_seen": "Mes dernier(s|es) {categories} vu(s|es)",
+				"to_see": "Mes dernières {categories} à voir"
+			}
+		}
+	},
+	"search": {
+		"tagline": "Recherchez, Ajoutez, Triez, Le tour est joué !"
+	},
+	"account": {
+		"search_option": "Affichage des recherches",
+		"search_view": [
+			"Mosaïque",
+			"détaillé"
+		],
+		"stats": "Statistiques",
+		"change_mail": "Changer mon email",
+		"change_name": "Changer mon nom",
+		"change_mdp": "Changer mon mot de passe",
+		"logout": "Me déconnecter",
+		"remove_data": "Supprimer mes données",
+		"remove_account": "Supprimer mon compte",
+		"bug": "J'ai trouvé un bug !",
+		"modals": {
+			"change_mail": {
+				"pwd": "Changer mon mot de passe",
+				"new_mail": "Nouveau mail"
+			},
+			"change_name": {
+				"new_name": "Nouveau nom"
+			},
+			"change_password": {
+				"old_pwd": "Ancien mot de passe",
+				"new_pwd": "Nouveau mot de passe"
+			},
+			"remove_data": {
+				"msg": "Etes-vous sur de supprimer vos données ?"
+			},
+			"remove_account": {
+				"pwd": "Mot de passe"
+			},
+			"buttons": [
+				"Annuler",
+				"Confirmer"
+			]
+		}
+	},
+	"categories": {
+		"all": {
+			"name": "Recherche générale",
+			"genre": "f"
+		},
+		"library": {
+			"name": "Ma vidéothèque",
+			"genre": "f"
+		},
+		"movies": {
+			"name": "Films",
+			"genre": "m"
+		},
+		"tv": {
+			"name": "Séries",
+			"genre": "f"
+		},
+		"people": {
+			"name": "Personnes",
+			"genre": "f"
+		},
+		"collections": {
+			"name": "Collections",
+			"genre": "f"
+		}
+	}
+}
