@@ -47,7 +47,7 @@ class PersonCardComponent extends StatelessWidget {
                     tag: heroTag,
                     transitionOnUserGestures: true, 
                     child: ProgressiveImage(
-                      placeholder: AssetImage("assets/loading.png"),
+                      placeholder: AssetImage("assets/img/loading.png"),
                       thumbnail: Utils.fetchImage(data.profile_path, ImageTypes.Profile, true),
                       image: Utils.fetchImage(data.profile_path, ImageTypes.Profile),
                       width: 100,

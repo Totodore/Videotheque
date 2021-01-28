@@ -144,7 +144,7 @@ class SearchModeComponent extends StatelessWidget {
                     groupValue: controller.newSearchUI ,
                     onChanged: (val) => controller.newSearchUI = val
                   ),
-                  title: const Text("Images"),
+                  title: const Text("Mosaïque"),
                 ),
               ),
               Expanded(
