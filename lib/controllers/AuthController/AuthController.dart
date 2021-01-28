@@ -5,7 +5,7 @@ import 'package:Videotheque/services/FireconfigQueries.dart';
 import 'package:Videotheque/services/FirestoreQueries.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Singletons.dart';
-import 'package:Videotheque/views/app_view.dart';
+import 'package:Videotheque/views/AppView.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
