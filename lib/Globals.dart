@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GlobalsColor {
-  static const darkGreen = Color(0xFF00574B);
+  static final darkGreen = Color(0xFF00574B);
   static final darkGreenDisabled = Color(0xFF00574B).withAlpha(100);
   static final plainDarkGreenDisabled = Color(0xFF99bcb7);
   static final green = Color(0xFF295f5f);
@@ -18,6 +18,8 @@ class GlobalsColor {
 class GlobalsData {
   static Map genreList = Map();
 
+  static const String apiKey = "a6499d6e1a486416773626640f79de9d";
+  static const String ytApiKey = "AIzaSyAJgzmg3zxU6nhQOOlb6EZ2NN4i5-yJsYo";
   static const String lang = "fr-FR";
   
   static const String backdropSize = "https://image.tmdb.org/t/p/w780/";
@@ -144,7 +146,18 @@ class GlobalsMessage {
       "library_fav": "Mes collections favorites",
       "library_seen": "Mes dernières collections vues",
       "library_to_see": "Mes dernières collection à voir"
+      
     },
+    // {
+    //   "name": companies,
+    //   "type": QueryTypes.companies,
+    //   "route": "company",
+    //   "color": Color(0XFF2f26c9),
+    //   "selected_color": Color(0XFF2f26c9).withAlpha(50),
+    //   "splash_color": Color(0XFF2f26c9).withAlpha(100),
+    //   "icon": Icons.business,
+    //   "db_route": "companies",
+    // }
   ]; 
 }
 
@@ -222,7 +235,7 @@ enum HomeCarrousels {
 }
 
 enum QueryTypes {
-  all,
+  all,  
   movie,
   tv,
   person,
