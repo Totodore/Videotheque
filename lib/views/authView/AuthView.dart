@@ -1,16 +1,16 @@
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/views/app_view.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Videotheque/controllers/auth_controller/AuthController.dart';
+import 'package:Videotheque/controllers/AuthController/AuthController.dart';
 
-import '../app_view.dart';
 
 class AuthView extends StatelessWidget {
   AppView mainView;
-  
+
   AuthView(this.mainView);
 
   final OutlineInputBorder inputBorder = new OutlineInputBorder(
@@ -52,7 +52,7 @@ class AuthView extends StatelessWidget {
                               alignment: Alignment.centerLeft,
                               margin: EdgeInsets.only(top: 20, left: 10),
                               child: Image(
-                                image: AssetImage("assets/launcher_iconV2.png"),
+                                image: AssetImage("assets/icons/launcher_iconV2.png"),
                                 width: MediaQuery.of(context).size.width/4,
                                 fit: BoxFit.cover,
                               ),

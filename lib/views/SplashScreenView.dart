@@ -14,7 +14,7 @@ class SplashScreenView extends StatelessWidget {
       width: double.maxFinite,
       color: Colors.white,
       child: Center(child: Image(
-        image: AssetImage("assets/splash.png"),
+        image: AssetImage("assets/icons/splash.png"),
         fit: BoxFit.scaleDown,
         height: 160,
       )),
