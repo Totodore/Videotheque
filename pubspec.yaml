@@ -59,10 +59,9 @@ flutter_icons:
 flutter:
   uses-material-design: true
   assets:
-    - assets/loading.png
-    - assets/launcher_iconV2.png
-    - assets/splash.png
-    - assets/NoImage.jpg
+    - assets/img/loading.png
+    - assets/icons/launcher_iconV2.png
+    - assets/icons/splash.png
   fonts:
     - family: Aladin
       fonts:

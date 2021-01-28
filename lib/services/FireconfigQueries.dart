@@ -32,7 +32,6 @@ class FireconfigQueries {
         var data = FireconfigInfos.fromString(config[key].asString());
         if (!(_prefs.getDismissed(data?.id))) {
           _infos.add(data);
-          print(data);
         }
       }
     }

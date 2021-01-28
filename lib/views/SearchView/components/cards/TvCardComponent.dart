@@ -42,7 +42,7 @@ class TvCardComponent extends StatelessWidget {
                     tag: heroTag,
                     transitionOnUserGestures: true,
                     child: ProgressiveImage(
-                      placeholder: AssetImage("assets/loading.png"),
+                      placeholder: AssetImage("assets/img/loading.png"),
                       thumbnail: Utils.fetchImage(data.poster_path, ImageTypes.Poster, true),
                       image: Utils.fetchImage(data.poster_path, ImageTypes.Poster),
                       width: 100,

@@ -27,7 +27,7 @@ class TvImgComponent extends StatelessWidget {
         Hero(
           tag: heroTag,
           child: ProgressiveImage(
-            placeholder: AssetImage("assets/loading.png"),
+            placeholder: AssetImage("assets/img/loading.png"),
             thumbnail: Utils.fetchImage(data.poster_path, ImageTypes.Poster,true),
             image: Utils.fetchImage(data.poster_path, ImageTypes.Poster),
             width: 400,

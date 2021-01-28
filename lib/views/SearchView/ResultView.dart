@@ -15,7 +15,6 @@ class ResultSearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(newDisplayResult);
     return ChangeNotifierProvider<ResultSearchController>(
       create: (context) => ResultSearchController(type, context, data, ),
       child: Consumer<ResultSearchController>(builder: (context, controller, child) {
