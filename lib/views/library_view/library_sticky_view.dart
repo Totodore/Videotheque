@@ -143,7 +143,7 @@ class LibraryStickyView extends StatelessWidget {
                           Hero(
                             tag: heroTag,
                             child: ProgressiveImage(
-                              placeholder: AssetImage("assets/img/loading.png"),
+                              placeholder: AssetImage("assets/loading.png"),
                               thumbnail: Utils.fetchImage(controller.getImageElement(index), controller.getImageType(index),true),
                               image: Utils.fetchImage(controller.getImageElement(index), controller.getImageType(index)),
                               width: 400,

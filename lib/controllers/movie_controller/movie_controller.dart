@@ -36,7 +36,6 @@ class MovieController extends ChangeNotifier {
   MovieController(this.context) {
     heroTag = GlobalsArgs.transfertArg[1];
     preloadData = GlobalsArgs.transfertArg[0];
-    print(preloadData);
     if (GlobalsArgs.isFromLibrary ?? false)
       convertDataToDBData();
 
@@ -49,7 +48,7 @@ class MovieController extends ChangeNotifier {
       fetchSimilarMovies();
       fetchTrailer();
     });
-
+    
   }
 
   void convertDataToDBData() {
@@ -77,7 +76,7 @@ class MovieController extends ChangeNotifier {
     isFav = false;
   }
   void fetchInfosTags() async {
-    objectsStates[ElementsTypes.InfoTags] = States.Loading;
+    objectsStates[ElementsTypes.InfoTags] = States.Loading;    
     notifyListeners();
     Map data = await tmdbQueries.getMovie(preloadData["id"].toString());
     loadedInfosTags = [

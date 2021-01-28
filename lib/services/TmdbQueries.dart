@@ -1,10 +1,5 @@
 import 'dart:convert';
 import 'package:Videotheque/Env.dart';
-import 'package:Videotheque/models/api/ApiSearchCollectionModel.dart';
-import 'package:Videotheque/models/api/ApiSearchModel.dart';
-import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
-import 'package:Videotheque/models/api/ApiSearchPersonModel.dart';
-import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
 import 'package:http/http.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Utils.dart';
@@ -17,29 +12,28 @@ class TMDBQueries {
   Future<Response> actualQuerySearch;
 
 
-  Future<ApiSearchModel> onlineSearchMulti(String query, [int offset = 1]) async {
-    var content = sortNoContent(await searchQuery("search/multi", query, offset), QueryTypes.all);
-    return ApiSearchModel.fromJson(content);
+  Future<Map<String, dynamic>> onlineSearchMulti(String query, [int offset = 1]) async {
+    return sortNoContent(await searchQuery("search/multi", query, offset), QueryTypes.all);
   }
 
-  Future<ApiSearchModel<ApiSearchMovieModel>> onlineSearchMovie(String query, [int offset = 1]) async {
-    var content = sortNoContent(await searchQuery("search/movie", query, offset), QueryTypes.movie);
-    return ApiSearchModel<ApiSearchMovieModel>.fromJson(content);
+  Future<Map<String, dynamic>> onlineSearchMovie(String query, [int offset = 1]) async {
+    return sortNoContent(await searchQuery("search/movie", query, offset), QueryTypes.movie);
   }
 
-  Future<ApiSearchModel<ApiSearchPersonModel>> onlineSearchPerson(String query, [int offset = 1]) async {
-    var content = sortNoContent(await searchQuery("search/person", query, offset), QueryTypes.person);
-    return ApiSearchModel<ApiSearchPersonModel>.fromJson(content);
+  Future<Map<String, dynamic>> onlineSearchPerson(String query, [int offset = 1]) async {
+    return sortNoContent(await searchQuery("search/person", query, offset), QueryTypes.person);
   }
 
-  Future<ApiSearchModel<ApiSearchCollectionModel>> onlineSearchCollection(String query, [int offset = 1]) async {
-    var content = sortNoContent(await searchQuery("search/collection", query, offset), QueryTypes.collection);
-    return ApiSearchModel<ApiSearchCollectionModel>.fromJson(content);
+  Future<Map<String, dynamic>> onlineSearchCollection(String query, [int offset = 1]) async {
+    return sortNoContent(await searchQuery("search/collection", query, offset), QueryTypes.collection);
   }
 
-  Future<ApiSearchModel<ApiSearchTvModel>> onlineSearchTV(String query, [int offset = 1]) async {
-    var content = sortNoContent(await searchQuery("search/tv", query, offset), QueryTypes.tv);
-    return ApiSearchModel<ApiSearchTvModel>.fromJson(content);
+  // Future<Map<String, dynamic>> onlineSearchCompanies(String query, [int offset = 1]) async {
+  //   return sortNoContent(await defaultQuery("search/company?&page=$offset&&query=$query"), QueryTypes.companies);
+  // }
+
+  Future<Map<String, dynamic>> onlineSearchTV(String query, [int offset = 1]) async {
+    return sortNoContent(await searchQuery("search/tv", query, offset), QueryTypes.tv);
   }
 
   Future<Map<String, dynamic>> getMovie(String id) async {

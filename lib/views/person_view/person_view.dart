@@ -96,7 +96,7 @@ class PersonView extends StatelessWidget {
                                   child: Hero(
                                     tag: controller.heroTag,
                                     child: ProgressiveImage(
-                                      placeholder: AssetImage("assets/img/loading.png"),
+                                      placeholder: AssetImage("assets/loading.png"),
                                       thumbnail: Utils.fetchImage(controller.preloadData["profile_path"], ImageTypes.Profile, true),
                                       image: Utils.fetchImage(controller.preloadData["profile_path"], ImageTypes.Profile),
                                       width: 160,
@@ -117,7 +117,7 @@ class PersonView extends StatelessWidget {
                                   child: Hero(
                                     tag: controller.heroTag,
                                     child: ProgressiveImage(
-                                      placeholder: AssetImage("assets/img/loading.png"),
+                                      placeholder: AssetImage("assets/loading.png"),
                                       thumbnail: Utils.fetchImage(controller.preloadData["profile_path"], ImageTypes.Profile, true),
                                       image: Utils.fetchImage(controller.preloadData["profile_path"], ImageTypes.Profile),
                                       width: 160,
