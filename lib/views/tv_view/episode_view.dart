@@ -79,7 +79,7 @@ class EpisodeView extends StatelessWidget {
                                 child: Hero(
                                   tag: controller.heroTag,
                                   child: ProgressiveImage(
-                                    placeholder: AssetImage("assets/img/loading.png"),
+                                    placeholder: AssetImage("assets/loading.png"),
                                     thumbnail: Utils.fetchImage(controller.data["poster_path"],  ImageTypes.Poster, true),
                                     image: Utils.fetchImage(controller.data["poster_path"], ImageTypes.Poster),
                                     width: 160,
@@ -100,7 +100,7 @@ class EpisodeView extends StatelessWidget {
                                 child: Hero(
                                   tag: controller.heroTag,
                                   child: ProgressiveImage(
-                                    placeholder: AssetImage("assets/img/loading.png"),
+                                    placeholder: AssetImage("assets/loading.png"),
                                     thumbnail: Utils.fetchImage(controller.data["poster_path"],  ImageTypes.Poster, true),
                                     image: Utils.fetchImage(controller.data["poster_path"],  ImageTypes.Poster),
                                     width: 160,
