@@ -68,12 +68,12 @@ void main() async {
 
 registerSingletons() {
   print("Registering singletons...");
+  Singletons.registerSingleton(new Preferences());
   Singletons.registerSingleton(new FirestoreQueries());
   Singletons.registerSingleton(new FireauthQueries());
   Singletons.registerSingleton(new FireconfigQueries());
   Singletons.registerSingleton(new TMDBQueries());
   Singletons.registerSingleton(new BarcodeLookup());
-  Singletons.registerSingleton(new Preferences());
 }
 
 configureApp() async {

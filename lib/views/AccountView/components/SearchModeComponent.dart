@@ -24,25 +24,10 @@ class SearchModeComponent extends StatelessWidget {
         title: Text("Affichage des recherches", style: TextStyle(fontWeight: FontWeight.w600, color: GlobalsColor.darkGreen)),
         onExpansionChanged: (value) => controller.dispSearchOptions = value,
         trailing: AnimatedCrossFade(
-          firstChild: AnimatedCrossFade(
-            firstChild: Icon(Icons.keyboard_arrow_down),
-            secondChild: Icon(Icons.keyboard_arrow_up),
-            duration: Duration(milliseconds: 300),
-            crossFadeState: controller.dispSearchOptions ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-          ),
-          secondChild: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: SizedBox(
-              width: 23,
-              height: 23,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(GlobalsColor.darkGreen),
-              ),
-            ),
-          ),
-          crossFadeState: controller.statsStates == States.Added ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-          duration: Duration(milliseconds: 350),
+          firstChild: Icon(Icons.keyboard_arrow_down),
+          secondChild: Icon(Icons.keyboard_arrow_up),
+          duration: Duration(milliseconds: 300),
+          crossFadeState: controller.dispSearchOptions ? CrossFadeState.showSecond : CrossFadeState.showFirst,
         ),
         children: [
           GridView.count(

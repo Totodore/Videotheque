@@ -16,6 +16,7 @@ class FireconfigQueries {
     _remoteConfig = await RemoteConfig.instance;
     await _remoteConfig.activateFetched();
     await _remoteConfig.fetch(expiration: const Duration(seconds: 0));
+    await _prefs.ensureLoaded();
     await fetch();
   }
 
@@ -25,11 +26,14 @@ class FireconfigQueries {
   */
   Future<void> fetch() async {
     final config = _remoteConfig.getAll();
+    _infos = [];
     for(final key in config.keys) {
       if (key.startsWith("info")) {
         var data = FireconfigInfos.fromString(config[key].asString());
-        if (!(await _prefs.getDismissed(data?.id)))
+        if (!(_prefs.getDismissed(data?.id))) {
           _infos.add(data);
+          print(data);
+        }
       }
     }
   }

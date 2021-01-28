@@ -8,7 +8,11 @@ class Preferences {
 
   bool _newSearchUI = true;
 
-  HashMap<String, bool> _dismissedInfos;
+  HashMap<String, bool> _dismissedInfos = HashMap<String, bool>();
+
+  final String uiTag = "new_search_ui";
+
+  bool loaded = false;
 
   Preferences() {
     init();
@@ -16,19 +20,22 @@ class Preferences {
 
   void init() async {
     _pref = await SharedPreferences.getInstance();
-    _newSearchUI = _pref.getBool("new_search_ui") ?? true;
+    _newSearchUI = _pref.getBool(uiTag) ?? true;
+    loaded = true;
   }
 
-  void toggleDismissed(String id, [bool value]) {
+  void toggleDismissed(String id, [bool value]) async {
     _dismissedInfos[id] = value ?? !(_dismissedInfos[id] ?? true);
-    _pref.setBool(id, _dismissedInfos[id]);
+    await _pref.setBool(id, _dismissedInfos[id]);
   }
+
+  Future ensureLoaded() => Future.doWhile(() => !loaded);
 
   bool getDismissed(String id) => _dismissedInfos[id] ?? false;
 
   set newSearchUI(bool val) {
     _newSearchUI = val;
-    _pref.setBool("new_search_ui", val);
+    _pref.setBool(uiTag, val);
   }
 
   bool get newSearchUI => _newSearchUI;
