@@ -21,4 +21,7 @@ class ApiSearchCollectionModel extends ApiSearchElModel {
 
   factory ApiSearchCollectionModel.fromString(String json) => _$ApiSearchCollectionModelFromJson(jsonDecode(json));
   Map<String, dynamic> toJson() => _$ApiSearchCollectionModelToJson(this);
+
+  bool get hasImg => poster_path != null;
+
 }
