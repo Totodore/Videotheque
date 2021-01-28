@@ -91,13 +91,13 @@ class HomeController extends CustomChangeNotifier {
   void onDismissed(FireconfigInfos infos, [bool link = false]) async {
     if ((link && (infos.dismiss_click ?? false))) {
       launch(infos.link);
-      prefs.toggleDismissed(infos.id, true);
+      await prefs.toggleDismissed(infos.id, true);
       await fireconfig.fetch();
       notifyListeners();
     } else if (link && !(infos.dismiss_click ?? false))
       launch(infos.link);
     else if (!link) {
-      prefs.toggleDismissed(infos.id, true);
+      await prefs.toggleDismissed(infos.id, true);
       await fireconfig.fetch();
       notifyListeners();
     }
