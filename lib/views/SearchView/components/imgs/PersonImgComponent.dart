@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/models/api/ApiSearchPersonModel.dart';
 import 'package:Videotheque/utils/Utils.dart';
+import 'package:Videotheque/views/SearchView/components/imgs/NoImgComponent.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 
@@ -24,20 +27,8 @@ class PersonImgComponent extends StatelessWidget {
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
     child: Stack(
       children: <Widget>[
-        Hero(
-          tag: heroTag,
-          child: ProgressiveImage(
-            placeholder: AssetImage("assets/img/loading.png"),
-            thumbnail: Utils.fetchImage(data.profile_path, ImageTypes.Poster,true),
-            image: Utils.fetchImage(data.profile_path, ImageTypes.Poster),
-            width: 400,
-            height: 600,
-            fit: BoxFit.fitHeight,
-            fadeDuration: const Duration(milliseconds: 150),
-            blur: 2,
-          ),
-        ),
-        Positioned(
+        data.hasImg ? _getImg() : NoImgComponent(data.name),
+        data.hasImg ? Positioned(
           bottom: 0,
           right: 0,
           left: 0,
@@ -54,16 +45,16 @@ class PersonImgComponent extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                  begin: FractionalOffset.bottomCenter,
-                  end: FractionalOffset.topCenter,
-                  colors: [
-                    Colors.black.withAlpha(160),
-                    Colors.black.withAlpha(0)
-                  ]
-                )
-              ),
+                begin: FractionalOffset.bottomCenter,
+                end: FractionalOffset.topCenter,
+                colors: [
+                  Colors.black.withAlpha(160),
+                  Colors.black.withAlpha(0)
+                ]
+              )
             ),
           ),
+        ) : Container(),
         Positioned.fill(
           child: Material(
             color: Colors.transparent,
@@ -77,5 +68,16 @@ class PersonImgComponent extends StatelessWidget {
         )
       ],
     ),
+  );
+
+  Widget _getImg() => ProgressiveImage(
+    placeholder: AssetImage("assets/img/loading.png"),
+    thumbnail: Utils.fetchImage(data.profile_path, ImageTypes.Poster,true),
+    image: Utils.fetchImage(data.profile_path, ImageTypes.Poster),
+    width: 400,
+    height: 600,
+    fit: BoxFit.fitHeight,
+    fadeDuration: const Duration(milliseconds: 150),
+    blur: 2,
   );
 }
