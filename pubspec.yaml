@@ -2,7 +2,7 @@ name: Videotheque
 description: >-
   Gérer votre bibliothèque de films ! Cherchez, Ajoutez, Triez, Le tour est
   joué !
-version: 3.0.8+27
+version: 3.0.8+28
 environment:
   sdk: ">=2.1.0 <3.0.0"
 dependencies:
