@@ -103,7 +103,7 @@ class TvView extends StatelessWidget {
                         title: Text(""),
                         collapseMode: CollapseMode.parallax,
                         background: ProgressiveImage(
-                          placeholder: AssetImage("assets/loading.png"),
+                          placeholder: AssetImage("assets/img/loading.png"),
                           thumbnail: Utils.fetchImage(controller.preloadData["backdrop_path"], ImageTypes.Backdrop, true),
                           image: Utils.fetchImage(controller.preloadData["backdrop_path"], ImageTypes.Backdrop),
                           width: MediaQuery.of(context).size.width,
@@ -139,7 +139,7 @@ class TvView extends StatelessWidget {
                                   child: Hero(
                                     tag: controller.heroTag,
                                     child: ProgressiveImage(
-                                      placeholder: AssetImage("assets/loading.png"),
+                                      placeholder: AssetImage("assets/img/loading.png"),
                                       thumbnail: Utils.fetchImage(controller.preloadData["poster_path"], ImageTypes.Poster, true),
                                       image: Utils.fetchImage(controller.preloadData["poster_path"], ImageTypes.Poster),
                                       width: 160,
@@ -160,7 +160,7 @@ class TvView extends StatelessWidget {
                                   child: Hero(
                                     tag: controller.heroTag,
                                     child: ProgressiveImage(
-                                      placeholder: AssetImage("assets/loading.png"),
+                                      placeholder: AssetImage("assets/img/loading.png"),
                                       thumbnail: Utils.fetchImage(controller.preloadData["poster_path"], ImageTypes.Poster, true),
                                       image: Utils.fetchImage(controller.preloadData["poster_path"], ImageTypes.Poster),
                                       width: 160,

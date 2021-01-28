@@ -2,7 +2,7 @@ name: Videotheque
 description: >-
   Gérer votre bibliothèque de films ! Cherchez, Ajoutez, Triez, Le tour est
   joué !
-version: 3.0.7+26
+version: 3.0.8+28
 environment:
   sdk: ">=2.1.0 <3.0.0"
 dependencies:
@@ -44,7 +44,8 @@ dependencies:
   permission_handler: ^5.0.1+1
   json_annotation: ^3.1.1
   in_app_review: ^1.0.4
-  
+  random_color: ^1.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -58,10 +59,9 @@ flutter_icons:
 flutter:
   uses-material-design: true
   assets:
-    - assets/loading.png
-    - assets/launcher_iconV2.png
-    - assets/splash.png
-    - assets/NoImage.jpg
+    - assets/img/loading.png
+    - assets/icons/launcher_iconV2.png
+    - assets/icons/splash.png
   fonts:
     - family: Aladin
       fonts:
