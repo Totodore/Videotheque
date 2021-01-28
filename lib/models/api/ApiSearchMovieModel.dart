@@ -36,4 +36,5 @@ class ApiSearchMovieModel extends ApiSearchElModel {
   Map<String, dynamic> toJson() => _$ApiSearchMovieModelToJson(this);
 
   bool get hasImg => poster_path != null;
+  bool get hasBody => hasImg || (overview?.length ?? 0) > 2;
 }

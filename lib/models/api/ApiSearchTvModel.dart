@@ -32,5 +32,6 @@ class ApiSearchTvModel extends ApiSearchElModel {
   Map<String, dynamic> toJson() => _$ApiSearchTvModelToJson(this);
 
   bool get hasImg => poster_path != null;
+  bool get hasBody => hasImg || (overview?.length ?? 0) > 2;
 
 }

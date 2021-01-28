@@ -15,7 +15,7 @@ class KnownForTvComponent extends StatelessWidget {
     data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
     child: ActionChip(
       avatar: CircleAvatar(
-        child: Icon(Icons.movie, color: TvView.baseColor),
+        child: Icon(Icons.tv, color: TvView.baseColor),
         backgroundColor: Colors.transparent,
       ),
       labelStyle: TextStyle(color: Colors.black),

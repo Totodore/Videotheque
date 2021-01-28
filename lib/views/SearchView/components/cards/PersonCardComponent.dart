@@ -5,6 +5,7 @@ import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
 import 'package:Videotheque/utils/Utils.dart';
 import 'package:Videotheque/views/SearchView/components/cards/KnownForMovieComponent.dart';
 import 'package:Videotheque/views/SearchView/components/cards/KnownForTvComponent.dart';
+import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 
@@ -12,7 +13,6 @@ class PersonCardComponent extends StatelessWidget {
   final ApiSearchPersonModel data;
   final Function onClick;
   final Function onKnownClick;
-  final int movieIndex = 3;
   final String heroTag;
   final int index;
 
@@ -26,24 +26,24 @@ class PersonCardComponent extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: const BorderRadius.all(Radius.circular(5))),
       margin: EdgeInsets.all(6),
       child: InkWell(
-        onTap: () => onClick(GlobalsMessage.chipData[movieIndex]["route"], index, heroTag),
+        onTap: () => onClick("person", index, heroTag),
         onDoubleTap: null,
         onLongPress: null,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(Icons.movie, color: GlobalsColor.darkGreen),
+              leading: Icon(Icons.people, color: PersonView.baseColor),
               title: Text(data.name ?? "", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),),
             ),
             Container(
-              padding: EdgeInsets.only(right: 7, left: 7, bottom: 7, top:0),
+              padding: EdgeInsets.only(right: 7, left: 7, bottom: data.hasBody ? 7 : 0, top:0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  data.profile_path != null ? Hero(
+                  data.hasImg ? Hero(
                     tag: heroTag,
                     transitionOnUserGestures: true, 
                     child: ProgressiveImage(
@@ -58,10 +58,9 @@ class PersonCardComponent extends StatelessWidget {
                     )
                   ) : Container(),
                   Padding(
-                    child: Container(),
-                    padding: EdgeInsets.only(left: 7),
+                    padding: data.hasImg ? EdgeInsets.only(left: 7) : EdgeInsets.zero,
                   ),
-                  Expanded(
+                  (data.known_for?.length ?? 0) > 0 ? Expanded(
                     child: Wrap(
                       spacing: 5,
                       runSpacing: 0,
@@ -69,17 +68,17 @@ class PersonCardComponent extends StatelessWidget {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       alignment: WrapAlignment.spaceEvenly,
                       children: data.known_for.map<Widget>(
-                        (el) => el.media_type == "movie" ?
+                        (el) => el?.media_type == "movie" ?
                           KnownForMovieComponent(el.getAs<ApiSearchMovieModel>(), onKnownClick, index)
                         : KnownForTvComponent(el.getAs<ApiSearchTvModel>(), onKnownClick, index)
                       ).toList()
                     )
-                  ),
+                  ) : Container(),
                 ],
               ),
             ),
             Divider(
-              color: GlobalsMessage.chipData[movieIndex]["color"],
+              color: PersonView.baseColor,
               height: 2,
               thickness: 2,
             ),

@@ -23,5 +23,6 @@ class ApiSearchCollectionModel extends ApiSearchElModel {
   Map<String, dynamic> toJson() => _$ApiSearchCollectionModelToJson(this);
 
   bool get hasImg => poster_path != null;
+  bool get hasBody => hasImg;
 
 }
