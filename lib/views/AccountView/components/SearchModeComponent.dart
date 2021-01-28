@@ -53,9 +53,9 @@ class SearchModeComponent extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 10),
             children: [
-              OutlinedButton(onPressed: () => controller.newSearchDisplay = true,
+              OutlinedButton(onPressed: () => controller.newSearchUI = true,
                 style: ButtonStyle(
-                  side: MaterialStateProperty.all(BorderSide(color: controller.newSearchDisplay ? GlobalsColor.darkGreen : Colors.grey[300], width: 2)),
+                  side: MaterialStateProperty.all(BorderSide(color: controller.newSearchUI ? GlobalsColor.darkGreen : Colors.grey[300], width: 2)),
                   padding: MaterialStateProperty.all(const EdgeInsets.only(top: 20, left: 8, right: 8)),
                 ),
                 child: GridView.count(
@@ -78,9 +78,9 @@ class SearchModeComponent extends StatelessWidget {
                   ))
                 )
               ),
-              OutlinedButton(onPressed: () => controller.newSearchDisplay = false,
+              OutlinedButton(onPressed: () => controller.newSearchUI = false,
                 style: ButtonStyle(
-                  side: MaterialStateProperty.all(BorderSide(color: !controller.newSearchDisplay ? GlobalsColor.darkGreen : Colors.grey[300], width: 2)),
+                  side: MaterialStateProperty.all(BorderSide(color: !controller.newSearchUI ? GlobalsColor.darkGreen : Colors.grey[300], width: 2)),
                   padding: MaterialStateProperty.all(const EdgeInsets.only(top: 5, left: 8, right: 8)),
                 ),
                 child: ListView(
@@ -156,8 +156,8 @@ class SearchModeComponent extends StatelessWidget {
                   leading: Radio(
                     activeColor: GlobalsColor.darkGreen,
                     value: true,
-                    groupValue: controller.newSearchDisplay,
-                    onChanged: (val) => controller.newSearchDisplay = val
+                    groupValue: controller.newSearchUI ,
+                    onChanged: (val) => controller.newSearchUI = val
                   ),
                   title: const Text("Images"),
                 ),
@@ -167,8 +167,8 @@ class SearchModeComponent extends StatelessWidget {
                   leading: Radio(
                     activeColor: GlobalsColor.darkGreen,
                     value: false,
-                    groupValue: controller.newSearchDisplay,
-                    onChanged: (val) => controller.newSearchDisplay = val,
+                    groupValue: controller.newSearchUI ,
+                    onChanged: (val) => controller.newSearchUI = val,
                   ),
                   title: const Text("Détaillé"),
                 ),

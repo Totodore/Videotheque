@@ -3,6 +3,7 @@ import 'package:Videotheque/services/FireconfigQueries.dart';
 import 'package:Videotheque/services/FirestoreQueries.dart';
 import 'package:Videotheque/components/alert_dialog_component.dart';
 import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/services/Preferences.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/AccountView/components/ChangeMailComponent.dart';
 import 'package:Videotheque/views/AccountView/components/ChangeNameComponent.dart';
@@ -12,7 +13,6 @@ import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:random_color/random_color.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountController extends ChangeNotifier {
@@ -42,10 +42,8 @@ class AccountController extends ChangeNotifier {
   FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
   FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
   FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
+  Preferences prefs = Singletons.instance<Preferences>();
 
-  SharedPreferences _preferences;
-
-  bool _newSearchDisplay = true;
   bool _dispSearchOptions = false;
 
   final List<List<Color>> gradients = List.generate(6, (index) => List.generate(2, (index) => RandomColor().randomColor()));
@@ -69,8 +67,6 @@ class AccountController extends ChangeNotifier {
   void fetchStats() async {
     statsStates = States.Loading;
     notifyListeners();
-    _preferences = await SharedPreferences.getInstance();
-    newSearchDisplay = _preferences.getBool("new_search") ?? true;
     List<int> statsNumberGeneral = await firestore.statNumberGeneral; 
     statNumberMovies = await firestore.statNumberEl(QueryTypes.movie);
     statNumberPeople = await firestore.statNumberEl(QueryTypes.person);
@@ -222,9 +218,8 @@ class AccountController extends ChangeNotifier {
     notifyListeners();
   }
 
-  set newSearchDisplay(bool newSearchDisplay) {
-    _newSearchDisplay = newSearchDisplay;
-    _preferences.setBool("new_search", _newSearchDisplay);
+  set newSearchUI(bool val) {
+    prefs.newSearchUI = val;
     notifyListeners();
   }
   set dispSearchOptions(bool dispSearchOptions) {
@@ -232,7 +227,7 @@ class AccountController extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool get newSearchDisplay => _newSearchDisplay;
+  bool get newSearchUI => prefs.newSearchUI;
   bool get dispSearchOptions => _dispSearchOptions;
 
   set context(BuildContext context) => _context = context;

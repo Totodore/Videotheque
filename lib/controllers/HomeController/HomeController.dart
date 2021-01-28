@@ -3,6 +3,7 @@ import 'package:Videotheque/services/FireauthQueries.dart';
 import 'package:Videotheque/services/FireconfigQueries.dart';
 import 'package:Videotheque/services/FirestoreQueries.dart';
 import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/services/Preferences.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/utils/CustomChangeNotifier.dart';
 import 'package:Videotheque/views/HomeView/CarrouselView.dart';
@@ -10,7 +11,6 @@ import 'package:Videotheque/views/HomeView/components/InfoComponent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,7 +26,8 @@ class HomeController extends CustomChangeNotifier {
   FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
   FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
   FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
-  
+  Preferences prefs = Singletons.instance<Preferences>();
+
   HomeController(this._context) {
     if (this.mounted)
       _getLibrary();
@@ -88,16 +89,15 @@ class HomeController extends CustomChangeNotifier {
   }
 
   void onDismissed(FireconfigInfos infos, [bool link = false]) async {
-    final shared = await SharedPreferences.getInstance();
     if ((link && (infos.dismiss_click ?? false))) {
       launch(infos.link);
-      await shared.setBool(infos.id, true);
+      prefs.toggleDismissed(infos.id, true);
       await fireconfig.fetch();
       notifyListeners();
     } else if (link && !(infos.dismiss_click ?? false))
       launch(infos.link);
     else if (!link) {
-      await shared.setBool(infos.id, true);
+      prefs.toggleDismissed(infos.id, true);
       await fireconfig.fetch();
       notifyListeners();
     }
