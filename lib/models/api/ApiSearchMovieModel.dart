@@ -30,5 +30,8 @@ class ApiSearchMovieModel extends ApiSearchElModel {
   factory ApiSearchMovieModel.fromJson(Map<String, dynamic> json) => _$ApiSearchMovieModelFromJson(json);
 
   factory ApiSearchMovieModel.fromString(String json) => _$ApiSearchMovieModelFromJson(jsonDecode(json));
+
   Map<String, dynamic> toJson() => _$ApiSearchMovieModelToJson(this);
+
+  bool get hasImg => poster_path != null;
 }

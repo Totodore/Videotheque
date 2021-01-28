@@ -18,27 +18,27 @@ class TMDBQueries {
 
 
   Future<ApiSearchModel> onlineSearchMulti(String query, [int offset = 1]) async {
-    var content = sortNoContent(await searchQuery("search/multi", query, offset), QueryTypes.all);
+    var content = await searchQuery("search/multi", query, offset);
     return ApiSearchModel.fromJson(content);
   }
 
   Future<ApiSearchModel<ApiSearchMovieModel>> onlineSearchMovie(String query, [int offset = 1]) async {
-    var content = sortNoContent(await searchQuery("search/movie", query, offset), QueryTypes.movie);
+    var content = await searchQuery("search/movie", query, offset);
     return ApiSearchModel<ApiSearchMovieModel>.fromJson(content);
   }
 
   Future<ApiSearchModel<ApiSearchPersonModel>> onlineSearchPerson(String query, [int offset = 1]) async {
-    var content = sortNoContent(await searchQuery("search/person", query, offset), QueryTypes.person);
+    var content = await searchQuery("search/person", query, offset);
     return ApiSearchModel<ApiSearchPersonModel>.fromJson(content);
   }
 
   Future<ApiSearchModel<ApiSearchCollectionModel>> onlineSearchCollection(String query, [int offset = 1]) async {
-    var content = sortNoContent(await searchQuery("search/collection", query, offset), QueryTypes.collection);
+    var content = await searchQuery("search/collection", query, offset);
     return ApiSearchModel<ApiSearchCollectionModel>.fromJson(content);
   }
 
   Future<ApiSearchModel<ApiSearchTvModel>> onlineSearchTV(String query, [int offset = 1]) async {
-    var content = sortNoContent(await searchQuery("search/tv", query, offset), QueryTypes.tv);
+    var content = await searchQuery("search/tv", query, offset);
     return ApiSearchModel<ApiSearchTvModel>.fromJson(content);
   }
 
@@ -112,14 +112,6 @@ class TMDBQueries {
   }
   Future<Map<String, dynamic>> getCollection(String id) {
     return defaultQuery("collection/$id");
-  }
-
-  Map<String, dynamic> sortNoContent(Map<String, dynamic> toSort, QueryTypes queryTypes) {
-    if (toSort["results"] == null)  //En cas d'erreur
-      return toSort;
-    toSort["results"].removeWhere((el) => el["poster_path"] == null && el["profile_path"] == null);
-
-    return toSort;
   }
 
   Future<Map<String, dynamic>> searchQuery(String path, String query, int offset) async {

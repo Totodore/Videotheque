@@ -35,4 +35,7 @@ class ApiSearchPersonModel extends ApiSearchElModel {
     list.map((el) {
       return el["title"] != null ? ApiSearchMovieModel.fromJson(el) : ApiSearchTvModel.fromJson(el);
     }).toList();
+
+  bool get hasImg => profile_path != null;
+
 }

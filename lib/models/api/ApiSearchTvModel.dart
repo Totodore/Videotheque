@@ -30,4 +30,7 @@ class ApiSearchTvModel extends ApiSearchElModel {
 
   factory ApiSearchTvModel.fromString(String json) => _$ApiSearchTvModelFromJson(jsonDecode(json));
   Map<String, dynamic> toJson() => _$ApiSearchTvModelToJson(this);
+
+  bool get hasImg => poster_path != null;
+
 }
