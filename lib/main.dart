@@ -2,6 +2,7 @@ import 'package:Videotheque/services/BarcodeLookup.dart';
 import 'package:Videotheque/services/FireauthQueries.dart';
 import 'package:Videotheque/services/FireconfigQueries.dart';
 import 'package:Videotheque/services/FirestoreQueries.dart';
+import 'package:Videotheque/services/Preferences.dart';
 import 'package:Videotheque/services/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/SplashScreenView.dart';
@@ -72,6 +73,7 @@ registerSingletons() {
   Singletons.registerSingleton(new FireconfigQueries());
   Singletons.registerSingleton(new TMDBQueries());
   Singletons.registerSingleton(new BarcodeLookup());
+  Singletons.registerSingleton(new Preferences());
 }
 
 configureApp() async {
