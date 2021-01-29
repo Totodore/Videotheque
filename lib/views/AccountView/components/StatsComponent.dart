@@ -1,4 +1,5 @@
 import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/controllers/AccountController/AccountController.dart';
 import 'package:community_material_icon/community_material_icon.dart';
@@ -28,26 +29,11 @@ class StatsComponent extends StatelessWidget {
           fontWeight: FontWeight.w500
         )),
         leading: Icon(CommunityMaterialIcons.chart_bell_curve, color: GlobalsColor.darkGreen),
-        trailing: AnimatedCrossFade(
-          firstChild: AnimatedCrossFade(
-            firstChild: Icon(Icons.keyboard_arrow_down), 
-            secondChild: Icon(Icons.keyboard_arrow_up),
-            duration: Duration(milliseconds: 300),
-            crossFadeState: controller.dispStats ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-          ),
-          secondChild: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: SizedBox(
-              width: 23,
-              height: 23,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(GlobalsColor.darkGreen),
-              ),
-            ),
-          ), 
-          crossFadeState: controller.statsStates == States.Added ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-          duration: Duration(milliseconds: 350),
+        trailing: CrossFadeComponent(
+          child1: Icon(Icons.keyboard_arrow_down),
+          child2: Icon(Icons.keyboard_arrow_up),
+          ms: 350,
+          dispFirst: !controller.dispStats,
         ),
         children: [
           Padding(
