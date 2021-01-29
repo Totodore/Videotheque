@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:Videotheque/components/CrossFadeComponent.dart';
+import 'package:Videotheque/components/FABComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
@@ -29,23 +31,7 @@ class CollectionView extends StatelessWidget {
       child: Consumer<CollectionController>(
         builder: (context, controller, child) {
           return Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: controller.isAdded ? controller.removeCollection : controller.addCollection,
-              backgroundColor: CollectionView.baseColor,
-              elevation: 3,
-              child: AnimatedCrossFade(
-                firstChild: Icon(Icons.add,
-                  color: Colors.white,
-                  size: 25,
-                ),
-                secondChild: Icon(Icons.done,
-                  color: Colors.white,
-                  size: 25,
-                ),
-                crossFadeState: controller.isAdded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                duration: Duration(milliseconds: 300),
-              ),
-            ),
+            floatingActionButton: FABComponent(controller.isAdded, CollectionView.baseColor, controller.isAdded ? controller.removeCollection : controller.addCollection),
             body: Builder(
               builder: (context) {
                 BuildContext scaffoldContext = context;
@@ -108,7 +94,6 @@ class CollectionView extends StatelessWidget {
                           height: 175 + GlobalsData.endSortBarPos + kToolbarHeight,
                           fit: BoxFit.cover,
                           alignment: Alignment.center,
-                          fadeDuration: Duration(milliseconds: 150),
                           blur: 4,
                           repeat: ImageRepeat.noRepeat,
                           matchTextDirection: true,
@@ -171,11 +156,11 @@ class CollectionView extends StatelessWidget {
                           ),
                         ),
                         AnimatedSwitcher(
-                          duration: Duration(milliseconds: 150),
                           transitionBuilder: (Widget child, Animation<double> animation) {
                             final Animation<Offset> animationOffset = Tween<Offset>(begin: Offset(0.0, 0.3), end: Offset(0.0, 0.0)).animate(animation);
                             return FadeTransition(child: SlideTransition(child: child, position: animationOffset), opacity: animation);
                           },
+                          duration: const Duration(milliseconds: 250),
                           child: controller.isAdded ? ToSeeSeenComponent(
                             () => controller.onCollectionToSeeTapped(scaffoldContext), 
                             () => controller.onCollectionSeenTapped(scaffoldContext),
@@ -194,11 +179,10 @@ class CollectionView extends StatelessWidget {
                           transform: Matrix4.translationValues(0, -5, 0),
                           child: Theme(
                             data: Theme.of(context).copyWith(splashColor: CollectionView.splashColor),
-                            child: AnimatedCrossFade(
-                              firstChild: SkeletonTagComponent(3),
-                              secondChild: TagView(ElementsTypes.GenreTags, controller.addedGenreTags, controller.onAddTagTapped),
-                              crossFadeState: controller.objectsStates[ElementsTypes.GenreTags] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                              duration: Duration(milliseconds: 200),
+                            child: CrossFadeComponent(
+                              child1: SkeletonTagComponent(3),
+                              child2: TagView(ElementsTypes.GenreTags, controller.addedGenreTags, controller.onAddTagTapped),
+                              dispFirst: controller.objectsStates[ElementsTypes.GenreTags] == States.Loading
                             ),
                           ),
                         ) : Padding(padding: EdgeInsets.zero),
@@ -211,11 +195,10 @@ class CollectionView extends StatelessWidget {
                           transform: Matrix4.translationValues(0, -5, 0),
                           child: Theme(
                             data: Theme.of(context).copyWith(splashColor: CollectionView.splashColor),
-                            child: AnimatedCrossFade(
-                              firstChild: SkeletonCarrouselComponent(),
-                              secondChild: controller.objectsStates[ElementsTypes.MoviesCarrousel] == States.Added ? CarrouselView(QueryTypes.movie, controller.carrouselData[ElementsTypes.MoviesCarrousel]) : Padding(padding: EdgeInsets.all(0)),
-                              crossFadeState: controller.objectsStates[ElementsTypes.MoviesCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                              duration: Duration(milliseconds: 200),
+                            child: CrossFadeComponent(
+                              child1: SkeletonCarrouselComponent(),
+                              child2: controller.objectsStates[ElementsTypes.MoviesCarrousel] == States.Added ? CarrouselView(QueryTypes.movie, controller.carrouselData[ElementsTypes.MoviesCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                              dispFirst: controller.objectsStates[ElementsTypes.MoviesCarrousel] == States.Loading,
                             ),
                           ),
                         ),

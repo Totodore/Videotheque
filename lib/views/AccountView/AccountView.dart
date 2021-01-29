@@ -1,3 +1,4 @@
+import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/components/skeleton_textline_component.dart';
 import 'package:Videotheque/views/AccountView/components/ButtonComponent.dart';
@@ -50,15 +51,15 @@ class AccountView extends StatelessWidget {
                                             padding: const EdgeInsets.only(right: 4.0),
                                             child: Icon(CommunityMaterialIcons.information_outline),
                                           ),
-                                          AnimatedCrossFade(
-                                            duration: Duration(milliseconds: 350),
-                                            firstChild: Text(controller.name ?? "Erreur !", 
+                                          CrossFadeComponent(
+                                            child1: SkeletonTextLineComponent(),
+                                            child2: Text(controller.name ?? "Erreur !", 
                                               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600), 
                                               textAlign: TextAlign.left,
                                             ),
-                                            secondChild: SkeletonTextLineComponent(),
-                                            crossFadeState: controller.accountDataState == States.Added ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                                          ),
+                                            ms: 350,
+                                            dispFirst: controller.accountDataState != States.Added,
+                                          )
                                         ],
                                       ),
                                       Row(
@@ -67,14 +68,14 @@ class AccountView extends StatelessWidget {
                                             padding: const EdgeInsets.only(right: 4.0),
                                             child: Icon(Icons.mail_outline),
                                           ),
-                                          AnimatedCrossFade(
-                                            duration: Duration(milliseconds: 350),
-                                            firstChild: Text(controller.mail, 
+                                          CrossFadeComponent(
+                                            child1: SkeletonTextLineComponent(),
+                                            child2: Text(controller.mail,
                                               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600), 
-                                              textAlign: TextAlign.left, 
+                                              textAlign: TextAlign.left,
                                             ),
-                                            secondChild: SkeletonTextLineComponent(),
-                                            crossFadeState: controller.accountDataState == States.Added ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                                            ms: 350,
+                                            dispFirst: controller.accountDataState != States.Added,
                                           ),
                                         ],
                                       ),
@@ -84,15 +85,15 @@ class AccountView extends StatelessWidget {
                                             padding: const EdgeInsets.only(right: 4.0),
                                             child: Icon(CommunityMaterialIcons.account_clock_outline),
                                           ),
-                                          AnimatedCrossFade(
-                                            duration: Duration(milliseconds: 350),
-                                            firstChild: Text(controller.accountCreation, 
+                                          CrossFadeComponent(
+                                            child1: SkeletonTextLineComponent(),
+                                            child2: Text(controller.accountCreation, 
                                               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600), 
                                               textAlign: TextAlign.left
                                             ),
-                                            secondChild: SkeletonTextLineComponent(),
-                                            crossFadeState: controller.accountDataState == States.Added ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                                          ),
+                                            ms: 350,
+                                            dispFirst: controller.accountDataState != States.Added,
+                                          )
                                         ],
                                       )
                                     ],

@@ -1,3 +1,4 @@
+import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/views/AppView.dart';
@@ -134,9 +135,8 @@ class AuthView extends StatelessWidget {
                                     enabled: !controller.pendingTransfer,
                                   ),
                                 ),
-                                AnimatedCrossFade(
-                                  duration: controller.crossFadeDuration,
-                                  firstChild: Padding(
+                                CrossFadeComponent(
+                                  child1: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
                                     child:  TextFormField(
                                       enabled: !controller.pendingTransfer,
@@ -153,8 +153,8 @@ class AuthView extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  secondChild: Container(padding: EdgeInsets.zero),
-                                  crossFadeState: controller.registerSelected ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                                  child2: Container(),
+                                  dispFirst: controller.registerSelected,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
@@ -181,9 +181,8 @@ class AuthView extends StatelessWidget {
                                     validator: controller.passwdValidator,
                                   ),
                                 ),
-                                AnimatedCrossFade(
-                                  duration: controller.crossFadeDuration,
-                                  firstChild: Padding(
+                                CrossFadeComponent(
+                                  child1: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
                                     child:  TextFormField(
                                       enabled: !controller.pendingTransfer,
@@ -206,8 +205,8 @@ class AuthView extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  secondChild: Container(padding: EdgeInsets.zero),
-                                  crossFadeState: controller.registerSelected ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                                  child2: Container(),
+                                  dispFirst: controller.registerSelected,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 25.0),

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/controllers/AccountController/AccountController.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
@@ -23,11 +24,10 @@ class SearchModeComponent extends StatelessWidget {
         leading: Icon(CommunityMaterialIcons.movie_search, color: GlobalsColor.darkGreen),
         title: Text("Affichage des recherches", style: TextStyle(fontWeight: FontWeight.w600, color: GlobalsColor.darkGreen)),
         onExpansionChanged: (value) => controller.dispSearchOptions = value,
-        trailing: AnimatedCrossFade(
-          firstChild: Icon(Icons.keyboard_arrow_down),
-          secondChild: Icon(Icons.keyboard_arrow_up),
-          duration: Duration(milliseconds: 300),
-          crossFadeState: controller.dispSearchOptions ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+        trailing: CrossFadeComponent(
+          child1: Icon(Icons.keyboard_arrow_down),
+          child2: Icon(Icons.keyboard_arrow_up),
+          dispFirst: !controller.dispSearchOptions,
         ),
         children: [
           GridView.count(

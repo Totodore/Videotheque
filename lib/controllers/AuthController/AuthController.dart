@@ -14,7 +14,6 @@ class AuthController extends ChangeNotifier {
   BuildContext context;
   BuildContext scaffoldContext;
   AppView mainView;
-  final crossFadeDuration = Duration(milliseconds: 300);
   final formKey = GlobalKey<FormState>();
   bool launchAnimation = false;
   bool registerSelected = true;
