@@ -17,8 +17,8 @@ import 'package:Videotheque/views/components/carrousel_view.dart';
 
 import 'package:Videotheque/controllers/movie_controller/movie_controller.dart';
 
-import 'package:Videotheque/components/skeleton_carrousel_component.dart';
-import 'package:Videotheque/components/skeleton_tag_component.dart';
+import 'package:Videotheque/components/SkeletonCarrouselComponent.dart';
+import 'package:Videotheque/components/SkeletonTagComponent.dart';
 import 'package:Videotheque/components/DividerComponent.dart';
 
 class MovieView extends StatelessWidget {

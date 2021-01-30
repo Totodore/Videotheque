@@ -6,8 +6,8 @@ import 'package:Videotheque/components/HeaderComponent.dart';
 import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:Videotheque/components/DividerComponent.dart';
-import 'package:Videotheque/components/skeleton_carrousel_component.dart';
-import 'package:Videotheque/components/skeleton_tag_component.dart';
+import 'package:Videotheque/components/SkeletonCarrouselComponent.dart';
+import 'package:Videotheque/components/SkeletonTagComponent.dart';
 
 import 'package:Videotheque/controllers/collection_controller/collection_controller.dart';
 
