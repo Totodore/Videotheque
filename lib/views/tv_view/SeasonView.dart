@@ -1,6 +1,6 @@
 import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/components/TrailerComponent.dart';
-import 'package:Videotheque/components/divider_component.dart';
+import 'package:Videotheque/components/DividerComponent.dart';
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
 import 'package:Videotheque/components/skeleton_tag_component.dart';
 

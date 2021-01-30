@@ -8,19 +8,16 @@ import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:Videotheque/components/TrailerComponent.dart';
 import 'package:Videotheque/controllers/tv_controller/tv_controller.dart';
 
-import 'package:Videotheque/components/divider_component.dart';
+import 'package:Videotheque/components/DividerComponent.dart';
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
 import 'package:Videotheque/components/skeleton_tag_component.dart';
 
 import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/utils/Utils.dart';
 
 import 'package:Videotheque/views/tv_view/tag_view.dart';
 import 'package:Videotheque/views/components/carrousel_view.dart';
 
-import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:flutter/material.dart';
-import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
 
 

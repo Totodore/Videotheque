@@ -1,5 +1,5 @@
 
-import 'package:Videotheque/components/divider_component.dart';
+import 'package:Videotheque/components/DividerComponent.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
