@@ -5,6 +5,7 @@ import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/components/FABComponent.dart';
 import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
+import 'package:Videotheque/components/TrailerComponent.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
@@ -14,7 +15,6 @@ import 'package:Videotheque/utils/Utils.dart';
 import 'package:Videotheque/Globals.dart';
 
 import 'package:Videotheque/views/movie_view/tag_view.dart';
-import 'package:Videotheque/views/movie_view/trailer_view.dart';
 import 'package:Videotheque/views/components/carrousel_view.dart';
 
 import 'package:Videotheque/controllers/movie_controller/movie_controller.dart';
@@ -192,7 +192,7 @@ class MovieView extends StatelessWidget {
                         controller.dispElement(ElementsTypes.YoutubeTrailer) ? Center(
                           child: Theme(
                             data: Theme.of(context).copyWith(splashColor: GlobalsColor.darkGreen),
-                            child: TrailerView(controller.trailerKey),
+                            child: TrailerComponent(controller.trailerKey, "Trailer du film", GlobalsColor.darkGreen),
                           ),
                         ) : Container(),  
                       ]),
