@@ -1,4 +1,4 @@
-import 'package:Videotheque/views/tv_view/tv_view.dart';
+import 'package:Videotheque/views/tv_view/TvView.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';

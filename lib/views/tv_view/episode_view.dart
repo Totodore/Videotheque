@@ -9,7 +9,7 @@ import 'package:Videotheque/utils/Utils.dart';
 
 import 'package:Videotheque/views/tv_view/tag_view.dart';
 import 'package:Videotheque/views/tv_view/trailer_view.dart';
-import 'package:Videotheque/views/tv_view/tv_view.dart';
+import 'package:Videotheque/views/tv_view/TvView.dart';
 import 'package:Videotheque/views/components/carrousel_view.dart';
 
 import 'package:drop_cap_text/drop_cap_text.dart';
