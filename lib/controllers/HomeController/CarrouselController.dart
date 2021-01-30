@@ -60,4 +60,6 @@ class CarrouselController extends ChangeNotifier {
   }
 
   String get heroTag => Uuid().v1();
+
+  bool hasImage(int index) => carrouselData[index]["image_url"]?.toString()?.isNotEmpty ?? false;
 }
