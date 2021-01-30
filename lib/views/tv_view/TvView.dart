@@ -6,7 +6,7 @@ import 'package:Videotheque/components/HeaderComponent.dart';
 import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:Videotheque/components/TrailerComponent.dart';
-import 'package:Videotheque/controllers/tv_controller/TvController.dart';
+import 'package:Videotheque/controllers/TvController/TvController.dart';
 
 import 'package:Videotheque/components/DividerComponent.dart';
 import 'package:Videotheque/components/SkeletonCarrouselComponent.dart';
