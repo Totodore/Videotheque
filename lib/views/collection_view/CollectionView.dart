@@ -12,7 +12,7 @@ import 'package:Videotheque/components/SkeletonTagComponent.dart';
 import 'package:Videotheque/controllers/collection_controller/collection_controller.dart';
 
 import 'package:Videotheque/views/collection_view/tag_view.dart';
-import 'package:Videotheque/views/components/carrousel_view.dart';
+import 'package:Videotheque/views/components/CarrouselView.dart';
 
 import 'package:Videotheque/Globals.dart';
 import 'package:flutter/material.dart';

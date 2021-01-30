@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:Videotheque/Globals.dart';
 
 import 'package:Videotheque/views/movie_view/tag_view.dart';
-import 'package:Videotheque/views/components/carrousel_view.dart';
+import 'package:Videotheque/views/components/CarrouselView.dart';
 
 import 'package:Videotheque/controllers/movie_controller/movie_controller.dart';
 
