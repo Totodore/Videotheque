@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-import 'package:Videotheque/controllers/tv_controller/AddTagController.dart';
+import 'package:Videotheque/controllers/TvController/AddTagController.dart';
 import 'package:Videotheque/components/DividerComponent.dart';
 
 class AddTagView extends StatelessWidget {

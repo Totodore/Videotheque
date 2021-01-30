@@ -5,7 +5,7 @@ import 'package:Videotheque/components/DividerComponent.dart';
 import 'package:Videotheque/components/SkeletonCarrouselComponent.dart';
 import 'package:Videotheque/components/SkeletonTagComponent.dart';
 
-import 'package:Videotheque/controllers/tv_controller/EpisodeController.dart';
+import 'package:Videotheque/controllers/TvController/EpisodeController.dart';
 
 import 'package:Videotheque/Globals.dart';
 
