@@ -10,7 +10,7 @@ import 'package:Videotheque/Globals.dart';
 
 import 'package:Videotheque/controllers/person_controller/person_controller.dart';
 
-import 'package:Videotheque/views/components/carrousel_view.dart';
+import 'package:Videotheque/views/components/CarrouselView.dart';
 import 'package:Videotheque/views/person_view/tag_view.dart';
 
 import 'package:flutter/material.dart';

@@ -7,7 +7,7 @@ import 'package:Videotheque/components/SkeletonTagComponent.dart';
 
 import 'package:Videotheque/views/tv_view/tag_view.dart';
 import 'package:Videotheque/views/tv_view/TvView.dart';
-import 'package:Videotheque/views/components/carrousel_view.dart';
+import 'package:Videotheque/views/components/CarrouselView.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
