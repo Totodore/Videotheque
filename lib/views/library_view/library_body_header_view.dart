@@ -2,7 +2,7 @@ import 'package:Videotheque/components/DividerComponent.dart';
 import 'package:Videotheque/controllers/library_controller/library_body_controller.dart';
 import 'package:Videotheque/controllers/library_controller/library_body_header_controller.dart';
 import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/views/library_view/carrousel_view.dart';
+import 'package:Videotheque/views/library_view/CarrouselView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

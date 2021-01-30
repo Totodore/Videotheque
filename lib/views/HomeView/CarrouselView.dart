@@ -1,6 +1,7 @@
 
 import 'package:Videotheque/components/DividerComponent.dart';
 import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/components/NoImgComponent.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +46,7 @@ class CarrouselView extends StatelessWidget {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                           child: Stack(
                             children: <Widget>[
-                              Hero(
+                              controller.hasImage(index) ? Hero(
                                 tag: heroTag,
                                 child: ProgressiveImage(
                                   placeholder: AssetImage("assets/img/loading.png"),
@@ -55,10 +56,10 @@ class CarrouselView extends StatelessWidget {
                                   height: 187.5,
                                   fit: BoxFit.fitHeight,
                                   fadeDuration: Duration(milliseconds: 150),
-                                  blur: 2,                      
+                                  blur: 2,
                                 ),
-                              ),
-                              controller.getElementType(index) == QueryTypes.person ? Positioned(
+                              ) : NoImgComponent(controller.getNameElement(index) ?? "", 125, 187.5, 14),
+                              controller.getElementType(index) == QueryTypes.person && controller.hasImage(index) ? Positioned(
                                 bottom: 0,
                                 right: 0,
                                 left: 0,
