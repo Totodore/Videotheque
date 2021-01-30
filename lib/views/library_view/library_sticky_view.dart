@@ -1,10 +1,11 @@
 import 'dart:ui';
 
+import 'package:Videotheque/components/NoImgComponent.dart';
 import 'package:Videotheque/controllers/library_controller/library_body_controller.dart';
 import 'package:Videotheque/controllers/library_controller/library_sticky_controller.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Utils.dart';
-import 'package:Videotheque/views/library_view/customSearchPainter.dart';
+import 'package:Videotheque/views/library_view/component/CustomSearchPainter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -140,7 +141,7 @@ class LibraryStickyView extends StatelessWidget {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                       child: Stack(
                         children: <Widget>[
-                          Hero(
+                          controller.hasImg(index) ? Hero(
                             tag: heroTag,
                             child: ProgressiveImage(
                               placeholder: AssetImage("assets/img/loading.png"),
@@ -152,8 +153,8 @@ class LibraryStickyView extends StatelessWidget {
                               fadeDuration: const Duration(milliseconds: 150),
                               blur: 2,
                             ),
-                          ),
-                          controller.getElementType(index) == QueryTypes.person ? Positioned(
+                          ) : NoImgComponent(controller.getNameElement(index)),
+                          controller.getElementType(index) == QueryTypes.person && controller.hasImg(index) ? Positioned(
                             bottom: 0,
                             right: 0,
                             left: 0,

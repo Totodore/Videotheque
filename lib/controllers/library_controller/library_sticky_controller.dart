@@ -179,5 +179,7 @@ class LibraryStickyController extends ChangeNotifier {
 
   bool get dispSearchBar => _displaySearchBar;
 
+  bool hasImg(int index) => _displayLibraryData[index]["image_url"]?.toString()?.isNotEmpty ?? false;
+
 
 }
