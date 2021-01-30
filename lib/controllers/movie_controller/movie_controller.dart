@@ -80,8 +80,12 @@ class MovieController extends ChangeNotifier {
     objectsStates[ElementsTypes.InfoTags] = States.Loading;
     notifyListeners();
     Map data = await tmdbQueries.getMovie(preloadData["id"].toString());
+    DateTime date;
+    try {
+      date = DateTime.parse(data["release_date"]);
+    } catch (e) {}
     loadedInfosTags = [
-      data["release_date"] != null ? "Sortie : " + DateFormat('dd/MM/yyyy').format(DateTime.parse(data["release_date"])) : null,
+      date != null ? "Sortie : " + DateFormat('dd/MM/yyyy').format(date) : null,
       data["vote_average"] != null && data["vote_average"] > 0 ? "${data["vote_average"]} ★" : null,
       data["budget"] != null && data["budget"] > 0 ? "${data["budget"]} \$" : null,
       data["status"] != null ? data["status"] : null,
@@ -111,8 +115,6 @@ class MovieController extends ChangeNotifier {
     objectsStates[ElementsTypes.CrewCarrousel] = States.Loading;
     notifyListeners();
     Map data = await tmdbQueries.getMovieCredits(preloadData["id"].toString());
-    data["cast"].removeWhere((element) => element["profile_path"] == null);
-    data["crew"].removeWhere((element) => element["profile_path"] == null);
     carrouselData[ElementsTypes.CastingCarrousel] = data["cast"];
     carrouselData[ElementsTypes.CrewCarrousel] = data["crew"];
     objectsStates[ElementsTypes.CastingCarrousel] = carrouselData[ElementsTypes.CastingCarrousel].length > 0 ? States.Added : States.Empty;
@@ -123,7 +125,6 @@ class MovieController extends ChangeNotifier {
     objectsStates[ElementsTypes.SimilarCarrousel] = States.Loading;
     notifyListeners();
     List similars = tmdbQueries.sortByPopularity(Map.from(await tmdbQueries.getMovieSimilar(preloadData["id"].toString()))["results"]);
-    similars.removeWhere((element) => element["poster_path"] == null);
     carrouselData[ElementsTypes.SimilarCarrousel] = similars;
     objectsStates[ElementsTypes.SimilarCarrousel] = carrouselData[ElementsTypes.SimilarCarrousel] != null && carrouselData[ElementsTypes.SimilarCarrousel].length > 0 ? States.Added : States.Empty;
     notifyListeners();

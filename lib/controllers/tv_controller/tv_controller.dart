@@ -96,9 +96,6 @@ class TvController extends ChangeNotifier {
     ];
     loadedInfosTags.removeWhere((el) => el == null);
 
-    if (data["created_by"] != null)
-      data["created_by"].removeWhere((el) => el["profile_path"] == null);
-
     for (Map season in data["seasons"])
       if (season["poster_path"] == null) season["poster_path"] = preloadData["poster_path"];
 
@@ -140,8 +137,6 @@ class TvController extends ChangeNotifier {
     objectsStates[ElementsTypes.CrewCarrousel] = States.Loading;
     notifyListeners();
     Map data = await tmdbQueries.getTvCredits(preloadData["id"].toString());
-    data["cast"].removeWhere((element) => element["profile_path"] == null);
-    data["crew"].removeWhere((element) => element["profile_path"] == null);
     carrouselData[ElementsTypes.CastingCarrousel] = data["cast"];
     carrouselData[ElementsTypes.CrewCarrousel] = data["crew"];
     objectsStates[ElementsTypes.CastingCarrousel] = data["cast"] != null && data["cast"].length > 0 ? States.Added : States.Empty;

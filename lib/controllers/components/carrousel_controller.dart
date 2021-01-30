@@ -16,7 +16,7 @@ class CarrouselController extends ChangeNotifier {
   final Function _showEl;
   final bool _isEpisode;
 
-  CarrouselController(this._context, this._type, this._carrouselData, [this._showEl, this._isEpisode]) {
+  CarrouselController(this._context, this._type, this._carrouselData, [this._showEl, this._isEpisode = false]) {
     _sortAndFilterData();
   }
 
@@ -25,13 +25,13 @@ class CarrouselController extends ChangeNotifier {
   void _sortAndFilterData() {
     List toRemove = [];
     //faire en sorte que ca s'affiche pas plusieurs fois
-    for(var i = 0; i<_carrouselData.length; i++){
+    for(var i = 0; i < _carrouselData.length; i++){
         var ele = _carrouselData[i];
-      for(var i2 = i+1;i2<_carrouselData.length;i2++){
-            var ele2 = _carrouselData[i2];
-            if(ele["id"] == ele2["id"])
-              toRemove.add(ele2);
-          }
+      for(var i2 = i+1; i2 < _carrouselData.length; i2++) {
+        var ele2 = _carrouselData[i2];
+        if(ele["id"] == ele2["id"])
+          toRemove.add(ele2);
+      }
     }
     for(var ele in toRemove)
         _carrouselData.remove(ele);
@@ -67,12 +67,12 @@ class CarrouselController extends ChangeNotifier {
 
   String getNameElement(int index) {
     if (_type == QueryTypes.movie)
-      return _carrouselData[index]["title"] != null ? _carrouselData[index]["title"] : _carrouselData[index]["original_title"];
-    else if (_type == QueryTypes.tv && _isEpisode)
+      return _carrouselData[index]["title"] ?? _carrouselData[index]["original_title"] ?? "";
+    else if (_type == QueryTypes.tv && (_isEpisode ?? false))
       return "Épisode ${index+1}";
-    else 
-      return _carrouselData[index]["name"] != null ? _carrouselData[index]["name"] : _carrouselData[index]["original_name"];
-  } 
+    else
+      return _carrouselData[index]["name"] ?? _carrouselData[index]["original_name"] ?? "";
+  }
 
   String getImageElement(int index) {
     if (_type == QueryTypes.person)
@@ -84,6 +84,8 @@ class CarrouselController extends ChangeNotifier {
   ImageTypes getImageType(int index) {
     return GlobalsMessage.chipData[QueryTypes.values.indexOf(_type)]["image_type"];
   }
+
+  bool hasImage(int index) => _carrouselData[index]["poster_path"] != null || _carrouselData[index]["profile_path"] != null;
 
   String get heroTag => Uuid().v1();
 

@@ -95,7 +95,6 @@ class PersonController extends ChangeNotifier {
     notifyListeners();
     Map data = await tmdbQueries.getKnownForMovies(preloadData["id"].toString());
     List knownFor = List.from(data["cast"])..addAll(data["crew"]);
-    knownFor.removeWhere((element) => element["poster_path"] == null);
 
     carrouselData[ElementsTypes.KnownForMovieCarrousel] = tmdbQueries.sortByPopularity(knownFor);
     objectsStates[ElementsTypes.KnownForMovieCarrousel] = knownFor != null && knownFor.length > 0 ? States.Added : States.Empty;
@@ -107,7 +106,6 @@ class PersonController extends ChangeNotifier {
     notifyListeners();
     Map data = await tmdbQueries.getKnownForTv(preloadData["id"].toString());
     List knownFor = List.from(data["cast"])..addAll(data["crew"]);
-    knownFor.removeWhere((element) => element["poster_path"] == null);
 
     carrouselData[ElementsTypes.KnownForTvCarrousel] = tmdbQueries.sortByPopularity(knownFor);
     objectsStates[ElementsTypes.KnownForTvCarrousel] = knownFor != null && knownFor.length > 0 ? States.Added : States.Empty;
