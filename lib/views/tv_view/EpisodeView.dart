@@ -5,11 +5,11 @@ import 'package:Videotheque/components/DividerComponent.dart';
 import 'package:Videotheque/components/SkeletonCarrouselComponent.dart';
 import 'package:Videotheque/components/SkeletonTagComponent.dart';
 
-import 'package:Videotheque/controllers/tv_controller/episode_controller.dart';
+import 'package:Videotheque/controllers/tv_controller/EpisodeController.dart';
 
 import 'package:Videotheque/Globals.dart';
 
-import 'package:Videotheque/views/tv_view/tag_view.dart';
+import 'package:Videotheque/views/tv_view/TagView.dart';
 import 'package:Videotheque/views/tv_view/TvView.dart';
 import 'package:Videotheque/views/components/CarrouselView.dart';
 
