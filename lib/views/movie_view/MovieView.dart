@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/components/FABComponent.dart';
+import 'package:Videotheque/components/HeaderComponent.dart';
 import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:Videotheque/components/TrailerComponent.dart';
@@ -43,55 +44,7 @@ class MovieView extends StatelessWidget {
                       delegate: SliverChildListDelegate([
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0, right: 10, top: 10, bottom: 0),
-                          child: (controller.preloadData["overview"]?.toString()?.length ?? 0) > 0 ? DropCapText(
-                            controller.preloadData["overview"],
-                            style: TextStyle(
-                              fontSize: 17,
-                              height: 1.4
-                            ),
-                            dropCapPadding: EdgeInsets.only(right: 15),
-                            textAlign: TextAlign.justify,
-                            overflow: TextOverflow.fade,
-                            dropCap: DropCap(
-                              height: 240,
-                              width: 160,
-                              child: Card(
-                                elevation: 3,
-                                margin: EdgeInsets.only(bottom: 0),
-                                child: Hero(
-                                  tag: controller.heroTag,
-                                  child: ProgressiveImage(
-                                    placeholder: AssetImage("assets/img/loading.png"),
-                                    thumbnail: Utils.fetchImage(controller.preloadData["poster_path"], ImageTypes.Poster, true),
-                                    image: Utils.fetchImage(controller.preloadData["poster_path"], ImageTypes.Poster),
-                                    width: 160,
-                                    height: 240,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ) : Container(
-                            width: 160,
-                            height: 240,
-                            margin: const EdgeInsets.only(bottom: 10),
-                            alignment: Alignment.centerLeft,
-                            child: Card(
-                              elevation: 3,
-                              margin: EdgeInsets.only(bottom: 0),
-                              child: Hero(
-                                tag: controller.heroTag,
-                                child: ProgressiveImage(
-                                  placeholder: AssetImage("assets/img/loading.png"),
-                                  thumbnail: Utils.fetchImage(controller.preloadData["poster_path"], ImageTypes.Poster, true),
-                                  image: Utils.fetchImage(controller.preloadData["poster_path"], ImageTypes.Poster),
-                                  width: 160,
-                                  height: 240,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
+                          child: HeaderComponent(controller.preloadData["overview"], controller.heroTag, controller.preloadData["poster_path"], false),
                         ),
                         AnimatedSwitcher(
                           duration: Duration(milliseconds: 150),

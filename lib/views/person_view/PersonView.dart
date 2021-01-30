@@ -1,5 +1,6 @@
 import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/components/FABComponent.dart';
+import 'package:Videotheque/components/HeaderComponent.dart';
 import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
@@ -39,56 +40,7 @@ class PersonView extends StatelessWidget {
                       delegate: SliverChildListDelegate([
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0, right: 10, top: 10, bottom: 0),
-                            child: controller.objectsStates[ElementsTypes.MainData] != States.Empty ? DropCapText(
-                              controller.objectsStates[ElementsTypes.MainData] == States.Added ? controller.mainData["biography"] : "Chargement...",
-                              style: TextStyle(
-                                fontSize: 17,
-                                height: 1.4
-                              ),
-                              dropCapPadding: EdgeInsets.only(right: 15),
-                              textAlign: TextAlign.justify,
-                              overflow: TextOverflow.fade,
-                              dropCap: DropCap(
-                                height: 240, 
-                                width: 160,
-                                child: Card(
-                                  elevation: 3,
-                                  margin: EdgeInsets.only(bottom: 0),
-                                  child: Hero(
-                                    tag: controller.heroTag,
-                                    child: ProgressiveImage(
-                                      placeholder: AssetImage("assets/img/loading.png"),
-                                      thumbnail: Utils.fetchImage(controller.preloadData["profile_path"], ImageTypes.Profile, true),
-                                      image: Utils.fetchImage(controller.preloadData["profile_path"], ImageTypes.Profile),
-                                      width: 160,
-                                      height: 240,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ) : Container(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                width: 160,
-                                padding: EdgeInsets.only(bottom: 15),
-                                child: Card(
-                                  elevation: 3,
-                                  margin: EdgeInsets.only(bottom: 0),
-                                  child: Hero(
-                                    tag: controller.heroTag,
-                                    child: ProgressiveImage(
-                                      placeholder: AssetImage("assets/img/loading.png"),
-                                      thumbnail: Utils.fetchImage(controller.preloadData["profile_path"], ImageTypes.Profile, true),
-                                      image: Utils.fetchImage(controller.preloadData["profile_path"], ImageTypes.Profile),
-                                      width: 160,
-                                      height: 240,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                            child: HeaderComponent(controller.preloadData["biography"], controller.heroTag, controller.preloadData["profile_path"], true),
                           ),
                           controller.isAdded ? DividerComponent(PersonView.baseColor) : Container(),
                           controller.isAdded ? Container(

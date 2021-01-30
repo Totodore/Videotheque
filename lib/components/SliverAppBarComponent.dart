@@ -79,5 +79,5 @@ class SliverAppBarComponent extends StatelessWidget {
     ) : Container(),
   );
 
-  bool get _hasBackdrop => backdropPath?.isEmpty ?? false;
+  bool get _hasBackdrop => backdropPath?.isNotEmpty ?? false;
 }
