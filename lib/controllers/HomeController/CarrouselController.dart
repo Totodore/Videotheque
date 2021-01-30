@@ -1,7 +1,7 @@
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/SlidePageRoute.dart';
 import 'package:Videotheque/views/collection_view/CollectionView.dart';
-import 'package:Videotheque/views/movie_view/movie_view.dart';
+import 'package:Videotheque/views/movie_view/MovieView.dart';
 import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
 import 'package:flutter/material.dart';

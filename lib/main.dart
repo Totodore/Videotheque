@@ -10,7 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Videotheque/views/AppView.dart';
-import 'package:Videotheque/views/movie_view/movie_view.dart';
+import 'package:Videotheque/views/movie_view/MovieView.dart';
 import 'package:Videotheque/views/person_view/person_view.dart';
 import 'package:Videotheque/views/SearchView/SearchView.dart';
 import 'package:Videotheque/views/collection_view/CollectionView.dart';
