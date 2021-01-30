@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/components/FABComponent.dart';
+import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
@@ -39,68 +40,8 @@ class CollectionView extends StatelessWidget {
                 return CustomScrollView(
                   physics: BouncingScrollPhysics(),
                   slivers: <Widget>[
-                    SliverAppBar(
-                      forceElevated: true,
-                      backgroundColor: CollectionView.baseColor,
-                      pinned: true,
-                      snap: false,
-                      floating: false,
-                      stretchTriggerOffset: 80,
-                      onStretchTrigger: () async => Navigator.popUntil(context, ModalRoute.withName("/")),
-                      stretch: false,
-                      expandedHeight: controller.data["backdrop_path"] != null ? 175 + GlobalsData.endSortBarPos : kToolbarHeight,
-                      elevation: 3,
-                      leading: IconButton(
-                        icon: Icon(Icons.arrow_back,
-                          color: controller.data["backdrop_path"] != null ? CollectionView.baseColor : Colors.white,
-                          size: 38,
-                        ),
-                        onPressed: () => Navigator.popUntil(context, ModalRoute.withName("/")),
-                      ),
-                      title: controller.data["backdrop_path"] != null ? ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: SizedBox(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.black.withOpacity(0.4),
-                            ),
-                            margin: EdgeInsets.zero,
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                              child: Text(controller.data["name"] != null ? controller.data["name"] : controller.data["name_title"],    
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ) : Text(controller.data["name"] != null ? controller.data["name"] : controller.data["name_title"],    
-                        style: TextStyle(color: Colors.white),
-                      ),           
-                      actions: <Widget>[
-                        controller.isAdded ? IconButton(icon: Icon(controller.isFav ? Icons.favorite : Icons.favorite_border, color: Colors.white), 
-                          onPressed: () => controller.onFavTapped(scaffoldContext)
-                        ) : Padding(padding: EdgeInsets.zero)
-                      ],     
-                      flexibleSpace: controller.data["backdrop_path"] != null ? BackgroundFlexibleSpaceBar(
-                        title: Text(""),
-                        collapseMode: CollapseMode.parallax,
-                        background: ProgressiveImage(
-                          placeholder: AssetImage("assets/img/loading.png"),
-                          thumbnail: Utils.fetchImage(controller.data["backdrop_path"], ImageTypes.Backdrop, true),
-                          image: Utils.fetchImage(controller.data["backdrop_path"], ImageTypes.Backdrop),
-                          width: MediaQuery.of(context).size.width,
-                          height: 175 + GlobalsData.endSortBarPos + kToolbarHeight,
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
-                          blur: 4,
-                          repeat: ImageRepeat.noRepeat,
-                          matchTextDirection: true,
-                        ),
-                      ) : null,
-                    ),
-                    SliverList( 
+                    SliverAppBarComponent(CollectionView.baseColor, controller.data["backdrop_path"], controller.data["name"] ?? controller.data["original_name"], controller.isAdded, controller.isFav, controller.onFavTapped),
+                    SliverList(
                       delegate: SliverChildListDelegate([
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0, right: 10, top: 10, bottom: 0),
