@@ -1,3 +1,4 @@
+import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
 import 'package:Videotheque/components/skeleton_tag_component.dart';
@@ -119,11 +120,10 @@ class EpisodeView extends StatelessWidget {
                           alignment: Alignment.topLeft,
                           child: Theme(
                             data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
-                            child: AnimatedCrossFade(
-                              firstChild: SkeletonTagComponent(3),
-                              secondChild: controller.objectsStates[ElementsTypes.InfoTags] == States.Added ? TagView(ElementsTypes.InfoTags, controller.details, [], false, null) : Padding(padding: EdgeInsets.all(0)),
-                              crossFadeState: controller.objectsStates[ElementsTypes.InfoTags] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                              duration: Duration(milliseconds: 200),
+                            child: CrossFadeComponent(
+                              child1: SkeletonTagComponent(3),
+                              child2: controller.objectsStates[ElementsTypes.InfoTags] == States.Added ? TagView(ElementsTypes.InfoTags, controller.details, [], false, null) : Padding(padding: EdgeInsets.all(0)),
+                              dispFirst: controller.objectsStates[ElementsTypes.InfoTags] == States.Loading,
                             ),
                           ),
                         ),
@@ -134,11 +134,10 @@ class EpisodeView extends StatelessWidget {
                           alignment: Alignment.topLeft,
                           child: Theme(
                             data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
-                            child: AnimatedCrossFade(
-                              firstChild: SkeletonCarrouselComponent(),
-                              secondChild: controller.objectsStates[ElementsTypes.GuestsCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.GuestsCarrousel]) : Padding(padding: EdgeInsets.all(0)),
-                              crossFadeState: controller.objectsStates[ElementsTypes.GuestsCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                              duration: Duration(milliseconds: 200),
+                            child: CrossFadeComponent(
+                              child1: SkeletonCarrouselComponent(),
+                              child2: controller.objectsStates[ElementsTypes.GuestsCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.GuestsCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                              dispFirst: controller.objectsStates[ElementsTypes.GuestsCarrousel] == States.Loading,
                             ),
                           ),
                         ),
@@ -149,11 +148,10 @@ class EpisodeView extends StatelessWidget {
                           alignment: Alignment.topLeft,
                           child: Theme(
                             data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
-                            child: AnimatedCrossFade(
-                              firstChild: SkeletonCarrouselComponent(),
-                              secondChild: controller.objectsStates[ElementsTypes.CastingCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.CastingCarrousel]) : Padding(padding: EdgeInsets.all(0)),
-                              crossFadeState: controller.objectsStates[ElementsTypes.CastingCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                              duration: Duration(milliseconds: 200),
+                            child: CrossFadeComponent(
+                              child1: SkeletonCarrouselComponent(),
+                              child2: controller.objectsStates[ElementsTypes.CastingCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.CastingCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                              dispFirst: controller.objectsStates[ElementsTypes.CastingCarrousel] == States.Loading,
                             ),
                           ),
                         ),
@@ -164,11 +162,10 @@ class EpisodeView extends StatelessWidget {
                           alignment: Alignment.topLeft,
                           child: Theme(
                             data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
-                            child: AnimatedCrossFade(
-                              firstChild: SkeletonCarrouselComponent(),
-                              secondChild: controller.objectsStates[ElementsTypes.CrewCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.CrewCarrousel]) : Padding(padding: EdgeInsets.all(0)),
-                              crossFadeState: controller.objectsStates[ElementsTypes.CrewCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                              duration: Duration(milliseconds: 200),
+                            child: CrossFadeComponent(
+                              child1: SkeletonCarrouselComponent(),
+                              child2: controller.objectsStates[ElementsTypes.CrewCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.CrewCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                              dispFirst: controller.objectsStates[ElementsTypes.CrewCarrousel] == States.Loading,
                             ),
                           ),
                         ),
@@ -178,7 +175,7 @@ class EpisodeView extends StatelessWidget {
                             data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
                             child: TrailerView(controller.trailerKey),
                           ),
-                        ) : Container(),  
+                        ) : Container(),
                       ]
                     ),
                   ),
