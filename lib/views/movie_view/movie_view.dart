@@ -1,6 +1,7 @@
 
 import 'dart:ui';
 
+import 'package:Videotheque/components/FABComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:background_app_bar/background_app_bar.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
@@ -29,23 +30,7 @@ class MovieView extends StatelessWidget {
       child: Consumer<MovieController>(
         builder: (context, controller, child) {
           return Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: controller.isAdded ? controller.removeMovie : controller.addMovie,
-              backgroundColor: GlobalsColor.darkGreen,
-              elevation: 3,
-              child: AnimatedCrossFade(
-                firstChild: Icon(Icons.add,
-                  color: Colors.white,
-                  size: 25,
-                ),
-                secondChild: Icon(Icons.done,
-                  color: Colors.white,
-                  size: 25,
-                ),
-                crossFadeState: controller.isAdded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                duration: Duration(milliseconds: 300),
-              ),
-            ),
+            floatingActionButton: FABComponent(controller.isAdded, GlobalsColor.darkGreen, controller.isAdded ? controller.removeMovie : controller.addMovie),
             body: Builder(
               builder: (context) {
                 BuildContext scaffoldContext = context;
