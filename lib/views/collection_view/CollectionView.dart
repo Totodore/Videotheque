@@ -16,7 +16,6 @@ import 'package:Videotheque/views/components/carrousel_view.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Utils.dart';
 
-import 'package:background_app_bar/background_app_bar.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
@@ -111,7 +110,7 @@ class CollectionView extends StatelessWidget {
                             "Collection à voir",
                             "Collection vue") : Container(),
                         ),
-                        controller.isAdded ? DividerComponent(CollectionView.baseColor) : Padding(padding: EdgeInsets.zero),
+                        controller.isAdded ? DividerComponent(CollectionView.baseColor) : Container(),
                         controller.isAdded ? Container(
                           width: MediaQuery.of(context).size.width - 20,
                           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -126,8 +125,8 @@ class CollectionView extends StatelessWidget {
                               dispFirst: controller.objectsStates[ElementsTypes.GenreTags] == States.Loading
                             ),
                           ),
-                        ) : Padding(padding: EdgeInsets.zero),
-                        controller.dispElement(ElementsTypes.MoviesCarrousel) ? DividerComponent(CollectionView.baseColor, "Films") : Padding(padding: EdgeInsets.zero),
+                        ) : Container(),
+                        controller.dispElement(ElementsTypes.MoviesCarrousel) ? DividerComponent(CollectionView.baseColor, "Films") : Container(),
                         Container(
                           width: MediaQuery.of(context).size.width - 20,
                           margin: EdgeInsets.symmetric(horizontal: 10),

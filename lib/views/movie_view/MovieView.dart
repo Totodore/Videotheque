@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:Videotheque/components/FABComponent.dart';
 import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
-import 'package:background_app_bar/background_app_bar.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
@@ -106,9 +105,9 @@ class MovieView extends StatelessWidget {
                             controller.isSeen, 
                             GlobalsColor.darkGreen,
                             "Film à voir",
-                            "Film vu") : Padding(padding: EdgeInsets.zero),
+                            "Film vu") : Container(),
                         ),
-                        controller.isAdded ? DividerComponent(GlobalsColor.darkGreen) : Padding(padding: EdgeInsets.zero),
+                        controller.isAdded ? DividerComponent(GlobalsColor.darkGreen) : Container(),
                         Container(
                           width: MediaQuery.of(context).size.width - 20,
                           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -125,7 +124,7 @@ class MovieView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        controller.dispElement(ElementsTypes.InfoTags) ? DividerComponent(GlobalsColor.darkGreen) : Padding(padding: EdgeInsets.zero),
+                        controller.dispElement(ElementsTypes.InfoTags) ? DividerComponent(GlobalsColor.darkGreen) : Container(),
                         Container(
                           width: MediaQuery.of(context).size.width - 20,
                           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -142,7 +141,7 @@ class MovieView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        controller.dispElement(ElementsTypes.CastingCarrousel) ? DividerComponent(GlobalsColor.darkGreen, "Casting") : Padding(padding: EdgeInsets.zero),
+                        controller.dispElement(ElementsTypes.CastingCarrousel) ? DividerComponent(GlobalsColor.darkGreen, "Casting") : Container(),
                         Container(
                           width: MediaQuery.of(context).size.width - 20,
                           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -159,7 +158,7 @@ class MovieView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        controller.dispElement(ElementsTypes.CrewCarrousel) ? DividerComponent(GlobalsColor.darkGreen, "Équipe") : Padding(padding: EdgeInsets.zero),
+                        controller.dispElement(ElementsTypes.CrewCarrousel) ? DividerComponent(GlobalsColor.darkGreen, "Équipe") : Container(),
                         Container(
                           width: MediaQuery.of(context).size.width - 20,
                           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -176,7 +175,7 @@ class MovieView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        controller.dispElement(ElementsTypes.SimilarCarrousel) ? DividerComponent(GlobalsColor.darkGreen, "Films similaires") : Padding(padding: EdgeInsets.zero),
+                        controller.dispElement(ElementsTypes.SimilarCarrousel) ? DividerComponent(GlobalsColor.darkGreen, "Films similaires") : Container(),
                         Container(
                           width: MediaQuery.of(context).size.width - 20,
                           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -193,13 +192,13 @@ class MovieView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        controller.dispElement(ElementsTypes.YoutubeTrailer) ? DividerComponent(GlobalsColor.darkGreen) : Padding(padding: EdgeInsets.zero),
+                        controller.dispElement(ElementsTypes.YoutubeTrailer) ? DividerComponent(GlobalsColor.darkGreen) : Container(),
                         controller.dispElement(ElementsTypes.YoutubeTrailer) ? Center(
                           child: Theme(
                             data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
                             child: TrailerView(controller.trailerKey),
                           ),
-                        ) : Padding(padding: EdgeInsets.zero),  
+                        ) : Container(),  
                       ]),
                     ),
                   ],

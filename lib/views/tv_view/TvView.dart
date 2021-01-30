@@ -16,7 +16,6 @@ import 'package:Videotheque/views/tv_view/tag_view.dart';
 import 'package:Videotheque/views/movie_view/trailer_view.dart';
 import 'package:Videotheque/views/components/carrousel_view.dart';
 
-import 'package:background_app_bar/background_app_bar.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
@@ -110,9 +109,9 @@ class TvView extends StatelessWidget {
                               controller.isSeen, 
                               TvView.baseColor,
                               "Série à voir",
-                              "Série vue") : Padding(padding: EdgeInsets.zero),
+                              "Série vue") : Container(),
                           ),
-                          controller.isAdded ? DividerComponent(TvView.baseColor) : Padding(padding: EdgeInsets.zero),
+                          controller.isAdded ? DividerComponent(TvView.baseColor) : Container(),
                           Container(
                             width: MediaQuery.of(context).size.width - 20,
                             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -127,7 +126,7 @@ class TvView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          controller.dispElement(ElementsTypes.InfoTags) ? DividerComponent(TvView.baseColor) : Padding(padding: EdgeInsets.zero),
+                          controller.dispElement(ElementsTypes.InfoTags) ? DividerComponent(TvView.baseColor) : Container(),
                           Container(
                             width: MediaQuery.of(context).size.width - 20,
                             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -142,7 +141,7 @@ class TvView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          controller.dispElement(ElementsTypes.MadeByCarrousel) ? DividerComponent(TvView.baseColor, "Créée par") : Padding(padding: EdgeInsets.zero),
+                          controller.dispElement(ElementsTypes.MadeByCarrousel) ? DividerComponent(TvView.baseColor, "Créée par") : Container(),
                           Container(
                             width: MediaQuery.of(context).size.width - 20,
                             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -157,7 +156,7 @@ class TvView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          controller.dispElement(ElementsTypes.SeasonsCarrousel) ? DividerComponent(TvView.baseColor, "Saisons") : Padding(padding: EdgeInsets.zero),
+                          controller.dispElement(ElementsTypes.SeasonsCarrousel) ? DividerComponent(TvView.baseColor, "Saisons") : Container(),
                           Container(
                             width: MediaQuery.of(context).size.width - 20,
                             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -172,7 +171,7 @@ class TvView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          controller.objectsStates[ElementsTypes.CastingCarrousel] != States.Empty ? DividerComponent(TvView.baseColor, "Casting") : Padding(padding: EdgeInsets.zero),
+                          controller.objectsStates[ElementsTypes.CastingCarrousel] != States.Empty ? DividerComponent(TvView.baseColor, "Casting") : Container(),
                           Container(
                             width: MediaQuery.of(context).size.width - 20,
                             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -187,7 +186,7 @@ class TvView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          controller.dispElement(ElementsTypes.CrewCarrousel) ? DividerComponent(TvView.baseColor, "Équipe") : Padding(padding: EdgeInsets.zero),
+                          controller.dispElement(ElementsTypes.CrewCarrousel) ? DividerComponent(TvView.baseColor, "Équipe") : Container(),
                           Container(
                             width: MediaQuery.of(context).size.width - 20,
                             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -202,7 +201,7 @@ class TvView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          controller.dispElement(ElementsTypes.SimilarCarrousel) ? DividerComponent(TvView.baseColor, "Séries similaires") : Padding(padding: EdgeInsets.zero),
+                          controller.dispElement(ElementsTypes.SimilarCarrousel) ? DividerComponent(TvView.baseColor, "Séries similaires") : Container(),
                           Container(
                             width: MediaQuery.of(context).size.width - 20,
                             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -217,13 +216,13 @@ class TvView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          controller.dispElement(ElementsTypes.YoutubeTrailer) ? DividerComponent(TvView.baseColor) : Padding(padding: EdgeInsets.zero),
+                          controller.dispElement(ElementsTypes.YoutubeTrailer) ? DividerComponent(TvView.baseColor) : Container(),
                           controller.objectsStates[ElementsTypes.YoutubeTrailer] == States.Added ? Center(
                             child: Theme(
                               data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
                               child: TrailerView(controller.trailerKey),
                             ),
-                          ) : Padding(padding: EdgeInsets.zero),  
+                          ) : Container(),  
                         ]
                       ),
                     ),

@@ -30,7 +30,6 @@ class PersonView extends StatelessWidget {
             floatingActionButton: FABComponent(controller.isAdded, PersonView.baseColor, controller.isAdded ? controller.removePerson : controller.addPerson),
             body: Builder(
               builder: (context) {
-                BuildContext scaffoldContext = context;
                 return CustomScrollView(
                   physics: BouncingScrollPhysics(),
                   slivers: <Widget>[
@@ -90,7 +89,7 @@ class PersonView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          controller.isAdded ? DividerComponent(PersonView.baseColor) : Padding(padding: EdgeInsets.zero),
+                          controller.isAdded ? DividerComponent(PersonView.baseColor) : Container(),
                           controller.isAdded ? Container(
                             width: MediaQuery.of(context).size.width - 20,
                             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -106,7 +105,7 @@ class PersonView extends StatelessWidget {
                                 duration: Duration(milliseconds: 200),
                               ),
                             ),
-                          ) : Padding(padding: EdgeInsets.zero),
+                          ) : Container(),
                           DividerComponent(PersonView.baseColor),
                           Container(
                             width: MediaQuery.of(context).size.width - 20,
@@ -124,7 +123,7 @@ class PersonView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          controller.dispElement(ElementsTypes.KnownForMovieCarrousel) ? DividerComponent(PersonView.baseColor, "Films") : Padding(padding: EdgeInsets.zero),
+                          controller.dispElement(ElementsTypes.KnownForMovieCarrousel) ? DividerComponent(PersonView.baseColor, "Films") : Container(),
                           Container(
                             width: MediaQuery.of(context).size.width - 20,
                             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -141,7 +140,7 @@ class PersonView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          controller.dispElement(ElementsTypes.KnownForTvCarrousel) ? DividerComponent(PersonView.baseColor, "Séries") : Padding(padding: EdgeInsets.zero),
+                          controller.dispElement(ElementsTypes.KnownForTvCarrousel) ? DividerComponent(PersonView.baseColor, "Séries") : Container(),
                           Container(
                             width: MediaQuery.of(context).size.width - 20,
                             margin: EdgeInsets.symmetric(horizontal: 10),

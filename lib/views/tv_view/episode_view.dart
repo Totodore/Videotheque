@@ -112,7 +112,7 @@ class EpisodeView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        controller.dispElement(ElementsTypes.InfoTags) ? DividerComponent(TvView.baseColor) : Padding(padding: EdgeInsets.zero),
+                        controller.dispElement(ElementsTypes.InfoTags) ? DividerComponent(TvView.baseColor) : Container(),
                         Container(
                           width: MediaQuery.of(context).size.width - 20,
                           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -127,7 +127,7 @@ class EpisodeView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        controller.dispElement(ElementsTypes.GuestsCarrousel) ? DividerComponent(TvView.baseColor, "Invités") : Padding(padding: EdgeInsets.zero),
+                        controller.dispElement(ElementsTypes.GuestsCarrousel) ? DividerComponent(TvView.baseColor, "Invités") : Container(),
                         Container(
                           width: MediaQuery.of(context).size.width - 20,
                           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -142,7 +142,7 @@ class EpisodeView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        controller.dispElement(ElementsTypes.CastingCarrousel) ? DividerComponent(TvView.baseColor, "Casting") : Padding(padding: EdgeInsets.zero),
+                        controller.dispElement(ElementsTypes.CastingCarrousel) ? DividerComponent(TvView.baseColor, "Casting") : Container(),
                         Container(
                           width: MediaQuery.of(context).size.width - 20,
                           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -157,7 +157,7 @@ class EpisodeView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        controller.dispElement(ElementsTypes.CrewCarrousel) ? DividerComponent(TvView.baseColor, "Équipe") : Padding(padding: EdgeInsets.zero),
+                        controller.dispElement(ElementsTypes.CrewCarrousel) ? DividerComponent(TvView.baseColor, "Équipe") : Container(),
                         Container(
                           width: MediaQuery.of(context).size.width - 20,
                           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -172,13 +172,13 @@ class EpisodeView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        controller.dispElement(ElementsTypes.YoutubeTrailer) ? DividerComponent(TvView.baseColor) : Padding(padding: EdgeInsets.zero),
+                        controller.dispElement(ElementsTypes.YoutubeTrailer) ? DividerComponent(TvView.baseColor) : Container(),
                         controller.objectsStates[ElementsTypes.YoutubeTrailer] == States.Added ? Center(
                           child: Theme(
                             data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
                             child: TrailerView(controller.trailerKey),
                           ),
-                        ) : Padding(padding: EdgeInsets.zero),  
+                        ) : Container(),  
                       ]
                     ),
                   ),
