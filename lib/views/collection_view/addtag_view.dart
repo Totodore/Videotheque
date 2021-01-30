@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 
 import 'package:Videotheque/controllers/collection_controller/addtag_controller.dart';
-import 'package:Videotheque/components/divider_component.dart';
+import 'package:Videotheque/components/DividerComponent.dart';
 
 class AddTagView extends StatelessWidget {
   BuildContext context;

@@ -7,12 +7,9 @@ import 'package:Videotheque/components/HeaderComponent.dart';
 import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:Videotheque/components/TrailerComponent.dart';
-import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:flutter/material.dart';
-import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Videotheque/utils/Utils.dart';
 import 'package:Videotheque/Globals.dart';
 
 import 'package:Videotheque/views/movie_view/tag_view.dart';
@@ -22,7 +19,7 @@ import 'package:Videotheque/controllers/movie_controller/movie_controller.dart';
 
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
 import 'package:Videotheque/components/skeleton_tag_component.dart';
-import 'package:Videotheque/components/divider_component.dart';
+import 'package:Videotheque/components/DividerComponent.dart';
 
 class MovieView extends StatelessWidget {
   @override

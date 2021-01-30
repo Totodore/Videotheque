@@ -1,5 +1,5 @@
 import 'package:Videotheque/components/CrossFadeComponent.dart';
-import 'package:Videotheque/components/divider_component.dart';
+import 'package:Videotheque/components/DividerComponent.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/views/AppView.dart';
 import 'package:community_material_icon/community_material_icon.dart';

@@ -1,4 +1,4 @@
-import 'package:Videotheque/components/divider_component.dart';
+import 'package:Videotheque/components/DividerComponent.dart';
 import 'package:Videotheque/controllers/library_controller/library_body_controller.dart';
 import 'package:Videotheque/controllers/library_controller/library_body_header_controller.dart';
 import 'package:Videotheque/Globals.dart';
