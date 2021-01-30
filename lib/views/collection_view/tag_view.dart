@@ -1,5 +1,5 @@
 import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/views/collection_view/collection_view.dart';
+import 'package:Videotheque/views/collection_view/CollectionView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

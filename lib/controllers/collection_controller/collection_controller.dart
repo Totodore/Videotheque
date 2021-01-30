@@ -6,7 +6,7 @@ import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/services/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/collection_view/addtag_view.dart';
-import 'package:Videotheque/views/collection_view/collection_view.dart';
+import 'package:Videotheque/views/collection_view/CollectionView.dart';
 import 'package:flutter/material.dart';
 
 class CollectionController extends ChangeNotifier {

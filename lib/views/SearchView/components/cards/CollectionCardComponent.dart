@@ -1,7 +1,7 @@
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/models/api/ApiSearchCollectionModel.dart';
 import 'package:Videotheque/utils/Utils.dart';
-import 'package:Videotheque/views/collection_view/collection_view.dart';
+import 'package:Videotheque/views/collection_view/CollectionView.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 
