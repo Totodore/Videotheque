@@ -4,7 +4,7 @@ import 'package:Videotheque/components/skeleton_textline_component.dart';
 import 'package:Videotheque/views/AccountView/components/ButtonComponent.dart';
 import 'package:Videotheque/views/AccountView/components/SearchModeComponent.dart';
 import 'package:Videotheque/views/AccountView/components/StatsComponent.dart';
-import 'package:Videotheque/views/person_view/person_view.dart';
+import 'package:Videotheque/views/person_view/PersonView.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

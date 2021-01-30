@@ -9,7 +9,7 @@ import 'package:Videotheque/views/AccountView/components/ChangeMailComponent.dar
 import 'package:Videotheque/views/AccountView/components/ChangeNameComponent.dart';
 import 'package:Videotheque/views/AccountView/components/ChangePasswordComponent.dart';
 import 'package:Videotheque/views/AccountView/components/RemoveAccountComponent.dart';
-import 'package:Videotheque/views/person_view/person_view.dart';
+import 'package:Videotheque/views/person_view/PersonView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:random_color/random_color.dart';

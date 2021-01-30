@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 
 import 'package:Videotheque/views/AppView.dart';
 import 'package:Videotheque/views/movie_view/MovieView.dart';
-import 'package:Videotheque/views/person_view/person_view.dart';
+import 'package:Videotheque/views/person_view/PersonView.dart';
 import 'package:Videotheque/views/SearchView/SearchView.dart';
 import 'package:Videotheque/views/collection_view/CollectionView.dart';
 import 'package:Videotheque/views/tv_view/tv_view.dart';
