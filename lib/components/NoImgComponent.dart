@@ -6,13 +6,16 @@ import 'package:random_color/random_color.dart';
 class NoImgComponent extends StatelessWidget {
 
   final String text;
+  final double height;
+  final double width;
+  final double fontSize;
 
-  const NoImgComponent(this.text);
+  const NoImgComponent(this.text, [this.width = 400, this.height = 600, this.fontSize = 18]);
 
   @override
   Widget build(BuildContext context) => Container(
-    width: 400,
-    height: 600,
+    width: width,
+    height: height,
     decoration: BoxDecoration(
       gradient: LinearGradient(
         begin: Alignment.bottomLeft,
@@ -35,7 +38,7 @@ class NoImgComponent extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 child: Text(text ?? "", textAlign: TextAlign.center, style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  fontSize: 18,
+                  fontSize: fontSize,
                   color: Colors.orange[50]
                 )),
               ),

@@ -60,7 +60,7 @@ class EpisodeView extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0, right: 10, top: 0, bottom: 0),
-                          child: HeaderComponent(controller.data["overview"], controller.heroTag, controller.data["name"], false)
+                          child: HeaderComponent(controller.data["overview"], controller.heroTag, controller.data["poster_path"], false)
                         ),
                         controller.dispElement(ElementsTypes.InfoTags) ? DividerComponent(TvView.baseColor) : Container(),
                         Container(

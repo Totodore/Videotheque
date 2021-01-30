@@ -1,4 +1,5 @@
 import 'package:Videotheque/components/CrossFadeComponent.dart';
+import 'package:Videotheque/components/HeaderComponent.dart';
 import 'package:Videotheque/components/TrailerComponent.dart';
 import 'package:Videotheque/components/DividerComponent.dart';
 import 'package:Videotheque/components/SkeletonCarrouselComponent.dart';
@@ -10,12 +11,9 @@ import 'package:Videotheque/views/components/carrousel_view.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:drop_cap_text/drop_cap_text.dart';
-import 'package:progressive_image/progressive_image.dart';
 
 import 'package:Videotheque/controllers/tv_controller/season_controller.dart';
 import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/utils/Utils.dart';
 
 class SeasonView extends StatelessWidget {
   Map data;
@@ -60,58 +58,9 @@ class SeasonView extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0, right: 10, top: 0, bottom: 0),
-                            child: controller.data["overview"] != null && controller.data["overview"].length > 2 ? DropCapText(
-                              controller.data["overview"],
-                              style: TextStyle(
-                                fontSize: 17,
-                                height: 1.4
-                              ),
-                              dropCapPadding: EdgeInsets.only(right: 15),
-                              textAlign: TextAlign.justify,
-                              overflow: TextOverflow.fade,
-                              dropCap: DropCap(
-                                height: 240, 
-                                width: 160,
-                                child: Card(
-                                  elevation: 3,
-                                  margin: EdgeInsets.only(bottom: 0),
-                                  child: Hero(
-                                    tag: controller.heroTag,
-                                    child: ProgressiveImage(
-                                      placeholder: AssetImage("assets/img/loading.png"),
-                                      thumbnail: Utils.fetchImage(controller.data["poster_path"], ImageTypes.Poster, true),
-                                      image: Utils.fetchImage(controller.data["poster_path"],  ImageTypes.Poster),
-                                      width: 160,
-                                      height: 240,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ) : Container(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                width: 160,
-                                padding: EdgeInsets.only(bottom: 15),
-                                child: Card(
-                                  elevation: 3,
-                                  margin: EdgeInsets.only(bottom: 0),
-                                  child: Hero(
-                                    tag: controller.heroTag,
-                                    child: ProgressiveImage(
-                                      placeholder: AssetImage("assets/img/loading.png"),
-                                      thumbnail: Utils.fetchImage(controller.data["poster_path"], ImageTypes.Poster, true),
-                                      image: Utils.fetchImage(controller.data["poster_path"], ImageTypes.Poster),
-                                      width: 160,
-                                      height: 240,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                            child: HeaderComponent(controller.data["overview"], controller.heroTag, controller.data["poster_path"], false),
                           ),
-                          controller.dispElement(ElementsTypes.InfoTags) ? DividerComponent(TvView.baseColor) : Container(),
+                          controller.dispElement(ElementsTypes.InfoTags) && controller.hasImg ? DividerComponent(TvView.baseColor) : Container(),
                           Container(
                             width: MediaQuery.of(context).size.width - 20,
                             margin: EdgeInsets.symmetric(horizontal: 10),

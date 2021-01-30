@@ -16,7 +16,7 @@ class EpisodeController extends ChangeNotifier {
   String trailerKey;
   
   List details = [];
-  Map<ElementsTypes, List> carrouselData = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (index) => []));
+  Map<ElementsTypes, List> carrouselData = Map.fromIterables(ElementsTypes.values, List.filled(ElementsTypes.values.length, null));
 
   Map<ElementsTypes, States> objectsStates = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (index) => States.Nothing));
 
@@ -33,9 +33,10 @@ class EpisodeController extends ChangeNotifier {
 
   void fetchDetails() {
     objectsStates[ElementsTypes.InfoTags] = States.Loading;
+    var date = DateTime.tryParse(data["air_date"]);
     details = [
       data["vote_average"] != null && data["vote_average"] > 0 ? "${data["vote_average"]} ★" : null,
-      data["air_date"] != null ? "Sortie le ${DateFormat('dd/MM/yyyy').format(DateTime.parse(data["air_date"]))}" : null,
+      date != null ? "Sortie le ${DateFormat('dd/MM/yyyy').format(date)}" : null,
     ];
     details.removeWhere((element) => element == null);
     objectsStates[ElementsTypes.InfoTags] = details.length > 0 ? States.Added : States.Empty;
@@ -49,21 +50,12 @@ class EpisodeController extends ChangeNotifier {
     List crew = results["crew"];
     List cast = results["cast"];
     List guests = results["guest_stars"];
-    if (crew != null) {
-      crew.removeWhere((el) => el["poster_path"] == null && el["profile_path"] == null);
-      carrouselData[ElementsTypes.CrewCarrousel] = crew;
-    }
-    if (cast != null) {
-      cast.removeWhere((el) => el["poster_path"] == null && el["profile_path"] == null);
-      carrouselData[ElementsTypes.CastingCarrousel] = cast;
-    }
-    if (guests != null) {
-      guests.removeWhere((el) => el["poster_path"] == null && el["profile_path"] == null);
-      carrouselData[ElementsTypes.GuestsCarrousel] = guests;
-    }
-    objectsStates[ElementsTypes.CrewCarrousel] = crew != null && crew.length > 0 ? States.Added : States.Empty;
-    objectsStates[ElementsTypes.CastingCarrousel] = cast != null && cast.length > 0 ? States.Added : States.Empty;
-    objectsStates[ElementsTypes.GuestsCarrousel] = guests != null && guests.length > 0 ? States.Added : States.Empty;
+    carrouselData[ElementsTypes.CrewCarrousel] ??= crew;
+    carrouselData[ElementsTypes.CastingCarrousel] ??= cast;
+    carrouselData[ElementsTypes.GuestsCarrousel] ??= guests;
+    objectsStates[ElementsTypes.CrewCarrousel] = (crew?.isNotEmpty ?? false) ? States.Added : States.Empty;
+    objectsStates[ElementsTypes.CastingCarrousel] = (cast?.isNotEmpty ?? false) ? States.Added : States.Empty;
+    objectsStates[ElementsTypes.GuestsCarrousel] = (guests?.isNotEmpty ?? false) ? States.Added : States.Empty;
     notifyListeners();
   }
 

@@ -162,8 +162,6 @@ class CollectionController extends ChangeNotifier {
     notifyListeners();
     Map results = await tmdbQueries.getCollection(data["id"].toString());
     List movies = results["parts"];
-    if (movies != null)
-      movies.removeWhere((el) => el["poster_path"] == null);
 
     overview = results["overview"];
     carrouselData[ElementsTypes.MoviesCarrousel] = movies;

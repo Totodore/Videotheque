@@ -39,7 +39,7 @@ class PersonView extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 10.0, right: 10, top: 10, bottom: 0),
                             child: HeaderComponent(controller.preloadData["biography"], controller.heroTag, controller.preloadData["profile_path"], true),
                           ),
-                          controller.isAdded ? DividerComponent(PersonView.baseColor) : Container(),
+                          controller.isAdded && controller.preloadData["poster_path"] != null ? DividerComponent(PersonView.baseColor) : Container(),
                           controller.isAdded ? Container(
                             width: MediaQuery.of(context).size.width - 20,
                             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -55,7 +55,7 @@ class PersonView extends StatelessWidget {
                               ),
                             ),
                           ) : Container(),
-                          DividerComponent(PersonView.baseColor),
+                          controller.preloadData["poster_path"] != null ? DividerComponent(PersonView.baseColor) : Container(),
                           Container(
                             width: MediaQuery.of(context).size.width - 20,
                             margin: EdgeInsets.symmetric(horizontal: 10),

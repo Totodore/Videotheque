@@ -16,7 +16,7 @@ class SeasonController extends ChangeNotifier {
   String trailerKey;
   
   List details;
-  Map<ElementsTypes, List> carrouselData = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (index) => []));
+  Map<ElementsTypes, List> carrouselData = Map.fromIterables(ElementsTypes.values, List.filled(ElementsTypes.values.length, null));
 
   Map<ElementsTypes, States> objectsStates = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (index) => States.Nothing));
 
@@ -58,18 +58,10 @@ class SeasonController extends ChangeNotifier {
     objectsStates[ElementsTypes.CrewCarrousel] = States.Loading;
     notifyListeners();
     Map results = await tmdbQueries.getTvSeasonCredits(tvId, data["season_number"].toString());
-    List crew = results["crew"];
-    List cast = results["cast"];
-    if (crew != null) {
-      crew.removeWhere((el) => el["poster_path"] == null && el["profile_path"] == null);
-      carrouselData[ElementsTypes.CrewCarrousel] = crew;
-    }
-    if (cast != null) {
-      cast.removeWhere((el) => el["poster_path"] == null && el["profile_path"] == null);
-      carrouselData[ElementsTypes.CastingCarrousel] = cast;
-    }
-    objectsStates[ElementsTypes.CrewCarrousel] = crew != null && crew.length > 0 ? States.Added : States.Empty;
-    objectsStates[ElementsTypes.CastingCarrousel] = cast != null && cast.length > 0 ? States.Added : States.Empty;
+    carrouselData[ElementsTypes.CrewCarrousel] ??= results["crew"];
+    carrouselData[ElementsTypes.CastingCarrousel] ??= results["cast"];
+    objectsStates[ElementsTypes.CrewCarrousel] = ((results["crew"] as List)?.isNotEmpty ?? false) ? States.Added : States.Empty;
+    objectsStates[ElementsTypes.CastingCarrousel] = ((results["cast"] as List)?.isNotEmpty ?? false) ? States.Added : States.Empty;
     notifyListeners();
   }
 
@@ -77,7 +69,7 @@ class SeasonController extends ChangeNotifier {
     objectsStates[ElementsTypes.YoutubeTrailer] = States.Loading;
     notifyListeners();
     List results = (await tmdbQueries.getTvSeasonVideos(tvId, data["season_number"].toString()))["results"];
-    
+
     for (Map trailer in results) {
       if (trailer["site"] == "YouTube") {
         trailerKey = trailer["key"];
@@ -94,7 +86,6 @@ class SeasonController extends ChangeNotifier {
     else return false;
   }
 
-  
   void showEpisodeEl(int index, String heroTag) {
     showModalBottomSheet(
       context: context,
@@ -106,4 +97,6 @@ class SeasonController extends ChangeNotifier {
       builder: (context) => EpisodeView(carrouselData[ElementsTypes.EpisodesCarrousel][index], heroTag, tvId, data["season_number"].toString()),
     );
   }
+
+  bool get hasImg => data["poster_path"]?.toString()?.isNotEmpty ?? false;
 }
