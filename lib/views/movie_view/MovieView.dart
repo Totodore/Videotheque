@@ -1,6 +1,7 @@
 
 import 'dart:ui';
 
+import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/components/FABComponent.dart';
 import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
@@ -115,12 +116,11 @@ class MovieView extends StatelessWidget {
                           padding: EdgeInsets.only(top: 0),
                           transform: Matrix4.translationValues(0, -5, 0),
                           child: Theme(
-                            data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
-                            child: AnimatedCrossFade(
-                              firstChild: SkeletonTagComponent(controller.preloadData["genre_ids"].length + 1),
-                              secondChild: controller.objectsStates[ElementsTypes.GenreTags] == States.Added ? TagView(ElementsTypes.GenreTags, controller.loadedGenreTags, controller.addedGenreTags, controller.isAdded, controller.onAddTagTapped): Padding(padding: EdgeInsets.all(0)),
-                              crossFadeState: controller.objectsStates[ElementsTypes.GenreTags] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                              duration: Duration(milliseconds: 200),
+                            data: Theme.of(context).copyWith(splashColor: GlobalsColor.darkGreen),
+                            child: CrossFadeComponent(
+                              child1: SkeletonTagComponent(controller.preloadData["genre_ids"].length + 1),
+                              child2: controller.objectsStates[ElementsTypes.GenreTags] == States.Added ? TagView(ElementsTypes.GenreTags, controller.loadedGenreTags, controller.addedGenreTags, controller.isAdded, controller.onAddTagTapped): Padding(padding: EdgeInsets.all(0)),
+                              dispFirst: controller.objectsStates[ElementsTypes.GenreTags] == States.Loading,
                             ),
                           ),
                         ),
@@ -132,12 +132,11 @@ class MovieView extends StatelessWidget {
                           padding: EdgeInsets.only(top: 0),
                           transform: Matrix4.translationValues(0, -5, 0),
                           child: Theme(
-                            data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
-                            child: AnimatedCrossFade(
-                              firstChild: SkeletonTagComponent(3),
-                              secondChild: controller.objectsStates[ElementsTypes.InfoTags] == States.Added ? TagView(ElementsTypes.InfoTags, controller.loadedInfosTags, [], controller.isAdded, controller.onAddTagTapped) : Padding(padding: EdgeInsets.all(0)),
-                              crossFadeState: controller.objectsStates[ElementsTypes.InfoTags] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                              duration: Duration(milliseconds: 200),
+                            data: Theme.of(context).copyWith(splashColor: GlobalsColor.darkGreen),
+                            child: CrossFadeComponent(
+                              child1: SkeletonTagComponent(3),
+                              child2: controller.objectsStates[ElementsTypes.InfoTags] == States.Added ? TagView(ElementsTypes.InfoTags, controller.loadedInfosTags, [], controller.isAdded, controller.onAddTagTapped) : Padding(padding: EdgeInsets.all(0)),
+                              dispFirst: controller.objectsStates[ElementsTypes.InfoTags] == States.Loading,
                             ),
                           ),
                         ),
@@ -149,12 +148,11 @@ class MovieView extends StatelessWidget {
                           padding: EdgeInsets.only(top: 0),
                           transform: Matrix4.translationValues(0, -5, 0),
                           child: Theme(
-                            data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
-                            child: AnimatedCrossFade(
-                              firstChild: SkeletonCarrouselComponent(),
-                              secondChild: controller.objectsStates[ElementsTypes.CastingCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.CastingCarrousel]) : Padding(padding: EdgeInsets.all(0)),
-                              crossFadeState: controller.objectsStates[ElementsTypes.CastingCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                              duration: Duration(milliseconds: 200),
+                            data: Theme.of(context).copyWith(splashColor: GlobalsColor.darkGreen),
+                            child: CrossFadeComponent(
+                              child1: SkeletonCarrouselComponent(),
+                              child2: controller.objectsStates[ElementsTypes.CastingCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.CastingCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                              dispFirst: controller.objectsStates[ElementsTypes.CastingCarrousel] == States.Loading,
                             ),
                           ),
                         ),
@@ -166,12 +164,11 @@ class MovieView extends StatelessWidget {
                           padding: EdgeInsets.only(top: 0),
                           transform: Matrix4.translationValues(0, -5, 0),
                           child: Theme(
-                            data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
-                            child: AnimatedCrossFade(
-                              firstChild: SkeletonCarrouselComponent(),
-                              secondChild: controller.objectsStates[ElementsTypes.CrewCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.CrewCarrousel]) : Padding(padding: EdgeInsets.all(0)),
-                              crossFadeState: controller.objectsStates[ElementsTypes.CrewCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                              duration: Duration(milliseconds: 200),
+                            data: Theme.of(context).copyWith(splashColor: GlobalsColor.darkGreen),
+                            child: CrossFadeComponent(
+                              child1: SkeletonCarrouselComponent(),
+                              child2: controller.objectsStates[ElementsTypes.CrewCarrousel] == States.Added ? CarrouselView(QueryTypes.person, controller.carrouselData[ElementsTypes.CrewCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                              dispFirst: controller.objectsStates[ElementsTypes.CrewCarrousel] == States.Loading,
                             ),
                           ),
                         ),
@@ -183,19 +180,18 @@ class MovieView extends StatelessWidget {
                           padding: EdgeInsets.only(top: 0),
                           transform: Matrix4.translationValues(0, -5, 0),
                           child: Theme(
-                            data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
-                            child: AnimatedCrossFade(
-                              firstChild: SkeletonCarrouselComponent(),
-                              secondChild: controller.objectsStates[ElementsTypes.SimilarCarrousel] == States.Added ? CarrouselView(QueryTypes.movie, controller.carrouselData[ElementsTypes.SimilarCarrousel]) : Padding(padding: EdgeInsets.all(0)),
-                              crossFadeState: controller.objectsStates[ElementsTypes.SimilarCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                              duration: Duration(milliseconds: 200),
+                            data: Theme.of(context).copyWith(splashColor: GlobalsColor.darkGreen),
+                            child: CrossFadeComponent(
+                              child1: SkeletonCarrouselComponent(),
+                              child2: controller.objectsStates[ElementsTypes.SimilarCarrousel] == States.Added ? CarrouselView(QueryTypes.movie, controller.carrouselData[ElementsTypes.SimilarCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                              dispFirst: controller.objectsStates[ElementsTypes.SimilarCarrousel] == States.Loading,
                             ),
                           ),
                         ),
                         controller.dispElement(ElementsTypes.YoutubeTrailer) ? DividerComponent(GlobalsColor.darkGreen) : Container(),
                         controller.dispElement(ElementsTypes.YoutubeTrailer) ? Center(
                           child: Theme(
-                            data: Theme.of(context).copyWith(splashColor: GlobalsMessage.chipData[1]["splash_color"]),
+                            data: Theme.of(context).copyWith(splashColor: GlobalsColor.darkGreen),
                             child: TrailerView(controller.trailerKey),
                           ),
                         ) : Container(),  

@@ -1,3 +1,4 @@
+import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/components/FABComponent.dart';
 import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/divider_component.dart';
@@ -33,7 +34,7 @@ class PersonView extends StatelessWidget {
                 return CustomScrollView(
                   physics: BouncingScrollPhysics(),
                   slivers: <Widget>[
-                    SliverAppBarComponent(PersonView.baseColor, controller.preloadData["backdrop_path"], controller.preloadData["name"] ?? controller.preloadData["original_name"], controller.isAdded, controller.isFav, controller.onFavTapped),
+                    SliverAppBarComponent(PersonView.baseColor, null, controller.preloadData["name"] ?? controller.preloadData["original_name"], controller.isAdded, controller.isFav, controller.onFavTapped),
                     SliverList(
                       delegate: SliverChildListDelegate([
                           Padding(
@@ -98,11 +99,10 @@ class PersonView extends StatelessWidget {
                             transform: Matrix4.translationValues(0, -5, 0),
                             child: Theme(
                               data: Theme.of(context).copyWith(splashColor: PersonView.splashColor),
-                              child: AnimatedCrossFade(
-                                firstChild: SkeletonTagComponent(3),
-                                secondChild: TagView(ElementsTypes.GenreTags, controller.addedGenreTags, controller.onAddTagTapped),
-                                crossFadeState: controller.objectsStates[ElementsTypes.GenreTags] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                                duration: Duration(milliseconds: 200),
+                              child: CrossFadeComponent(
+                                child1: SkeletonTagComponent(3),
+                                child2: TagView(ElementsTypes.GenreTags, controller.addedGenreTags, controller.onAddTagTapped),
+                                dispFirst: controller.objectsStates[ElementsTypes.GenreTags] == States.Loading,
                               ),
                             ),
                           ) : Container(),
@@ -115,11 +115,10 @@ class PersonView extends StatelessWidget {
                             transform: Matrix4.translationValues(0, -5, 0),
                             child: Theme(
                               data: Theme.of(context).copyWith(splashColor: PersonView.splashColor),
-                              child: AnimatedCrossFade(
-                                firstChild: SkeletonTagComponent(3),
-                                secondChild: controller.objectsStates[ElementsTypes.InfoTags] == States.Added ? TagView(ElementsTypes.InfoTags, controller.loadedInfoTags, controller.onAddTagTapped) : Padding(padding: EdgeInsets.all(0)),
-                                crossFadeState: controller.objectsStates[ElementsTypes.InfoTags] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                                duration: Duration(milliseconds: 200),
+                              child: CrossFadeComponent(
+                                child1: SkeletonTagComponent(3),
+                                child2: controller.objectsStates[ElementsTypes.InfoTags] == States.Added ? TagView(ElementsTypes.InfoTags, controller.loadedInfoTags, controller.onAddTagTapped) : Padding(padding: EdgeInsets.all(0)),
+                                dispFirst: controller.objectsStates[ElementsTypes.InfoTags] == States.Loading,
                               ),
                             ),
                           ),
@@ -132,11 +131,10 @@ class PersonView extends StatelessWidget {
                             transform: Matrix4.translationValues(0, -5, 0),
                             child: Theme(
                               data: Theme.of(context).copyWith(splashColor: PersonView.splashColor),
-                              child: AnimatedCrossFade(
-                                firstChild: SkeletonCarrouselComponent(),
-                                secondChild: controller.objectsStates[ElementsTypes.KnownForMovieCarrousel] == States.Added ? CarrouselView(QueryTypes.movie, controller.carrouselData[ElementsTypes.KnownForMovieCarrousel]) : Padding(padding: EdgeInsets.all(0)),
-                                crossFadeState: controller.objectsStates[ElementsTypes.KnownForMovieCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                                duration: Duration(milliseconds: 200),
+                              child: CrossFadeComponent(
+                                child1: SkeletonCarrouselComponent(),
+                                child2: controller.objectsStates[ElementsTypes.KnownForMovieCarrousel] == States.Added ? CarrouselView(QueryTypes.movie, controller.carrouselData[ElementsTypes.KnownForMovieCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                                dispFirst: controller.objectsStates[ElementsTypes.KnownForMovieCarrousel] == States.Loading,
                               ),
                             ),
                           ),
@@ -149,11 +147,10 @@ class PersonView extends StatelessWidget {
                             transform: Matrix4.translationValues(0, -5, 0),
                             child: Theme(
                               data: Theme.of(context).copyWith(splashColor: PersonView.splashColor),
-                              child: AnimatedCrossFade(
-                                firstChild: SkeletonCarrouselComponent(),
-                                secondChild: controller.objectsStates[ElementsTypes.KnownForTvCarrousel] == States.Added ? CarrouselView(QueryTypes.tv, controller.carrouselData[ElementsTypes.KnownForTvCarrousel]) : Padding(padding: EdgeInsets.all(0)),
-                                crossFadeState: controller.objectsStates[ElementsTypes.KnownForTvCarrousel] != States.Loading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                                duration: Duration(milliseconds: 200),
+                              child: CrossFadeComponent(
+                                child1: SkeletonCarrouselComponent(),
+                                child2: controller.objectsStates[ElementsTypes.KnownForTvCarrousel] == States.Added ? CarrouselView(QueryTypes.tv, controller.carrouselData[ElementsTypes.KnownForTvCarrousel]) : Padding(padding: EdgeInsets.all(0)),
+                                dispFirst: controller.objectsStates[ElementsTypes.KnownForTvCarrousel] == States.Loading,
                               ),
                             ),
                           ),

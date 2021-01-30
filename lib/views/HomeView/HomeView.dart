@@ -1,3 +1,4 @@
+import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/controllers/HomeController/HomeController.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/views/HomeView/components/AskMailComponent.dart';
@@ -24,16 +25,15 @@ class HomeView extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   child: Column(children: [
                     AppBarComponent(),
-                    AnimatedCrossFade(
-                      firstChild: LoadingComponent(), 
-                      secondChild: controller.hasNoContent ? NoContentComponent() : Column(children: 
+                    CrossFadeComponent(
+                      child1: LoadingComponent(),
+                      child2: controller.hasNoContent ? NoContentComponent() : Column(children: 
                         controller.infos..addAll([
                           Padding(padding: EdgeInsets.only(top: 10), child: Container()),
                           !controller.mailConfirmed ? AskMailComponent(controller.sendMailConfirm, controller.mailSended) : Container(),
-                        ])..addAll(controller.carrousels)..add(AskForCoffeeComponent())
+                        ])..addAll(controller.carrousels)..add(AskForCoffeeComponent()),
                       ),
-                      crossFadeState: controller.isLoading ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
-                      duration: const Duration(milliseconds: 200)
+                      dispFirst: controller.isLoading,
                     ),
                   ]),
                 ),
