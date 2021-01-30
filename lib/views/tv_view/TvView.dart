@@ -6,7 +6,7 @@ import 'package:Videotheque/components/HeaderComponent.dart';
 import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:Videotheque/components/TrailerComponent.dart';
-import 'package:Videotheque/controllers/tv_controller/tv_controller.dart';
+import 'package:Videotheque/controllers/tv_controller/TvController.dart';
 
 import 'package:Videotheque/components/DividerComponent.dart';
 import 'package:Videotheque/components/SkeletonCarrouselComponent.dart';
@@ -14,7 +14,7 @@ import 'package:Videotheque/components/SkeletonTagComponent.dart';
 
 import 'package:Videotheque/Globals.dart';
 
-import 'package:Videotheque/views/tv_view/tag_view.dart';
+import 'package:Videotheque/views/tv_view/TagView.dart';
 import 'package:Videotheque/views/components/CarrouselView.dart';
 
 import 'package:flutter/material.dart';
