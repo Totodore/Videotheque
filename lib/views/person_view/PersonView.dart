@@ -8,10 +8,10 @@ import 'package:Videotheque/components/SkeletonTagComponent.dart';
 
 import 'package:Videotheque/Globals.dart';
 
-import 'package:Videotheque/controllers/person_controller/person_controller.dart';
+import 'package:Videotheque/controllers/person_controller/PersonController.dart';
 
 import 'package:Videotheque/views/components/CarrouselView.dart';
-import 'package:Videotheque/views/person_view/tag_view.dart';
+import 'package:Videotheque/views/person_view/TagView.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

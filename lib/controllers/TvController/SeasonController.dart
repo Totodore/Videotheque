@@ -4,7 +4,7 @@ import 'package:Videotheque/services/FirestoreQueries.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/services/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
-import 'package:Videotheque/views/tv_view/EpisodeView.dart';
+import 'package:Videotheque/views/TvView/EpisodeView.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

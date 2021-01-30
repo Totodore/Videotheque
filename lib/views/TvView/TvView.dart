@@ -14,7 +14,7 @@ import 'package:Videotheque/components/SkeletonTagComponent.dart';
 
 import 'package:Videotheque/Globals.dart';
 
-import 'package:Videotheque/views/tv_view/TagView.dart';
+import 'package:Videotheque/views/TvView/TagView.dart';
 import 'package:Videotheque/views/components/CarrouselView.dart';
 
 import 'package:flutter/material.dart';
