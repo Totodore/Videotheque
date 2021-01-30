@@ -1,3 +1,4 @@
+import 'package:Videotheque/components/FABComponent.dart';
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
 import 'package:Videotheque/components/skeleton_tag_component.dart';
@@ -25,23 +26,7 @@ class PersonView extends StatelessWidget {
       child: Consumer<PersonController>( 
         builder: (BuildContext context, PersonController controller, Widget child) {
           return Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: controller.isAdded ? controller.removePerson : controller.addPerson,
-              backgroundColor: PersonView.baseColor,
-              elevation: 3,
-              child: AnimatedCrossFade(
-                firstChild: Icon(Icons.add,
-                  color: Colors.white,
-                  size: 25,
-                ),
-                secondChild: Icon(Icons.done,
-                  color: Colors.white,
-                  size: 25,
-                ),
-                crossFadeState: controller.isAdded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                duration: Duration(milliseconds: 300),
-              ),
-            ),
+            floatingActionButton: FABComponent(controller.isAdded, PersonView.baseColor, controller.isAdded ? controller.removePerson : controller.addPerson),
             body: Builder(
               builder: (context) {
                 BuildContext scaffoldContext = context;

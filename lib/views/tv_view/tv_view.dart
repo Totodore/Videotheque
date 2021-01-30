@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:Videotheque/components/FABComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:Videotheque/controllers/tv_controller/tv_controller.dart';
 
@@ -31,23 +32,7 @@ class TvView extends StatelessWidget {
       child: Consumer<TvController>(
         builder: (context, controller, child) {
           return Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: controller.isAdded ? controller.removeTv : controller.addTv,
-              backgroundColor: TvView.baseColor,
-              elevation: 3,
-              child: AnimatedCrossFade(
-                firstChild: Icon(Icons.add,
-                  color: Colors.white,
-                  size: 25,
-                ),
-                secondChild: Icon(Icons.done,
-                  color: Colors.white,
-                  size: 25,
-                ),
-                crossFadeState: controller.isAdded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                duration: Duration(milliseconds: 300),
-              ),
-            ),
+            floatingActionButton: FABComponent(controller.isAdded, TvView.baseColor, controller.isAdded ? controller.removeTv : controller.addTv),
             body: Builder(
               builder: (context) {
                 BuildContext scaffoldContext = context;
