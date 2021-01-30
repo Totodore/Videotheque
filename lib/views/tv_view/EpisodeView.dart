@@ -1,4 +1,5 @@
 import 'package:Videotheque/components/CrossFadeComponent.dart';
+import 'package:Videotheque/components/HeaderComponent.dart';
 import 'package:Videotheque/components/TrailerComponent.dart';
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
@@ -62,56 +63,7 @@ class EpisodeView extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0, right: 10, top: 0, bottom: 0),
-                          child: controller.data["overview"] != null && controller.data["overview"].length > 2 ? DropCapText(
-                            controller.data["overview"],
-                            style: TextStyle(
-                              fontSize: 17,
-                              height: 1.4
-                            ),
-                            dropCapPadding: EdgeInsets.only(right: 15),
-                            textAlign: TextAlign.justify,
-                            overflow: TextOverflow.fade,
-                            dropCap: DropCap(
-                              height: 240, 
-                              width: 160,
-                              child: Card(
-                                elevation: 3,
-                                margin: EdgeInsets.only(bottom: 0),
-                                child: Hero(
-                                  tag: controller.heroTag,
-                                  child: ProgressiveImage(
-                                    placeholder: AssetImage("assets/img/loading.png"),
-                                    thumbnail: Utils.fetchImage(controller.data["poster_path"],  ImageTypes.Poster, true),
-                                    image: Utils.fetchImage(controller.data["poster_path"], ImageTypes.Poster),
-                                    width: 160,
-                                    height: 240,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ) : Container(
-                            alignment: Alignment.centerLeft,
-                            child: Container(
-                              width: 160,
-                              padding: EdgeInsets.only(bottom: 15),
-                              child: Card(
-                                elevation: 3,
-                                margin: EdgeInsets.only(bottom: 0),
-                                child: Hero(
-                                  tag: controller.heroTag,
-                                  child: ProgressiveImage(
-                                    placeholder: AssetImage("assets/img/loading.png"),
-                                    thumbnail: Utils.fetchImage(controller.data["poster_path"],  ImageTypes.Poster, true),
-                                    image: Utils.fetchImage(controller.data["poster_path"],  ImageTypes.Poster),
-                                    width: 160,
-                                    height: 240,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                          child: HeaderComponent(controller.data["overview"], controller.heroTag, controller.data["name"], false)
                         ),
                         controller.dispElement(ElementsTypes.InfoTags) ? DividerComponent(TvView.baseColor) : Container(),
                         Container(
