@@ -15,7 +15,7 @@ class AlertDialogComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        title: title != null ? Text(title) : Padding(padding: EdgeInsets.zero),
+        title: title != null ? Text(title) : Container(),
         contentPadding: title == null ? EdgeInsets.symmetric(vertical: 5, horizontal: 25) : EdgeInsets.symmetric(vertical: 15, horizontal: 25),
         content: content != null ? Text(content) : Container(),
         contentTextStyle: TextStyle(fontWeight: FontWeight.w600, color: Colors.black, fontSize: 16.5), 

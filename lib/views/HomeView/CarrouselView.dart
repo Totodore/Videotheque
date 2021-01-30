@@ -81,7 +81,7 @@ class CarrouselView extends StatelessWidget {
                                     )
                                   ),
                                 ),
-                              ) : Padding(padding: EdgeInsets.zero),
+                              ) : Container(),
                               Positioned.fill(
                                 child: Material(
                                   color: Colors.transparent,
