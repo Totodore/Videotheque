@@ -5,7 +5,7 @@ import 'package:Videotheque/components/alert_dialog_component.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/services/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
-import 'package:Videotheque/views/tv_view/season_view.dart';
+import 'package:Videotheque/views/tv_view/SeasonView.dart';
 import 'package:Videotheque/views/tv_view/TvView.dart';
 import 'package:flutter/material.dart';
 import 'package:Videotheque/views/tv_view/addtag_view.dart';

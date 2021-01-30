@@ -4,6 +4,7 @@ import 'package:Videotheque/components/CrossFadeComponent.dart';
 import 'package:Videotheque/components/FABComponent.dart';
 import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
+import 'package:Videotheque/components/TrailerComponent.dart';
 import 'package:Videotheque/controllers/tv_controller/tv_controller.dart';
 
 import 'package:Videotheque/components/divider_component.dart';
@@ -14,7 +15,6 @@ import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/utils/Utils.dart';
 
 import 'package:Videotheque/views/tv_view/tag_view.dart';
-import 'package:Videotheque/views/movie_view/trailer_view.dart';
 import 'package:Videotheque/views/components/carrousel_view.dart';
 
 import 'package:drop_cap_text/drop_cap_text.dart';
@@ -214,7 +214,7 @@ class TvView extends StatelessWidget {
                           controller.objectsStates[ElementsTypes.YoutubeTrailer] == States.Added ? Center(
                             child: Theme(
                               data: Theme.of(context).copyWith(splashColor: TvView.splashColor),
-                              child: TrailerView(controller.trailerKey),
+                              child: TrailerComponent(controller.trailerKey, "Trailer de la série", TvView.baseColor),
                             ),
                           ) : Container(),
                         ]
