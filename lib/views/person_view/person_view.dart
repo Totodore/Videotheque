@@ -1,4 +1,5 @@
 import 'package:Videotheque/components/FABComponent.dart';
+import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/divider_component.dart';
 import 'package:Videotheque/components/skeleton_carrousel_component.dart';
 import 'package:Videotheque/components/skeleton_tag_component.dart';
@@ -33,33 +34,8 @@ class PersonView extends StatelessWidget {
                 return CustomScrollView(
                   physics: BouncingScrollPhysics(),
                   slivers: <Widget>[
-                    SliverAppBar(
-                      forceElevated: true,
-                      backgroundColor: PersonView.baseColor,
-                      pinned: true,
-                      snap: false,
-                      floating: false,
-                      stretchTriggerOffset: 80,
-                      onStretchTrigger: () async => Navigator.popUntil(context, ModalRoute.withName("/")),
-                      stretch: false,
-                      expandedHeight: kToolbarHeight,
-                      elevation: 3,
-                      actions: <Widget>[
-                        controller.isAdded ? IconButton( 
-                          icon: Icon(controller.isFav ? Icons.favorite : Icons.favorite_border, color: Colors.white),
-                          onPressed: () => controller.onFavTapped(scaffoldContext),
-                        ) : Padding(padding: EdgeInsets.zero)
-                      ],
-                      leading: IconButton(
-                        icon: Icon(Icons.arrow_back,
-                          color: Colors.white,
-                          size: 38,
-                        ),
-                        onPressed: () => Navigator.popUntil(context, ModalRoute.withName("/")),
-                      ),
-                      title: Text(controller.preloadData["name"], style: TextStyle(color: Colors.white)),               
-                    ),
-                    SliverList( 
+                    SliverAppBarComponent(PersonView.baseColor, controller.preloadData["backdrop_path"], controller.preloadData["name"] ?? controller.preloadData["original_name"], controller.isAdded, controller.isFav, controller.onFavTapped),
+                    SliverList(
                       delegate: SliverChildListDelegate([
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0, right: 10, top: 10, bottom: 0),

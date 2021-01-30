@@ -2,6 +2,7 @@
 import 'dart:ui';
 
 import 'package:Videotheque/components/FABComponent.dart';
+import 'package:Videotheque/components/SliverAppBarComponent.dart';
 import 'package:Videotheque/components/ToSeeSeenComponent.dart';
 import 'package:background_app_bar/background_app_bar.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
@@ -37,66 +38,7 @@ class MovieView extends StatelessWidget {
                 return CustomScrollView(
                   physics: BouncingScrollPhysics(),
                   slivers: <Widget>[
-                    SliverAppBar(
-                      forceElevated: true,
-                      backgroundColor: GlobalsColor.darkGreen,
-                      pinned: true,
-                      snap: false,
-                      floating: false,
-                      stretchTriggerOffset: 80,
-                      onStretchTrigger: () async => Navigator.popUntil(context, ModalRoute.withName("/")),
-                      stretch: false,
-                      expandedHeight: controller.preloadData["backdrop_path"] != null ? 175 + GlobalsData.endSortBarPos : kToolbarHeight,
-                      elevation: 3,
-                      leading: IconButton(
-                        icon: Icon(Icons.arrow_back,
-                          color: controller.preloadData["backdrop_path"] != null ? GlobalsColor.darkGreen : Colors.white,
-                          size: 38,
-                        ),
-                        onPressed: () => Navigator.popUntil(context, ModalRoute.withName("/")),
-                      ),
-                      title: controller.preloadData["backdrop_path"] != null ? ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: SizedBox(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.black.withOpacity(0.4),
-                            ),
-                            margin: EdgeInsets.zero,
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                              child: Text(controller.preloadData["title"] != null ? controller.preloadData["title"] : controller.preloadData["original_title"],
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ) : Text(controller.preloadData["title"] != null ? controller.preloadData["title"] : controller.preloadData["original_title"],
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      actions: <Widget>[
-                        controller.isAdded ? IconButton(icon: Icon(controller.isFav ? Icons.favorite : Icons.favorite_border, color: Colors.white), onPressed: () => controller.onFavTapped(scaffoldContext)) : Padding(padding: EdgeInsets.zero),
-                      ],
-                      flexibleSpace: controller.preloadData["backdrop_path"] != null ? BackgroundFlexibleSpaceBar(
-                        title: Text(""),
-                        collapseMode: CollapseMode.parallax,
-                        background: ProgressiveImage(
-                          placeholder: AssetImage("assets/img/loading.png"),
-                          thumbnail: Utils.fetchImage(controller.preloadData["backdrop_path"], ImageTypes.Backdrop, true),
-                          image: Utils.fetchImage(controller.preloadData["backdrop_path"], ImageTypes.Backdrop),
-                          width: MediaQuery.of(context).size.width,
-                          height: 175 + GlobalsData.endSortBarPos + kToolbarHeight,
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
-                          fadeDuration: Duration(milliseconds: 150),
-                          blur: 4,
-                          repeat: ImageRepeat.noRepeat,
-                          matchTextDirection: true,
-                        ),
-                      ) : Container(),
-                    ),
+                    SliverAppBarComponent(GlobalsColor.darkGreen, controller.preloadData["backdrop_path"], controller.preloadData["title"] ?? controller.preloadData["original_title"], controller.isAdded, controller.isFav, controller.onFavTapped),
                     SliverList(
                       delegate: SliverChildListDelegate([
                         Padding(
