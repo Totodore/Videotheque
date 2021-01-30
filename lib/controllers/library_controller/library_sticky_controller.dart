@@ -7,7 +7,7 @@ import 'package:Videotheque/views/collection_view/CollectionView.dart';
 import 'package:Videotheque/views/library_view/sortby_view.dart';
 import 'package:Videotheque/views/movie_view/MovieView.dart';
 import 'package:Videotheque/views/person_view/PersonView.dart';
-import 'package:Videotheque/views/tv_view/tv_view.dart';
+import 'package:Videotheque/views/tv_view/TvView.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

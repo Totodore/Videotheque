@@ -14,7 +14,7 @@ import 'package:Videotheque/views/movie_view/MovieView.dart';
 import 'package:Videotheque/views/person_view/PersonView.dart';
 import 'package:Videotheque/views/SearchView/SearchView.dart';
 import 'package:Videotheque/views/collection_view/CollectionView.dart';
-import 'package:Videotheque/views/tv_view/tv_view.dart';
+import 'package:Videotheque/views/tv_view/TvView.dart';
 import 'package:Videotheque/views/authView/AuthView.dart';
 import 'package:flutter/services.dart';
 import 'Globals.dart';

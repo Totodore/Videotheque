@@ -1,5 +1,5 @@
 import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/views/tv_view/tv_view.dart';
+import 'package:Videotheque/views/tv_view/TvView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
