@@ -5,10 +5,10 @@ import 'package:Videotheque/components/AlertDialogComponent.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/services/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
-import 'package:Videotheque/views/tv_view/SeasonView.dart';
-import 'package:Videotheque/views/tv_view/TvView.dart';
+import 'package:Videotheque/views/TvView/SeasonView.dart';
+import 'package:Videotheque/views/TvView/TvView.dart';
 import 'package:flutter/material.dart';
-import 'package:Videotheque/views/tv_view/AddTagView.dart';
+import 'package:Videotheque/views/TvView/AddTagView.dart';
 
 class TvController extends ChangeNotifier {
   String heroTag;
