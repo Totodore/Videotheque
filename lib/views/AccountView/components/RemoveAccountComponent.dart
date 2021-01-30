@@ -1,5 +1,5 @@
 import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/views/person_view/person_view.dart';
+import 'package:Videotheque/views/person_view/PersonView.dart';
 import 'package:flutter/material.dart';
 
 class RemoveAccountComponent extends StatelessWidget {

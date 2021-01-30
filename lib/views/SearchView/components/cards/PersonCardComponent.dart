@@ -5,7 +5,7 @@ import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
 import 'package:Videotheque/utils/Utils.dart';
 import 'package:Videotheque/views/SearchView/components/cards/KnownForMovieComponent.dart';
 import 'package:Videotheque/views/SearchView/components/cards/KnownForTvComponent.dart';
-import 'package:Videotheque/views/person_view/person_view.dart';
+import 'package:Videotheque/views/person_view/PersonView.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 
