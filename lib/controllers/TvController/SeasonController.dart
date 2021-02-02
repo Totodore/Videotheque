@@ -8,12 +8,15 @@ import 'package:Videotheque/views/TvView/EpisodeView.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'TvController.dart';
+
 class SeasonController extends ChangeNotifier {
   BuildContext context;
   Map data;
   String heroTag;
   String tvId;
   String trailerKey;
+  TvController tvController;
   
   List details;
   Map<ElementsTypes, List> carrouselData = Map.fromIterables(ElementsTypes.values, List.filled(ElementsTypes.values.length, null));
@@ -25,7 +28,7 @@ class SeasonController extends ChangeNotifier {
   FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
   TMDBQueries tmdbQueries = Singletons.instance<TMDBQueries>();
 
-  SeasonController(this.context, this.data, this.heroTag, this.tvId) {
+  SeasonController(this.context, this.data, this.heroTag, this.tvId, this.tvController) {
     fetchDetails();
     fetchEpisodes();
     fetchCredits();

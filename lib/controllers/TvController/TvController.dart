@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Videotheque/services/FireauthQueries.dart';
 import 'package:Videotheque/services/FireconfigQueries.dart';
 import 'package:Videotheque/services/FirestoreQueries.dart';
@@ -9,11 +11,15 @@ import 'package:Videotheque/views/TvView/SeasonView.dart';
 import 'package:Videotheque/views/TvView/TvView.dart';
 import 'package:flutter/material.dart';
 import 'package:Videotheque/views/TvView/AddTagView.dart';
+import 'package:snapping_sheet/snapping_sheet.dart';
 
 class TvController extends ChangeNotifier {
   String heroTag;
   BuildContext context;
   String id;
+  SnappingSheetController sheetController = SnappingSheetController();
+  ScrollController sheetScrollController = ScrollController();
+  bool showModal = false;
 
   Map<ElementsTypes, States> objectsStates = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (int index) => States.Nothing));
   Map<ElementsTypes, List> carrouselData = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (int index) => []));
@@ -29,7 +35,10 @@ class TvController extends ChangeNotifier {
   bool isSeen = false;
   BuildContext scaffoldContext;
 
-  
+  int indexSeason;
+  double oldScrollOffset;
+  String heroTagSeason;
+
   FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
   FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
   FireconfigQueries fireconfig = Singletons.instance<FireconfigQueries>();
@@ -253,14 +262,18 @@ class TvController extends ChangeNotifier {
   }
 
   void showSeasonEl(int index, String heroTag) {
-    showModalBottomSheet(
-      context: scaffoldContext,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      isDismissible: true,
-      barrierColor: Colors.black.withAlpha(1),
-      builder: (context) => SeasonView(carrouselData[ElementsTypes.SeasonsCarrousel][index], heroTag, preloadData["id"].toString()),
-    );
+    indexSeason = index;
+    heroTagSeason = heroTag;
+    showModal = true;
+    notifyListeners();
+    sheetController.snapToPosition(sheetController.snapPositions[1]);
   }
+
+  Widget getSeasonEl() {
+    if (indexSeason != null) {
+      return SeasonView(carrouselData[ElementsTypes.SeasonsCarrousel][indexSeason], heroTagSeason, preloadData["id"].toString(), this);
+    }
+    return Container();
+  }
+
 }
