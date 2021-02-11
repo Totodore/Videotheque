@@ -45,7 +45,6 @@ class TvView extends StatelessWidget {
                     SnapPosition(positionFactor: 0.8, snappingDuration: const Duration(milliseconds: 200), snappingCurve: Curves.ease),
                     SnapPosition(positionPixel: MediaQuery.of(context).size.height - kToolbarHeight - 35*2, snappingDuration: const Duration(milliseconds: 200), snappingCurve: Curves.ease)
                   ],
-                  sheet: controller.bottomSheetView,
                   onClose: controller.onSheetClose,
                 );
               }

@@ -7,17 +7,16 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 class BottomSheetView extends StatelessWidget {
 
   final Widget back;
-  final Widget sheet;
   final List<SnapPosition> positions;
   final void Function() onClose;
 
-  final SnapPosition initialPosition = SnapPosition(positionFactor: 0, snappingDuration: const Duration(milliseconds: 200), snappingCurve: Curves.ease);
+  final SnapPosition initialPosition = SnapPosition(positionFactor: 0);
   BottomSheetController _controller;
-  BottomSheetView({this.back, this.sheet, this.positions, this.onClose});
+  BottomSheetView({this.back, this.positions, this.onClose});
 
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
-    create: (context) => BottomSheetController(context, this.positions, this.onClose),
+    create: (context) => BottomSheetController(context, this.onClose),
     child: Consumer<BottomSheetController>(
       builder: (context, controller, child) {
         this._controller = controller;
@@ -30,7 +29,7 @@ class BottomSheetView extends StatelessWidget {
           sheetBelow: SnappingSheetContent(
             draggable: true,
             heightBehavior: SnappingSheetHeight.fit(),
-            child: sheet
+            child: controller.sheet
           ),
           grabbingHeight: controller.show ? 35 : 0,
           grabbing: this._grabSection(context),
@@ -71,6 +70,6 @@ class BottomSheetView extends StatelessWidget {
     );
   }
 
-  void toggleSheet() => _controller.toggleSheet();
   set positionIndex(int index) => _controller.positionIndex = index;
+  set sheet(Widget sheet) => _controller.sheet = sheet;
 }

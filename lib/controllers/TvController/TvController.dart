@@ -17,7 +17,6 @@ class TvController extends ChangeNotifier {
   String heroTag;
   BuildContext context;
   String id;
-  ScrollController sheetScrollController = ScrollController();
   BottomSheetView bottomSheet;
 
   Map<ElementsTypes, States> objectsStates = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (int index) => States.Nothing));
@@ -33,10 +32,6 @@ class TvController extends ChangeNotifier {
   bool isToSee = false;
   bool isSeen = false;
   BuildContext scaffoldContext;
-
-  int indexSeason;
-  double oldScrollOffset;
-  String heroTagSeason;
 
   FireauthQueries fireauth = Singletons.instance<FireauthQueries>();
   FirestoreQueries firestore = Singletons.instance<FirestoreQueries>();
@@ -261,19 +256,11 @@ class TvController extends ChangeNotifier {
   }
 
   void showSeasonEl(int index, String heroTag) {
-    indexSeason = index;
-    heroTagSeason = heroTag;
+    print(index);
+    bottomSheet.sheet = SeasonView(carrouselData[ElementsTypes.SeasonsCarrousel][index], heroTag, preloadData["id"].toString(), this);
     notifyListeners();
-    bottomSheet.toggleSheet();
   }
 
   void onSheetClose() {
-
-  }
-
-  Widget get bottomSheetView {
-    if (indexSeason == null || heroTagSeason == null)
-      return Container();
-    return SeasonView(carrouselData[ElementsTypes.SeasonsCarrousel][indexSeason], heroTagSeason, preloadData["id"].toString(), this);
   }
 }
