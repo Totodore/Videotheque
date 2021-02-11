@@ -90,15 +90,7 @@ class SeasonController extends ChangeNotifier {
   }
 
   void showEpisodeEl(int index, String heroTag) {
-    showModalBottomSheet(
-      context: context,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      isDismissible: true,
-      barrierColor: Colors.black.withAlpha(1),
-      builder: (context) => EpisodeView(carrouselData[ElementsTypes.EpisodesCarrousel][index], heroTag, tvId, data["season_number"].toString()),
-    );
+    EpisodeView(carrouselData[ElementsTypes.EpisodesCarrousel][index], heroTag, tvId, data["season_number"].toString());
   }
 
   bool get hasImg => data["poster_path"]?.toString()?.isNotEmpty ?? false;
