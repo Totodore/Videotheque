@@ -15,6 +15,7 @@ import 'package:Videotheque/components/SkeletonTagComponent.dart';
 import 'package:Videotheque/Globals.dart';
 
 import 'package:Videotheque/views/TvView/TagView.dart';
+import 'package:Videotheque/views/components/BottomSheetView.dart';
 import 'package:Videotheque/views/components/CarrouselView.dart';
 
 import 'package:flutter/material.dart';
@@ -37,23 +38,15 @@ class TvView extends StatelessWidget {
             body: Builder(builder: (context) {
                 BuildContext scaffoldContext = context;
                 controller.scaffoldContext = context;
-                return SnappingSheet(
-                  snappingSheetController: controller.sheetController,
-                  lockOverflowDrag: true,
-                  initSnapPosition: SnapPosition(positionFactor: 0, snappingDuration: const Duration(milliseconds: 200), snappingCurve: Curves.ease),
-                  snapPositions: [
+                return controller.bottomSheet = BottomSheetView(
+                  back: getTvView(controller, scaffoldContext),
+                  positions: [
                     SnapPosition(positionFactor: 0, snappingDuration: const Duration(milliseconds: 200), snappingCurve: Curves.ease),
                     SnapPosition(positionFactor: 0.8, snappingDuration: const Duration(milliseconds: 200), snappingCurve: Curves.ease),
                     SnapPosition(positionPixel: MediaQuery.of(context).size.height - kToolbarHeight - 35*2, snappingDuration: const Duration(milliseconds: 200), snappingCurve: Curves.ease)
                   ],
-                  child: getTvView(controller, scaffoldContext),
-                  sheetBelow: SnappingSheetContent(
-                    draggable: true,
-                    heightBehavior: SnappingSheetHeight.fit(),
-                    child: controller.getSeasonEl()
-                  ),
-                  grabbingHeight: controller.showModal ? 35 : 0,
-                  grabbing: grabSection(context),
+                  sheet: controller.bottomSheetView,
+                  onClose: controller.onSheetClose,
                 );
               }
             )
@@ -196,39 +189,7 @@ class TvView extends StatelessWidget {
           ]
         ),
       ),
-      SliverToBoxAdapter(
-        child: controller.getSeasonEl(),
-      )
     ],
   );
 
-  Widget grabSection(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [BoxShadow(
-          blurRadius: 20.0,
-          color: Colors.black.withOpacity(0.2),
-        )],
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.0),
-          topRight: Radius.circular(30.0),
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            width: 200.0,
-            height: 5.0,
-            margin: EdgeInsets.only(top: 15.0),
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.all(Radius.circular(5.0))
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

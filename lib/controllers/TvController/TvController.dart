@@ -9,17 +9,16 @@ import 'package:Videotheque/services/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
 import 'package:Videotheque/views/TvView/SeasonView.dart';
 import 'package:Videotheque/views/TvView/TvView.dart';
+import 'package:Videotheque/views/components/BottomSheetView.dart';
 import 'package:flutter/material.dart';
 import 'package:Videotheque/views/TvView/AddTagView.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
 
 class TvController extends ChangeNotifier {
   String heroTag;
   BuildContext context;
   String id;
-  SnappingSheetController sheetController = SnappingSheetController();
   ScrollController sheetScrollController = ScrollController();
-  bool showModal = false;
+  BottomSheetView bottomSheet;
 
   Map<ElementsTypes, States> objectsStates = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (int index) => States.Nothing));
   Map<ElementsTypes, List> carrouselData = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (int index) => []));
@@ -264,16 +263,17 @@ class TvController extends ChangeNotifier {
   void showSeasonEl(int index, String heroTag) {
     indexSeason = index;
     heroTagSeason = heroTag;
-    showModal = true;
     notifyListeners();
-    sheetController.snapToPosition(sheetController.snapPositions[1]);
+    bottomSheet.toggleSheet();
   }
 
-  Widget getSeasonEl() {
-    if (indexSeason != null) {
-      return SeasonView(carrouselData[ElementsTypes.SeasonsCarrousel][indexSeason], heroTagSeason, preloadData["id"].toString(), this);
-    }
-    return Container();
+  void onSheetClose() {
+
   }
 
+  Widget get bottomSheetView {
+    if (indexSeason == null || heroTagSeason == null)
+      return Container();
+    return SeasonView(carrouselData[ElementsTypes.SeasonsCarrousel][indexSeason], heroTagSeason, preloadData["id"].toString(), this);
+  }
 }

@@ -21,14 +21,18 @@ class SeasonView extends StatelessWidget {
   final String heroTag;
   final String tvId;
   final TvController _tvController;
-  const SeasonView(this.data, this.heroTag, this.tvId, this._tvController);
+  
+  SeasonController controller;
+  SeasonView(this.data, this.heroTag, this.tvId, this._tvController);
   
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SeasonController>(
       create: (context) => SeasonController(context, data, heroTag, tvId, _tvController),
       child: Consumer<SeasonController>(
-        builder: (BuildContext context, SeasonController controller, Widget child) => Container(
+        builder: (BuildContext context, SeasonController controller, Widget child) {
+          this.controller = controller;
+          return Container(
           color: Colors.white,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
@@ -108,7 +112,8 @@ class SeasonView extends StatelessWidget {
                 ],
               )
           ),
-        )
+        );
+        }
       )
     );
   }
