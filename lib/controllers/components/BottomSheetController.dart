@@ -4,35 +4,36 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 class BottomSheetController extends ChangeNotifier {
   final BuildContext context;
   final SnappingSheetController sheetController = SnappingSheetController();
-  final List<SnapPosition> _positions;
   final void Function() _onClose;
   
-  int _positionIndex = 0;
   bool _show = false;
+  bool _opening = false;
 
-  BottomSheetController(this.context, this._positions, this._onClose);
+  Widget _sheet;
 
-  SnapPosition get position => _positions[_positionIndex];
+  BottomSheetController(this.context, this._onClose);
+
+  SnapPosition get position => sheetController.currentSnapPosition;
   bool get show => _show;
 
   set positionIndex(int index) {
-    if (index < _positions.length && index >= 0) {
-      _positionIndex = index;
-      notifyListeners();
-    }
+    sheetController.snapToPosition(sheetController.snapPositions[index]);
   }
   set dragPosition(double offset) {
-    if (offset == 0) {
+    if (offset == 0 && !_opening) {
       this._onClose();
       _show = false;
       notifyListeners();
-    }
-    print(_show);
+    } else _show = true;
+  }
+  set sheet(Widget sheet) {
+    _sheet = sheet;
+    notifyListeners();
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _show = true; 
+      notifyListeners();
+    });
   }
 
-  void toggleSheet() {
-    _show = !_show;
-    positionIndex = _show ? 1 : 0;
-    notifyListeners();
-  }
+  Widget get sheet => _sheet ?? Container();
 }
