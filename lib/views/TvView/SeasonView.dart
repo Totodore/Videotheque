@@ -32,8 +32,10 @@ class SeasonView extends StatelessWidget {
       child: Consumer<SeasonController>(
         builder: (BuildContext context, SeasonController controller, Widget child) {
           this.controller = controller;
-          return Container(
+          return Card(
           color: Colors.white,
+          margin: EdgeInsets.zero,
+          elevation: 0,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(

@@ -4,6 +4,7 @@ import 'package:Videotheque/services/FirestoreQueries.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/services/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
+import 'package:Videotheque/utils/Utils.dart';
 import 'package:Videotheque/views/TvView/EpisodeView.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -90,7 +91,8 @@ class SeasonController extends ChangeNotifier {
   }
 
   void showEpisodeEl(int index, String heroTag) {
-    EpisodeView(carrouselData[ElementsTypes.EpisodesCarrousel][index], heroTag, tvId, data["season_number"].toString());
+    var view = EpisodeView(carrouselData[ElementsTypes.EpisodesCarrousel][index], heroTag, tvId, data["season_number"].toString());
+    showSnappingSheet(context, view);
   }
 
   bool get hasImg => data["poster_path"]?.toString()?.isNotEmpty ?? false;
