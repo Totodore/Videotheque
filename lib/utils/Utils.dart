@@ -2,6 +2,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:sliding_sheet/sliding_sheet.dart';
 
 import '../Globals.dart';
 
@@ -33,17 +34,28 @@ class Utils {
     }
   }
 
-  
-  //Return False or the given id
-  static Future<dynamic> checkOldAccount(String mail) async {
-    Response res = await Utils.fetchData("https://app-videotheque.scriptis.fr/php/check_old_account.php?mail=$mail");
-    if (res.statusCode != 200) {
-      print("Error while fetching checkOldAccount");
-      return false;
-    }
-    if (res.body.length > 0) return res.body;
-    else return false;
-  }
-  
   static String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+}
+
+Future<SheetController> showSnappingSheet(BuildContext context, Widget child) async {
+  var controller = SheetController();
+  var height = MediaQuery.of(context).size.height;
+  await showSlidingBottomSheet(context, builder: (context) => SlidingSheetDialog(
+    elevation: 8,
+    cornerRadius: 16,
+    backdropColor: Colors.black.withOpacity(0.2),
+    snapSpec: SnapSpec(
+      snap: true,
+      snappings: [0, 0.8, (height - kToolbarHeight - 35) / height],
+      positioning: SnapPositioning.relativeToAvailableSpace,
+      initialSnap: 0.8
+    ),
+    duration: const Duration(milliseconds: 350),
+    scrollSpec: ScrollSpec(
+      physics: BouncingScrollPhysics()
+    ),
+    controller: controller,    
+    builder: (context, state) => child
+  ));
+  return controller;
 }

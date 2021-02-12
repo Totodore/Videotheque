@@ -7,9 +7,9 @@ import 'package:Videotheque/components/AlertDialogComponent.dart';
 import 'package:Videotheque/Globals.dart';
 import 'package:Videotheque/services/TmdbQueries.dart';
 import 'package:Videotheque/utils/Singletons.dart';
+import 'package:Videotheque/utils/Utils.dart';
 import 'package:Videotheque/views/TvView/SeasonView.dart';
 import 'package:Videotheque/views/TvView/TvView.dart';
-import 'package:Videotheque/views/components/BottomSheetView.dart';
 import 'package:flutter/material.dart';
 import 'package:Videotheque/views/TvView/AddTagView.dart';
 
@@ -17,7 +17,6 @@ class TvController extends ChangeNotifier {
   String heroTag;
   BuildContext context;
   String id;
-  BottomSheetView bottomSheet;
 
   Map<ElementsTypes, States> objectsStates = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (int index) => States.Nothing));
   Map<ElementsTypes, List> carrouselData = Map.fromIterables(ElementsTypes.values, List.generate(ElementsTypes.values.length, (int index) => []));
@@ -256,11 +255,8 @@ class TvController extends ChangeNotifier {
   }
 
   void showSeasonEl(int index, String heroTag) {
-    print(index);
-    bottomSheet.sheet = SeasonView(carrouselData[ElementsTypes.SeasonsCarrousel][index], heroTag, preloadData["id"].toString(), this);
-    notifyListeners();
-  }
-
-  void onSheetClose() {
+    print("index: $index, tag: $heroTag");
+    var view = SeasonView(carrouselData[ElementsTypes.SeasonsCarrousel][index], heroTag, preloadData["id"].toString(), this);
+    showSnappingSheet(context, view);
   }
 }

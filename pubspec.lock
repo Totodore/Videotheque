@@ -819,6 +819,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sliding_sheet:
+    dependency: "direct main"
+    description:
+      name: sliding_sheet
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.1"
   sliver_scaffold:
     dependency: "direct main"
     description:
@@ -826,13 +833,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.7"
-  snapping_sheet:
-    dependency: "direct main"
-    description:
-      name: snapping_sheet
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.2"
   source_gen:
     dependency: transitive
     description:

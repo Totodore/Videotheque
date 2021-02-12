@@ -15,13 +15,10 @@ import 'package:Videotheque/components/SkeletonTagComponent.dart';
 import 'package:Videotheque/Globals.dart';
 
 import 'package:Videotheque/views/TvView/TagView.dart';
-import 'package:Videotheque/views/components/BottomSheetView.dart';
 import 'package:Videotheque/views/components/CarrouselView.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
-
 
 class TvView extends StatelessWidget {
   static final Color baseColor = GlobalsMessage.chipData[QueryTypes.values.indexOf(QueryTypes.tv)]["color"];
@@ -36,19 +33,10 @@ class TvView extends StatelessWidget {
           return Scaffold(
             floatingActionButton: FABComponent(controller.isAdded, TvView.baseColor, controller.isAdded ? controller.removeTv : controller.addTv),
             body: Builder(builder: (context) {
-                BuildContext scaffoldContext = context;
-                controller.scaffoldContext = context;
-                return controller.bottomSheet = BottomSheetView(
-                  back: getTvView(controller, scaffoldContext),
-                  positions: [
-                    SnapPosition(positionFactor: 0, snappingDuration: const Duration(milliseconds: 200), snappingCurve: Curves.ease),
-                    SnapPosition(positionFactor: 0.8, snappingDuration: const Duration(milliseconds: 200), snappingCurve: Curves.ease),
-                    SnapPosition(positionPixel: MediaQuery.of(context).size.height - kToolbarHeight - 35*2, snappingDuration: const Duration(milliseconds: 200), snappingCurve: Curves.ease)
-                  ],
-                  onClose: controller.onSheetClose,
-                );
-              }
-            )
+              BuildContext scaffoldContext = context;
+              controller.scaffoldContext = context;
+              return getTvView(controller, scaffoldContext);
+            })
           );
         }
       )

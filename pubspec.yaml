@@ -2,7 +2,7 @@ name: Videotheque
 description: >-
   Gérer votre bibliothèque de films ! Cherchez, Ajoutez, Triez, Le tour est
   joué !
-version: 3.0.8+28
+version: 3.1.0+29
 environment:
   sdk: ">=2.1.0 <3.0.0"
 dependencies:
@@ -45,8 +45,7 @@ dependencies:
   json_annotation: ^3.1.1
   in_app_review: ^1.0.4
   random_color: ^1.0.5
-  snapping_sheet: ^2.0.2
-
+  sliding_sheet: ^0.4.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
