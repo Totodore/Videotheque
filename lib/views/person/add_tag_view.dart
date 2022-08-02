@@ -1,10 +1,10 @@
-import 'package:Videotheque/views/person_view/PersonView.dart';
+import 'package:Videotheque/views/person/person_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-import 'package:Videotheque/controllers/person_controller/AddTagController.dart';
-import 'package:Videotheque/components/DividerComponent.dart';
+import 'package:Videotheque/controllers/person/add_tag_controller.dart';
+import 'package:Videotheque/components/divider_component.dart';
 
 class AddTagView extends StatelessWidget {
   BuildContext context;

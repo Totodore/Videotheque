@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/utils/Utils.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/utils/utils.dart';
 import 'package:background_app_bar/background_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';

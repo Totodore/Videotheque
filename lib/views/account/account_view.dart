@@ -1,16 +1,16 @@
-import 'package:Videotheque/components/CrossFadeComponent.dart';
-import 'package:Videotheque/components/DividerComponent.dart';
-import 'package:Videotheque/components/SkeletonTextlineComponent.dart';
-import 'package:Videotheque/views/AccountView/components/ButtonComponent.dart';
-import 'package:Videotheque/views/AccountView/components/SearchModeComponent.dart';
-import 'package:Videotheque/views/AccountView/components/StatsComponent.dart';
-import 'package:Videotheque/views/person_view/PersonView.dart';
+import 'package:Videotheque/components/cross_fade_component.dart';
+import 'package:Videotheque/components/divider_component.dart';
+import 'package:Videotheque/components/skeleton_textline_component.dart';
+import 'package:Videotheque/views/account/components/button_component.dart';
+import 'package:Videotheque/views/account/components/search_mode_component.dart';
+import 'package:Videotheque/views/account/components/stats_component.dart';
+import 'package:Videotheque/views/person/person_view.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Videotheque/controllers/AccountController/AccountController.dart';
-import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/controllers/account/account_controller.dart';
+import 'package:Videotheque/globals.dart';
 class AccountView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,4 @@
-import 'package:Videotheque/Globals.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:Videotheque/globals.dart';
 import 'package:flutter/material.dart';
 
 class AskMailComponent extends StatelessWidget {

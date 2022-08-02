@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:Videotheque/models/api/ApiSearchModel.dart';
-import 'package:Videotheque/services/BarcodeLookup.dart';
-import 'package:Videotheque/services/FireauthQueries.dart';
-import 'package:Videotheque/services/FireconfigQueries.dart';
-import 'package:Videotheque/services/FirestoreQueries.dart';
-import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/models/api/api_search_model.dart';
+import 'package:Videotheque/services/barcode_lookup.dart';
+import 'package:Videotheque/services/fireauth_queries.dart';
+import 'package:Videotheque/services/fireconfig_queries.dart';
+import 'package:Videotheque/services/firestore_queries.dart';
+import 'package:Videotheque/globals.dart';
 import 'package:Videotheque/services/Preferences.dart';
-import 'package:Videotheque/services/TmdbQueries.dart';
-import 'package:Videotheque/utils/Singletons.dart';
+import 'package:Videotheque/services/tmdb_queries.dart';
+import 'package:Videotheque/utils/singletons.dart';
 import 'package:barcode_scan_fix/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

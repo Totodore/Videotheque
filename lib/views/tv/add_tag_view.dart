@@ -1,10 +1,10 @@
-import 'package:Videotheque/views/TvView/TvView.dart';
+import 'package:Videotheque/views/tv/tv_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-import 'package:Videotheque/controllers/TvController/AddTagController.dart';
-import 'package:Videotheque/components/DividerComponent.dart';
+import 'package:Videotheque/controllers/tv/add_tag_controller.dart';
+import 'package:Videotheque/components/divider_component.dart';
 
 class AddTagView extends StatelessWidget {
   BuildContext context;

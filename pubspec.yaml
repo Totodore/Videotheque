@@ -40,7 +40,7 @@ dependencies:
   rxdart: ^0.24.1
   ndialog: ^2.1.0+6
   flutter_animated_dialog: ^1.1.0
-  barcode_scan_fix: ^1.0.2
+  barcode_scan2: ^4.2.1
   permission_handler: ^5.0.1+1
   json_annotation: ^3.1.1
   in_app_review: ^1.0.4

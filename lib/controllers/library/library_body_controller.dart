@@ -1,12 +1,12 @@
-import 'package:Videotheque/services/FireauthQueries.dart';
-import 'package:Videotheque/services/FireconfigQueries.dart';
-import 'package:Videotheque/services/FirestoreQueries.dart';
-import 'package:Videotheque/services/TmdbQueries.dart';
-import 'package:Videotheque/utils/Singletons.dart';
-import 'package:Videotheque/utils/CustomChangeNotifier.dart';
+import 'package:Videotheque/services/fireauth_queries.dart';
+import 'package:Videotheque/services/fireconfig_queries.dart';
+import 'package:Videotheque/services/firestore_queries.dart';
+import 'package:Videotheque/services/tmdb_queries.dart';
+import 'package:Videotheque/utils/singletons.dart';
+import 'package:Videotheque/utils/custom_change_notifier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/globals.dart';
 import 'package:flutter/material.dart';
 
 class LibraryBodyController extends CustomChangeNotifier {

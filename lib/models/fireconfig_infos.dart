@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'FireconfigInfos.g.dart';
+part 'fireconfig_infos.g.dart';
 
 @JsonSerializable(nullable: true)
 class FireconfigInfos {

@@ -1,5 +1,5 @@
 
-import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 

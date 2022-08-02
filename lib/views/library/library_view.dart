@@ -1,10 +1,9 @@
 import 'dart:ui';
 
-import 'package:Videotheque/controllers/library_controller/library_controller.dart';
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/views/library_view/library_body_view.dart';
+import 'package:Videotheque/controllers/library/library_controller.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/views/library/library_body_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 class LibraryView extends StatefulWidget {

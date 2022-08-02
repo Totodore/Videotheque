@@ -1,10 +1,10 @@
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/views/collection_view/CollectionView.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/views/collection/collection_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Videotheque/controllers/collection_controller/tag_controller.dart';
-import 'package:Videotheque/controllers/collection_controller/collection_controller.dart';
+import 'package:Videotheque/controllers/collection/tag_controller.dart';
+import 'package:Videotheque/controllers/collection/collection_controller.dart';
 
 class TagView extends StatelessWidget {
   ElementsTypes type;

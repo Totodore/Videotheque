@@ -1,10 +1,10 @@
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/views/TvView/TvView.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/views/tv/tv_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Videotheque/controllers/movie_controller/tag_controller.dart';
-import 'package:Videotheque/controllers/movie_controller/movie_controller.dart';
+import 'package:Videotheque/controllers/movie/tag_controller.dart';
+import 'package:Videotheque/controllers/movie/movie_controller.dart';
 
 class TagView extends StatelessWidget {
   ElementsTypes type;

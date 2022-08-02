@@ -1,7 +1,7 @@
 
-import 'package:Videotheque/controllers/SearchController/ResultController.dart';
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/models/api/ApiSearchModel.dart';
+import 'package:Videotheque/controllers/search/Result_controller.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/models/api/api_search_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';

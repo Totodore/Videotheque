@@ -1,5 +1,5 @@
-import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
-import 'package:Videotheque/views/TvView/TvView.dart';
+import 'package:Videotheque/models/api/api_search_tv_model.dart';
+import 'package:Videotheque/views/tv/tv_view.dart';
 import 'package:flutter/material.dart';
 
 class KnownForTvComponent extends StatelessWidget {

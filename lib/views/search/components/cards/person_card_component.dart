@@ -1,11 +1,11 @@
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
-import 'package:Videotheque/models/api/ApiSearchPersonModel.dart';
-import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
-import 'package:Videotheque/utils/Utils.dart';
-import 'package:Videotheque/views/SearchView/components/cards/KnownForMovieComponent.dart';
-import 'package:Videotheque/views/SearchView/components/cards/KnownForTvComponent.dart';
-import 'package:Videotheque/views/person_view/PersonView.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/models/api/api_search_movie_model.dart';
+import 'package:Videotheque/models/api/api_search_person_model.dart';
+import 'package:Videotheque/models/api/api_search_tv_model.dart';
+import 'package:Videotheque/utils/utils.dart';
+import 'package:Videotheque/views/search/components/cards/known_for_movie_component.dart';
+import 'package:Videotheque/views/search/components/cards/known_for_tv_component.dart';
+import 'package:Videotheque/views/person/person_view.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 

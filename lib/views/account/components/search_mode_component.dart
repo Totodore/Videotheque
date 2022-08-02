@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/components/CrossFadeComponent.dart';
-import 'package:Videotheque/controllers/AccountController/AccountController.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/components/cross_fade_component.dart';
+import 'package:Videotheque/controllers/account/account_controller.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 

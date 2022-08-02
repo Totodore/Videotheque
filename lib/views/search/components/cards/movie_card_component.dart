@@ -1,6 +1,6 @@
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
-import 'package:Videotheque/utils/Utils.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/models/api/api_search_movie_model.dart';
+import 'package:Videotheque/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 

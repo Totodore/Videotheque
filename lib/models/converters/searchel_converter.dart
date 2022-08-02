@@ -1,9 +1,9 @@
 
-import 'package:Videotheque/models/api/ApiSearchElModel.dart';
-import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
-import 'package:Videotheque/models/api/ApiSearchPersonModel.dart';
-import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
-import 'package:Videotheque/models/api/ApiSearchCollectionModel.dart';
+import 'package:Videotheque/models/api/api_search_el_model.dart';
+import 'package:Videotheque/models/api/api_search_movie_model.dart';
+import 'package:Videotheque/models/api/api_search_person_model.dart';
+import 'package:Videotheque/models/api/api_search_tv_model.dart';
+import 'package:Videotheque/models/api/api_search_collection_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class SearchElConverter<T extends ApiSearchElModel> implements JsonConverter<T, Object> {

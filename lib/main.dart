@@ -1,23 +1,23 @@
-import 'package:Videotheque/services/BarcodeLookup.dart';
-import 'package:Videotheque/services/FireauthQueries.dart';
-import 'package:Videotheque/services/FireconfigQueries.dart';
-import 'package:Videotheque/services/FirestoreQueries.dart';
-import 'package:Videotheque/services/Preferences.dart';
-import 'package:Videotheque/services/TmdbQueries.dart';
-import 'package:Videotheque/utils/Singletons.dart';
-import 'package:Videotheque/views/SplashScreenView.dart';
+import 'package:Videotheque/services/barcode_lookup.dart';
+import 'package:Videotheque/services/fireauth_queries.dart';
+import 'package:Videotheque/services/fireconfig_queries.dart';
+import 'package:Videotheque/services/firestore_queries.dart';
+import 'package:Videotheque/services/preferences.dart';
+import 'package:Videotheque/services/tmdb_queries.dart';
+import 'package:Videotheque/utils/singletons.dart';
+import 'package:Videotheque/views/splash_screen_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:Videotheque/views/AppView.dart';
-import 'package:Videotheque/views/movie_view/MovieView.dart';
-import 'package:Videotheque/views/person_view/PersonView.dart';
-import 'package:Videotheque/views/SearchView/SearchView.dart';
-import 'package:Videotheque/views/collection_view/CollectionView.dart';
-import 'package:Videotheque/views/TvView/TvView.dart';
-import 'package:Videotheque/views/authView/AuthView.dart';
+import 'package:Videotheque/views/app_view.dart';
+import 'package:Videotheque/views/movie/movie_view.dart';
+import 'package:Videotheque/views/person/person_view.dart';
+import 'package:Videotheque/views/search/search_view.dart';
+import 'package:Videotheque/views/collection/collection_view.dart';
+import 'package:Videotheque/views/tv/tv_view.dart';
+import 'package:Videotheque/views/auth/auth_view.dart';
 import 'package:flutter/services.dart';
-import 'Globals.dart';
+import 'globals.dart';
 
 AppView mainView;
 

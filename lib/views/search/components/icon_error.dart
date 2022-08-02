@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/globals.dart';
   
 class IconErrorView extends StatelessWidget {
   @override

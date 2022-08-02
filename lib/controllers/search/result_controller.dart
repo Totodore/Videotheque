@@ -1,19 +1,19 @@
 
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/models/api/ApiSearchElModel.dart';
-import 'package:Videotheque/models/api/ApiSearchModel.dart';
-import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
-import 'package:Videotheque/models/api/ApiSearchPersonModel.dart';
-import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
-import 'package:Videotheque/models/api/ApiSearchCollectionModel.dart';
-import 'package:Videotheque/views/SearchView/components/cards/MovieCardComponent.dart';
-import 'package:Videotheque/views/SearchView/components/cards/PersonCardComponent.dart';
-import 'package:Videotheque/views/SearchView/components/cards/TvCardComponent.dart';
-import 'package:Videotheque/views/SearchView/components/cards/CollectionCardComponent.dart';
-import 'package:Videotheque/views/SearchView/components/imgs/CollectionImgComponent.dart';
-import 'package:Videotheque/views/SearchView/components/imgs/MovieImgComponent.dart';
-import 'package:Videotheque/views/SearchView/components/imgs/PersonImgComponent.dart';
-import 'package:Videotheque/views/SearchView/components/imgs/TvImgComponent.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/models/api/api_search_el_model.dart';
+import 'package:Videotheque/models/api/api_search_model.dart';
+import 'package:Videotheque/models/api/api_search_movie_model.dart';
+import 'package:Videotheque/models/api/api_search_person_model.dart';
+import 'package:Videotheque/models/api/api_search_tv_model.dart';
+import 'package:Videotheque/models/api/api_search_collection_model.dart';
+import 'package:Videotheque/views/search/components/cards/movie_card_component.dart';
+import 'package:Videotheque/views/search/components/cards/person_card_component.dart';
+import 'package:Videotheque/views/search/components/cards/tv_card_component.dart';
+import 'package:Videotheque/views/search/components/cards/collection_card_component.dart';
+import 'package:Videotheque/views/search/components/imgs/collection_img_component.dart';
+import 'package:Videotheque/views/search/components/imgs/movie_img_component.dart';
+import 'package:Videotheque/views/search/components/imgs/person_img_component.dart';
+import 'package:Videotheque/views/search/components/imgs/tv_img_component.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 

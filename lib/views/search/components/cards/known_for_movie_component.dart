@@ -1,5 +1,5 @@
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/models/api/api_search_movie_model.dart';
 import 'package:flutter/material.dart';
 
 class KnownForMovieComponent extends StatelessWidget {

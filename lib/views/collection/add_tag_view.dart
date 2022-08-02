@@ -1,10 +1,10 @@
-import 'package:Videotheque/views/collection_view/CollectionView.dart';
+import 'package:Videotheque/views/collection/collection_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-import 'package:Videotheque/controllers/collection_controller/addtag_controller.dart';
-import 'package:Videotheque/components/DividerComponent.dart';
+import 'package:Videotheque/controllers/collection/add_tag_controller.dart';
+import 'package:Videotheque/components/divider_component.dart';
 
 class AddTagView extends StatelessWidget {
   BuildContext context;

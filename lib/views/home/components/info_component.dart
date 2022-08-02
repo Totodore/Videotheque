@@ -1,8 +1,7 @@
-import 'package:Videotheque/models/FireconfigInfos.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:Videotheque/models/fireconfig_infos.dart';
 import 'package:flutter/material.dart';
 
-import '../../../Globals.dart';
+import '../../../globals.dart';
 
 class InfoComponent extends StatelessWidget {
   final FireconfigInfos data;

@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart' as p;
-import 'package:Videotheque/Env.dart';
+import 'package:Videotheque/env.dart';
 import 'package:http/http.dart';
 
 class BarcodeLookup {

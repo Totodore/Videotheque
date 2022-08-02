@@ -1,4 +1,4 @@
-import 'package:Videotheque/components/CrossFadeComponent.dart';
+import 'package:Videotheque/components/cross_fade_component.dart';
 import 'package:flutter/material.dart';
 
 class FABComponent extends StatelessWidget {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
-import '../Globals.dart';
+import '../globals.dart';
 
 class Utils {
   static Future<Response> fetchData(url) {

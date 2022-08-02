@@ -1,13 +1,13 @@
-import 'package:Videotheque/views/AccountView/AccountView.dart';
-import 'package:Videotheque/views/HomeView/HomeView.dart';
-import 'package:Videotheque/views/library_view/library_view.dart';
-import 'package:Videotheque/views/SearchView/SearchView.dart';
+import 'package:Videotheque/views/account/account_view.dart';
+import 'package:Videotheque/views/home/home_view.dart';
+import 'package:Videotheque/views/library/library_view.dart';
+import 'package:Videotheque/views/search/search_view.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Videotheque/controllers/AppController.dart';
-import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/controllers/app_controller.dart';
+import 'package:Videotheque/globals.dart';
 
 class AppView extends StatelessWidget {
   List<Widget> _children;

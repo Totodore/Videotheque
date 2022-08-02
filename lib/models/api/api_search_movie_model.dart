@@ -1,11 +1,11 @@
 
 import 'dart:convert';
 
-import 'package:Videotheque/models/api/ApiSearchElModel.dart';
-import 'package:Videotheque/models/converters/DateTimeConverter.dart';
+import 'package:Videotheque/models/api/api_search_el_model.dart';
+import 'package:Videotheque/models/converters/datetime_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'ApiSearchMovieModel.g.dart';
+part 'api_search_movie_model.g.dart';
 
 @JsonSerializable(nullable: true)
 class ApiSearchMovieModel extends ApiSearchElModel {

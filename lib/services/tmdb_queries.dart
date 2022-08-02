@@ -1,13 +1,13 @@
 import 'dart:convert';
-import 'package:Videotheque/Env.dart';
-import 'package:Videotheque/models/api/ApiSearchCollectionModel.dart';
-import 'package:Videotheque/models/api/ApiSearchModel.dart';
-import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
-import 'package:Videotheque/models/api/ApiSearchPersonModel.dart';
-import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
+import 'package:Videotheque/env.dart';
+import 'package:Videotheque/models/api/api_search_collection_model.dart';
+import 'package:Videotheque/models/api/api_search_model.dart';
+import 'package:Videotheque/models/api/api_search_movie_model.dart';
+import 'package:Videotheque/models/api/api_search_person_model.dart';
+import 'package:Videotheque/models/api/api_search_tv_model.dart';
 import 'package:http/http.dart';
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/utils/Utils.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/utils/utils.dart';
 import 'package:path/path.dart' as p;
 
 class TMDBQueries {

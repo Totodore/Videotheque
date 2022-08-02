@@ -1,12 +1,12 @@
 
 import 'dart:convert';
 
-import 'package:Videotheque/models/api/ApiSearchElModel.dart';
-import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
-import 'package:Videotheque/models/api/ApiSearchMovieModel.dart';
+import 'package:Videotheque/models/api/api_search_el_model.dart';
+import 'package:Videotheque/models/api/api_search_tv_model.dart';
+import 'package:Videotheque/models/api/api_search_movie_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'ApiSearchPersonModel.g.dart';
+part 'api_search_person_model.g.dart';
 
 @JsonSerializable(nullable: true)
 class ApiSearchPersonModel extends ApiSearchElModel {

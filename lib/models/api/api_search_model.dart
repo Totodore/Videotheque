@@ -1,10 +1,10 @@
 
 import 'dart:convert';
 
-import 'package:Videotheque/models/api/ApiSearchElModel.dart';
-import 'package:Videotheque/models/converters/SearchElConverter.dart';
+import 'package:Videotheque/models/api/api_search_el_model.dart';
+import 'package:Videotheque/models/converters/searchel_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'ApiSearchModel.g.dart';
+part 'api_search_model.g.dart';
 
 @JsonSerializable(nullable: true)
 class ApiSearchModel<T extends ApiSearchElModel> {

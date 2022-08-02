@@ -1,11 +1,11 @@
-import 'package:Videotheque/components/CrossFadeComponent.dart';
-import 'package:Videotheque/controllers/HomeController/HomeController.dart';
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/views/HomeView/components/AskMailComponent.dart';
-import 'package:Videotheque/views/HomeView/components/LoadingComponent.dart';
-import 'package:Videotheque/views/HomeView/components/AppBarComponent.dart';
-import 'package:Videotheque/views/HomeView/components/AskForCoffeeComponent.dart';
-import 'package:Videotheque/views/HomeView/components/NoDataComponent.dart';
+import 'package:Videotheque/components/cross_fade_component.dart';
+import 'package:Videotheque/controllers/home/home_controller.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/views/home/components/ask_mail_component.dart';
+import 'package:Videotheque/views/home/components/Loading_component.dart';
+import 'package:Videotheque/views/home/components/app_bar_component.dart';
+import 'package:Videotheque/views/home/components/ask_for_coffee_component.dart';
+import 'package:Videotheque/views/home/components/no_data_component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

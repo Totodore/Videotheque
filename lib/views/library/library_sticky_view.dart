@@ -1,12 +1,11 @@
 import 'dart:ui';
 
-import 'package:Videotheque/components/NoImgComponent.dart';
-import 'package:Videotheque/controllers/library_controller/library_body_controller.dart';
-import 'package:Videotheque/controllers/library_controller/library_sticky_controller.dart';
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/utils/Utils.dart';
-import 'package:Videotheque/views/library_view/component/CustomSearchPainter.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:Videotheque/components/no_img_component.dart';
+import 'package:Videotheque/controllers/library/library_body_controller.dart';
+import 'package:Videotheque/controllers/library/library_sticky_controller.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/utils/utils.dart';
+import 'package:Videotheque/views/library/component/custom_search_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:progressive_image/progressive_image.dart';

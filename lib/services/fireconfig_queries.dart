@@ -1,6 +1,6 @@
-import 'package:Videotheque/models/FireconfigInfos.dart';
+import 'package:Videotheque/models/fireconfig_infos.dart';
 import 'package:Videotheque/services/Preferences.dart';
-import 'package:Videotheque/utils/Singletons.dart';
+import 'package:Videotheque/utils/singletons.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 class FireconfigQueries {
 

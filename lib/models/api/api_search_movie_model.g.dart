@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ApiSearchMovieModel.dart';
+part of 'api_search_movie_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

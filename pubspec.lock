@@ -43,13 +43,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-  barcode_scan_fix:
+  barcode_scan2:
     dependency: "direct main"
     description:
-      name: barcode_scan_fix
+      name: barcode_scan2
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "4.2.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -112,14 +112,14 @@ packages:
       name: built_collection
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.3.2"
+    version: "5.1.1"
   built_value:
     dependency: transitive
     description:
       name: built_value
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.1.0"
+    version: "8.4.0"
   cached_network_image:
     dependency: "direct main"
     description:
@@ -189,7 +189,7 @@ packages:
       name: code_builder
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.5.0"
+    version: "3.7.0"
   collection:
     dependency: transitive
     description:
@@ -336,7 +336,7 @@ packages:
       name: fixnum
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.11"
+    version: "1.0.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -702,6 +702,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  protobuf:
+    dependency: transitive
+    description:
+      name: protobuf
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   provider:
     dependency: "direct main"
     description:

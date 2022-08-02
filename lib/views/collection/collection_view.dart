@@ -1,20 +1,20 @@
 import 'dart:ui';
 
-import 'package:Videotheque/components/CrossFadeComponent.dart';
-import 'package:Videotheque/components/FABComponent.dart';
-import 'package:Videotheque/components/HeaderComponent.dart';
-import 'package:Videotheque/components/SliverAppBarComponent.dart';
-import 'package:Videotheque/components/ToSeeSeenComponent.dart';
-import 'package:Videotheque/components/DividerComponent.dart';
-import 'package:Videotheque/components/SkeletonCarrouselComponent.dart';
-import 'package:Videotheque/components/SkeletonTagComponent.dart';
+import 'package:Videotheque/components/cross_fade_component.dart';
+import 'package:Videotheque/components/fab_component.dart';
+import 'package:Videotheque/components/header_component.dart';
+import 'package:Videotheque/components/sliver_appbar_component.dart';
+import 'package:Videotheque/components/tosee_seen_component.dart';
+import 'package:Videotheque/components/divider_component.dart';
+import 'package:Videotheque/components/skeleton_carrousel_component.dart';
+import 'package:Videotheque/components/skeleton_tag_component.dart';
 
-import 'package:Videotheque/controllers/collection_controller/collection_controller.dart';
+import 'package:Videotheque/controllers/collection/collection_controller.dart';
 
-import 'package:Videotheque/views/collection_view/tag_view.dart';
-import 'package:Videotheque/views/components/CarrouselView.dart';
+import 'package:Videotheque/views/collection/tag_view.dart';
+import 'package:Videotheque/views/components/carrousel_view.dart';
 
-import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,12 +1,12 @@
-import 'package:Videotheque/components/CrossFadeComponent.dart';
-import 'package:Videotheque/components/DividerComponent.dart';
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/views/AppView.dart';
+import 'package:Videotheque/components/cross_fade_component.dart';
+import 'package:Videotheque/components/divider_component.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/views/app_view.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Videotheque/controllers/AuthController/AuthController.dart';
+import 'package:Videotheque/controllers/auth/auth_controller.dart';
 
 
 class AuthView extends StatelessWidget {

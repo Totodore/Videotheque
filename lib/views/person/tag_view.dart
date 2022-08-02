@@ -1,10 +1,10 @@
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/views/person_view/PersonView.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/views/person/person_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:Videotheque/controllers/person_controller/TagController.dart';
-import 'package:Videotheque/controllers/person_controller/PersonController.dart';
+import 'package:Videotheque/controllers/person/tag_controller.dart';
+import 'package:Videotheque/controllers/person/person_controller.dart';
 
 class TagView extends StatelessWidget {
   ElementsTypes type;

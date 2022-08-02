@@ -1,7 +1,7 @@
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/models/api/ApiSearchTvModel.dart';
-import 'package:Videotheque/utils/Utils.dart';
-import 'package:Videotheque/views/TvView/TvView.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/models/api/api_search_tv_model.dart';
+import 'package:Videotheque/utils/utils.dart';
+import 'package:Videotheque/views/tv/Tv_view.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ApiSearchTvModel.dart';
+part of 'api_search_tv_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

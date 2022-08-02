@@ -1,5 +1,4 @@
-import 'package:Videotheque/Globals.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:Videotheque/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 class AskForCoffeeComponent extends StatelessWidget {

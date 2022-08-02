@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'FireconfigInfos.dart';
+part of 'fireconfig_infos.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

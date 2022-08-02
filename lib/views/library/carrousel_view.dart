@@ -1,11 +1,11 @@
 
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/components/NoImgComponent.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/components/no_img_component.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
-import 'package:Videotheque/utils/Utils.dart';
-import 'package:Videotheque/controllers/library_controller/carrousel_controller.dart';
+import 'package:Videotheque/utils/utils.dart';
+import 'package:Videotheque/controllers/library/carrousel_controller.dart';
 class CarrouselView extends StatelessWidget {
   ElementsTypes type;
   List dataCarrousel;

@@ -1,7 +1,7 @@
-import 'package:Videotheque/Globals.dart';
+import 'package:Videotheque/globals.dart';
 import 'package:flutter/material.dart';
 
-class ChangeMailComponent extends StatelessWidget {
+class ChangePasswordComponent extends StatelessWidget {
 
   final Function _onConfirm;
   final Function _onClose;
@@ -9,13 +9,13 @@ class ChangeMailComponent extends StatelessWidget {
   final TextEditingController _textController2;
   final BuildContext _context;
 
-  ChangeMailComponent(this._onConfirm, this._onClose, this._textController, this._textController2, this._context);
+  ChangePasswordComponent(this._onConfirm, this._onClose, this._textController, this._textController2, this._context);
 
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      title: Text("Changer mon email"),
+      title: Text("Changer mon mot de passe"),
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
@@ -25,7 +25,7 @@ class ChangeMailComponent extends StatelessWidget {
             keyboardType: TextInputType.visiblePassword,
             decoration: InputDecoration(
               labelStyle: TextStyle(color: GlobalsColor.darkGreen),
-              labelText: "Mot de passe",
+              labelText: "Ancien mot de passe",
               contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(3)),
@@ -50,10 +50,11 @@ class ChangeMailComponent extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
           child: TextField(
             controller: _textController2,
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.visiblePassword,
+            obscureText: true,
             decoration: InputDecoration(
               labelStyle: TextStyle(color: GlobalsColor.darkGreen),
-              labelText: "Nouveau mail",
+              labelText: "Nouveau mot de passe",
               contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(3)),

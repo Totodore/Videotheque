@@ -1,7 +1,7 @@
-import 'package:Videotheque/services/FireauthQueries.dart';
-import 'package:Videotheque/Globals.dart';
-import 'package:Videotheque/utils/Singletons.dart';
-import 'package:Videotheque/utils/Utils.dart';
+import 'package:Videotheque/services/fireauth_queries.dart';
+import 'package:Videotheque/globals.dart';
+import 'package:Videotheque/utils/singletons.dart';
+import 'package:Videotheque/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:rxdart/rxdart.dart';
